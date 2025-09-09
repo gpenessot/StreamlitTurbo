@@ -1,4 +1,4 @@
-# 🚀 StreamlitBoilerplate Pro - Template Démo
+# ⚡ StreamlitTurbo - Template Démo
 
 > **Template professionnel pour développeurs Streamlit** 🎯  
 > **Économise 4h de setup sur chaque projet** ⏱️
@@ -52,22 +52,40 @@ mon-app/
 
 ```bash
 # 1. Installer Copier
-pip install copier
+uv add copier
 
 # 2. Générer votre projet
-copier copy https://github.com/votre-username/streamlit-boilerplate-pro mon-app
+copier copy https://github.com/gpenessot/StreamlitTurbo mon-app
 
-# 3. Lancer l'application
-cd mon-app && pip install -r requirements.txt && streamlit run main.py
+# 3. Setup automatique avec justfile
+cd mon-app && just setup
+
+# 4. Lancer l'application
+just run
 ```
 
-**Boom !** Votre app Streamlit pro est en ligne. 🎉
+**Boom !** Votre app Streamlit pro est en ligne avec le thème moderne ! 🎉
+
+### ⚡ **Workflow avec uv + justfile (recommandé) :**
+
+```bash
+# Cloner le template
+copier copy https://github.com/gpenessot/StreamlitTurbo mon-app
+
+# Setup complet automatique
+cd mon-app && just setup
+
+# Lancer en développement  
+just dev
+```
+
+**Encore plus rapide !** Une seule commande `just setup` fait tout le travail. ⚡
 
 ---
 
 ## 🎨 **Interface Moderne vs Streamlit Basique**
 
-| Streamlit de base | StreamlitBoilerplate Pro |
+| Streamlit de base | StreamlitTurbo |
 |---|---|
 | ![Basic Streamlit](https://via.placeholder.com/300x200/CCCCCC/000000?text=Basic+Streamlit) | ![Pro Template](https://via.placeholder.com/300x200/FF6B6B/FFFFFF?text=Pro+Template) |
 | ❌ Interface générique | ✅ Design sur-mesure |
@@ -108,7 +126,7 @@ cd mon-app && pip install -r requirements.txt && streamlit run main.py
 
 ### ⚠️ **Ce qui MANQUE dans cette version démo :**
 
-| Fonctionnalité | Version Démo 🎭 | **StreamlitBoilerplate Pro** 🚀 |
+| Fonctionnalité | Version Démo 🎭 | **StreamlitTurbo Pro** 🚀 |
 |---|---|---|
 | **🏗️ Architecture** | Structure de base | Architecture enterprise avec patterns avancés |
 | **🔐 Authentification** | ❌ Pas d'auth | ✅ **Système complet** (login, roles, sessions) |
@@ -135,7 +153,7 @@ cd mon-app && pip install -r requirements.txt && streamlit run main.py
 - ⏰ **1 jour** pour le monitoring
 - **TOTAL : 1 semaine de développement** 😵
 
-### ⚡ **Avec StreamlitBoilerplate Pro :**
+### ⚡ **Avec StreamlitTurbo :**
 - ✅ **3 minutes** pour générer le projet
 - ✅ **5 minutes** pour personnaliser
 - ✅ **2 minutes** pour déployer
@@ -148,7 +166,7 @@ cd mon-app && pip install -r requirements.txt && streamlit run main.py
 
 ## 💎 **Vous voulez la version COMPLÈTE ?**
 
-### 🔥 **StreamlitBoilerplate Pro** 
+### 🔥 **StreamlitTurbo Pro** 
 *Template professionnel avec architecture enterprise*
 
 ![Streamlit Unleashed](https://via.placeholder.com/600x300/FF6B6B/FFFFFF?text=STREAMLIT+UNLEASHED)
@@ -156,7 +174,7 @@ cd mon-app && pip install -r requirements.txt && streamlit run main.py
 ### 🎁 **Ce que vous obtenez en PLUS :**
 
 #### 🚀 **Développement Express**
-- ⚡ **Makefile/Justfile** : Un seul commande pour tout (dev, test, deploy)
+- ⚡ **Justfile + uv** : Un seul commande pour tout (setup, dev, deploy)
 - 🔧 **Outils pré-configurés** : Black, flake8, mypy, pre-commit
 - 🧪 **Tests starter kit** : Pytest + fixtures + coverage
 - 📊 **Monitoring intégré** : Logs, métriques, alertes
@@ -185,34 +203,26 @@ cd mon-app && pip install -r requirements.txt && streamlit run main.py
 - ⚡ **Cache Redis** pour les performances
 - 🔄 **Migrations automatiques**
 
-### 💰 **Valeur réelle :**
-
-> *"Ce template m'a fait économiser 40h sur mon dernier projet. ROI immédiat !"*  
-> **— Thomas, Lead Developer**
-
-> *"J'ai déployé 3 apps en production cette semaine grâce au template. Incroyable !"*  
-> **— Sarah, Data Scientist freelance**
-
-### ⏰ **Offre limitée :**
-- ~~297€~~ **197€** jusqu'au 31 mars
-- 🎁 **Bonus** : PDF "Les 7 erreurs fatales Streamlit" (47€)
-- 🎁 **Bonus** : Templates email + landing page (97€)
-- 💬 **Support prioritaire** Discord (priceless)
+### ⏰ **Offre limitée - Streamlit Unleashed :**
+- ~~147€~~ **97€** jusqu'au 28 septembre
+- 🎁 **4 templates premium** inclus (Analytics, Chatbot, Mapping, Dashboard temps réel)
+- 💬 **Communauté WhatsApp privée**
+- 🏆 **Défi LinkedIn** avec récompenses top 3
 
 ---
 
-## 🚀 **ACCÈS VIP à StreamlitBoilerplate Pro**
+## 🚀 **ACCÈS VIP à StreamlitTurbo Pro**
 
 ### 👉 **[STREAMLIT UNLEASHED - Accès immédiat](https://www.mes-formations-data.fr/formation/streamlit-unleashed)**
 
 🎯 **Formation complète Streamlit** avec :
-- ✅ **Template Pro complet** (valeur 497€)
-- ✅ **16h de vidéos** étape par étape
-- ✅ **Projets pratiques** avec vrais datasets
-- ✅ **Scripts déploiement** tous clouds
-- ✅ **Communauté privée** Discord
-- ✅ **Mises à jour** à vie
-- ✅ **Expertise développement** d'applications data
+- ✅ **6 modules complets** (Foundation, Interactivité, Navigation, Performance, Déploiement, Écosystème)
+- ✅ **5 projets concrets** avec code source
+- ✅ **4 templates premium** (Analytics, Chatbot, Mapping, Dashboard temps réel)
+- ✅ **Communauté WhatsApp privée**
+- ✅ **Accès à vie** au contenu
+- ✅ **Garantie 30 jours** satisfait ou remboursé
+- ✅ **Défi LinkedIn** avec récompenses
 
 ### 💡 **Pourquoi choisir Streamlit Unleashed ?**
 
@@ -230,13 +240,13 @@ cd mon-app && pip install -r requirements.txt && streamlit run main.py
 
 ---
 
-### 🎁 **BONUS EXCLUSIFS** (valeur 244€)
+### 🎁 **BONUS INCLUS**
 
-1. **📋 Checklist déploiement** (47€)
-2. **🚨 Guide "Éviter ces 7 erreurs Streamlit"** (97€)  
-3. **📞 Session coaching 1h** avec moi (100€)
+1. **📊 4 templates premium** (Analytics, Chatbot, Mapping, Dashboard temps réel)
+2. **💬 Communauté WhatsApp privée** pour échanger avec d'autres apprenants
+3. **🏆 Défi LinkedIn** avec récompenses pour les top 3 projets
 
-### ⏰ **Action limitée - Plus que 48h !**
+### ⏰ **Offre limitée - Jusqu'au 28 septembre !**
 
 **[👉 OBTENIR STREAMLIT UNLEASHED MAINTENANT](https://www.mes-formations-data.fr/formation/streamlit-unleashed)**
 
@@ -261,12 +271,12 @@ cd mon-app && pip install -r requirements.txt && streamlit run main.py
 
 - 📧 **Email Pro** : gael.penessot@gmail.com
 - 💼 **LinkedIn** : [Gaël Penessot](https://www.linkedin.com/in/gael-penessot/)  
-- 🐛 **Issues** : [GitHub Issues](https://github.com/votre-username/streamlit-boilerplate-pro/issues)
+- 🐛 **Issues** : [GitHub Issues](https://github.com/gpenessot/StreamlitTurbo/issues)
 - 💬 **Discord VIP** : Accès inclus avec [Streamlit Unleashed](https://www.mes-formations-data.fr/formation/streamlit-unleashed)
 
 ---
 
-## 🏆 **Récapitulatif : Pourquoi StreamlitBoilerplate Pro ?**
+## 🏆 **Récapitulatif : Pourquoi StreamlitTurbo Pro ?**
 
 ✅ **Template professionnel** testé sur 50+ projets  
 ✅ **Architecture enterprise** avec expertise développement  
@@ -280,7 +290,7 @@ cd mon-app && pip install -r requirements.txt && streamlit run main.py
 **Option A** : Continuer à perdre des heures sur le setup  
 **Option B** : Utiliser le système qui a fait ses preuves  
 
-**[👉 CHOISIR L'OPTION B - STREAMLIT UNLEASHED](https://www.mes-formations-data.fr/formation/streamlit-unleashed)**
+**[👉 CHOISIR L'OPTION B - STREAMLIT TURBO PRO](https://www.mes-formations-data.fr/formation/streamlit-unleashed)**
 
 ---
 
@@ -298,7 +308,7 @@ cd mon-app && pip install -r requirements.txt && streamlit run main.py
 
 **[🔥 ACCÈS VIP à la version complète](https://www.mes-formations-data.fr/formation/streamlit-unleashed)**
 
-*⏰ Offre limitée - Plus que 48h à -33%*
+*⏰ Offre limitée - Jusqu'au 28 septembre à 97€ au lieu de 147€*
 
 ---
 
