@@ -220,7 +220,6 @@ just dev
 - ✅ **4 templates premium** (Analytics, Chatbot, Mapping, Dashboard temps réel)
 - ✅ **Communauté WhatsApp privée**
 - ✅ **Accès à vie** au contenu
-- ✅ **Garantie 30 jours** satisfait ou remboursé
 - ✅ **Défi LinkedIn** avec récompenses
 
 ### 💡 **Pourquoi choisir Streamlit Unleashed ?**
@@ -249,7 +248,7 @@ just dev
 
 **[👉 OBTENIR STREAMLIT UNLEASHED MAINTENANT](https://www.mes-formations-data.fr/formation/streamlit-unleashed)**
 
-*⚡ Accès immédiat + garantie satisfait ou remboursé 30 jours*
+*⚡ Accès immédiat*
 
 ---
 
