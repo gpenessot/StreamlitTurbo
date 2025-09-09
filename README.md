@@ -48,7 +48,7 @@ mon-app/
 
 ---
 
-## 🚀 **Installation Express (30 secondes)**
+## ⚡ **Installation Express avec uv + justfile (30 secondes)**
 
 ```bash
 # 1. Installer Copier
@@ -57,29 +57,16 @@ uv add copier
 # 2. Générer votre projet
 copier copy https://github.com/gpenessot/StreamlitTurbo mon-app
 
-# 3. Setup automatique avec justfile
+# 3. Setup complet automatique
 cd mon-app && just setup
 
 # 4. Lancer l'application
-just run
+just run              # Production
+just dev              # Développement avec hot-reload
 ```
 
-**Boom !** Votre app Streamlit pro est en ligne avec le thème moderne ! 🎉
-
-### ⚡ **Workflow avec uv + justfile (recommandé) :**
-
-```bash
-# Cloner le template
-copier copy https://github.com/gpenessot/StreamlitTurbo mon-app
-
-# Setup complet automatique
-cd mon-app && just setup
-
-# Lancer en développement  
-just dev
-```
-
-**Encore plus rapide !** Une seule commande `just setup` fait tout le travail. ⚡
+**Boom !** Votre app Streamlit pro est en ligne avec le thème moderne ! 🎉  
+Une seule commande `just setup` fait tout le travail. ⚡
 
 ---
 
