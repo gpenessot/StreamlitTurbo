@@ -1,0 +1,84 @@
+# {{ project_name }}
+
+{{ project_description }}
+
+## 🚀 Installation
+
+```bash
+# Cloner ou télécharger le projet
+cd {{ project_slug }}
+
+# Installer les dépendances
+pip install -r requirements.txt
+
+# Lancer l'application
+streamlit run main.py
+```
+
+## 📁 Structure du projet
+
+```
+{{ project_slug }}/
+├── main.py                    # Point d'entrée de l'application
+├── requirements.txt           # Dépendances Python
+├── .streamlit/
+│   └── config.toml           # Configuration Streamlit
+├── src/
+│   └── {{ project_slug }}/
+│       ├── pages/            # Pages de l'application
+│       ├── components/       # Composants réutilisables
+│       └── utils/           # Fonctions utilitaires
+{% if use_sample_data %}└── data/
+    └── sample_data.csv      # Données d'exemple
+{% endif %}```
+
+## 🎯 Fonctionnalités
+
+- ✅ Structure modulaire et professionnelle
+- ✅ Pages multiples avec navigation
+- ✅ Composants réutilisables
+- ✅ Configuration Streamlit optimisée
+{% if use_sample_data %}- ✅ Données d'exemple incluses{% endif %}
+{% if include_analytics_page %}- ✅ Dashboard d'analytics de démonstration{% endif %}
+
+## 🎨 Personnalisation
+
+### Thème
+Le thème par défaut est configuré sur `{{ streamlit_theme }}`. 
+Vous pouvez le modifier dans `.streamlit/config.toml`.
+
+### Pages
+Ajoutez de nouvelles pages dans `src/{{ project_slug }}/pages/`.
+Le nommage `{numero}_{emoji}_{nom}.py` permet un tri automatique.
+
+### Composants
+Créez des composants réutilisables dans `src/{{ project_slug }}/components/`.
+
+## 🐍 Versions supportées
+
+- Python {{ python_version }}+
+- Streamlit 1.28.0+
+
+## 👨‍💻 Développé par
+
+**{{ author_name }}** - {{ author_email }}
+
+## 📚 Aller plus loin
+
+Ce template démo vous donne un aperçu des bonnes pratiques Streamlit.
+
+🎓 **Envie d'une version complète ?**
+- Tests automatisés
+- CI/CD avec GitHub Actions  
+- Déploiement cloud
+- Gestion avancée des états
+- Authentification utilisateur
+- Base de données intégrée
+- Monitoring et analytics
+- Documentation automatique
+
+👉 **[Découvrez notre formation Streamlit avancée](https://votre-lien-formation.com)**
+
+---
+
+⭐ Si ce template vous a aidé, n'hésitez pas à lui donner une étoile !

@@ -1,0 +1,113 @@
+# 🚀 {{ project_name }} - Justfile
+# Automatisation complète avec uv pour un développement express
+
+# Variables
+PYTHON_VERSION := "{{ python_version }}"
+PROJECT_NAME := "{{ project_slug }}"
+
+# 🎯 Setup complet du projet en une commande
+setup:
+    @echo "🚀 Setup complet de {{ project_name }}..."
+    @echo "📦 Initialisation du projet avec uv..."
+    uv init --python {{ python_version }}
+    @echo "🐍 Création de l'environnement virtuel..."
+    uv venv --python {{ python_version }}
+    @echo "📚 Installation des dépendances..."
+    uv pip install -r requirements.txt
+    @echo "✅ Setup terminé ! Lancez 'just run' pour démarrer l'app."
+
+# 🚀 Lancement de l'application Streamlit
+run:
+    @echo "🚀 Lancement de {{ project_name }}..."
+    uv run streamlit run main.py
+
+# 📦 Installation des dépendances uniquement
+install:
+    @echo "📦 Installation des dépendances..."
+    uv pip install -r requirements.txt
+
+# 🐍 Création de l'environnement virtuel uniquement
+venv:
+    @echo "🐍 Création de l'environnement virtuel..."
+    uv venv --python {{ python_version }}
+
+# 🧹 Nettoyage de l'environnement
+clean:
+    @echo "🧹 Nettoyage de l'environnement..."
+    rm -rf .venv/
+    rm -rf __pycache__/
+    find . -name "*.pyc" -delete
+    find . -name "*.pyo" -delete
+    @echo "✅ Nettoyage terminé."
+
+# 🔄 Réinstallation complète
+reset: clean setup
+
+# 📊 Lancement avec mode debug
+dev:
+    @echo "🔧 Lancement en mode développement..."
+    uv run streamlit run main.py --server.runOnSave=true --server.developmentMode=true
+
+# 📦 Ajout d'une nouvelle dépendance
+add PACKAGE:
+    @echo "📦 Ajout de {{ PACKAGE }}..."
+    uv add {{ PACKAGE }}
+    @echo "✅ {{ PACKAGE }} ajouté aux dépendances."
+
+# 📦 Ajout d'une dépendance de développement
+add-dev PACKAGE:
+    @echo "🔧 Ajout de {{ PACKAGE }} (dev)..."
+    uv add --dev {{ PACKAGE }}
+    @echo "✅ {{ PACKAGE }} ajouté aux dépendances de développement."
+
+# 🧪 Tests (si présents)
+test:
+    @echo "🧪 Lancement des tests..."
+    uv run pytest tests/ -v
+
+# 📄 Génération du requirements.txt
+freeze:
+    @echo "📄 Génération du requirements.txt..."
+    uv pip freeze > requirements.txt
+    @echo "✅ requirements.txt mis à jour."
+
+# ℹ️ Informations sur le projet
+info:
+    @echo "📋 Informations sur {{ project_name }}:"
+    @echo "  📁 Projet: {{ project_name }}"
+    @echo "  🔧 Slug: {{ project_slug }}"
+    @echo "  🐍 Python: {{ python_version }}"
+    @echo "  👤 Auteur: {{ author_name }}"
+    @echo "  📧 Email: {{ author_email }}"
+
+# 📚 Aide - Liste toutes les commandes disponibles
+help:
+    @echo "🚀 {{ project_name }} - Commandes disponibles:"
+    @echo ""
+    @echo "🎯 Commandes principales:"
+    @echo "  just setup     - Setup complet du projet (init + venv + install)"
+    @echo "  just run       - Lancer l'application Streamlit"
+    @echo "  just dev       - Lancer en mode développement"
+    @echo ""
+    @echo "📦 Gestion des dépendances:"
+    @echo "  just install           - Installer les dépendances"
+    @echo "  just add PACKAGE       - Ajouter une dépendance"
+    @echo "  just add-dev PACKAGE   - Ajouter une dépendance de dev"
+    @echo "  just freeze            - Générer requirements.txt"
+    @echo ""
+    @echo "🔧 Maintenance:"
+    @echo "  just venv      - Créer l'environnement virtuel"
+    @echo "  just clean     - Nettoyer l'environnement"
+    @echo "  just reset     - Réinstallation complète"
+    @echo "  just test      - Lancer les tests"
+    @echo ""
+    @echo "ℹ️ Informations:"
+    @echo "  just info      - Infos sur le projet"
+    @echo "  just help      - Afficher cette aide"
+    @echo ""
+    @echo "💡 Usage rapide:"
+    @echo "  1️⃣ just setup   # Premier lancement"
+    @echo "  2️⃣ just run     # Lancer l'app"
+
+# Commande par défaut (affiche l'aide)
+default: help

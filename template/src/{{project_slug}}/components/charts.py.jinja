@@ -1,0 +1,351 @@
+"""
+Composant Charts - Graphiques réutilisables pour les visualisations
+"""
+
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import numpy as np
+from typing import Dict, List, Optional, Tuple
+
+
+def create_line_chart(
+    data: pd.DataFrame, 
+    x_col: str, 
+    y_col: str, 
+    title: str = "Graphique linéaire",
+    color: str = "#FF6B6B",
+    height: int = 400
+) -> go.Figure:
+    """
+    Crée un graphique linéaire personnalisé.
+    
+    Args:
+        data: DataFrame contenant les données
+        x_col: Nom de la colonne pour l'axe X
+        y_col: Nom de la colonne pour l'axe Y
+        title: Titre du graphique
+        color: Couleur de la ligne
+        height: Hauteur du graphique
+    
+    Returns:
+        Figure Plotly
+    """
+    fig = px.line(
+        data, 
+        x=x_col, 
+        y=y_col,
+        title=title,
+        template="plotly_white"
+    )
+    
+    fig.update_traces(
+        line=dict(color=color, width=3),
+        hovertemplate=f"<b>{x_col}</b>: %{{x}}<br>" +
+                     f"<b>{y_col}</b>: %{{y}}<extra></extra>"
+    )
+    
+    fig.update_layout(
+        height=height,
+        showlegend=False,
+        title_x=0.5,
+        xaxis_title=x_col.replace('_', ' ').title(),
+        yaxis_title=y_col.replace('_', ' ').title()
+    )
+    
+    return fig
+
+
+def create_bar_chart(
+    data: pd.DataFrame, 
+    x_col: str, 
+    y_col: str, 
+    title: str = "Graphique en barres",
+    color: str = "#4ECDC4",
+    height: int = 400
+) -> go.Figure:
+    """
+    Crée un graphique en barres personnalisé.
+    """
+    fig = px.bar(
+        data, 
+        x=x_col, 
+        y=y_col,
+        title=title,
+        template="plotly_white"
+    )
+    
+    fig.update_traces(
+        marker_color=color,
+        hovertemplate=f"<b>{x_col}</b>: %{{x}}<br>" +
+                     f"<b>{y_col}</b>: %{{y}}<extra></extra>"
+    )
+    
+    fig.update_layout(
+        height=height,
+        title_x=0.5,
+        xaxis_title=x_col.replace('_', ' ').title(),
+        yaxis_title=y_col.replace('_', ' ').title()
+    )
+    
+    return fig
+
+
+def create_pie_chart(
+    data: pd.DataFrame, 
+    names_col: str, 
+    values_col: str, 
+    title: str = "Graphique circulaire",
+    height: int = 400
+) -> go.Figure:
+    """
+    Crée un graphique circulaire personnalisé.
+    """
+    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8']
+    
+    fig = px.pie(
+        data,
+        values=values_col,
+        names=names_col,
+        title=title,
+        color_discrete_sequence=colors
+    )
+    
+    fig.update_traces(
+        textposition='inside',
+        textinfo='percent+label',
+        hovertemplate="<b>%{label}</b><br>" +
+                     "Valeur: %{value}<br>" +
+                     "Pourcentage: %{percent}<extra></extra>"
+    )
+    
+    fig.update_layout(
+        height=height,
+        title_x=0.5,
+        showlegend=True
+    )
+    
+    return fig
+
+
+def create_scatter_plot(
+    data: pd.DataFrame, 
+    x_col: str, 
+    y_col: str, 
+    size_col: Optional[str] = None,
+    color_col: Optional[str] = None,
+    title: str = "Nuage de points",
+    height: int = 400
+) -> go.Figure:
+    """
+    Crée un nuage de points personnalisé.
+    """
+    fig = px.scatter(
+        data, 
+        x=x_col, 
+        y=y_col,
+        size=size_col,
+        color=color_col,
+        title=title,
+        template="plotly_white",
+        color_continuous_scale="Viridis"
+    )
+    
+    fig.update_layout(
+        height=height,
+        title_x=0.5,
+        xaxis_title=x_col.replace('_', ' ').title(),
+        yaxis_title=y_col.replace('_', ' ').title()
+    )
+    
+    return fig
+
+
+def create_multi_line_chart(
+    data: pd.DataFrame,
+    x_col: str,
+    y_cols: List[str],
+    title: str = "Graphique multi-lignes",
+    height: int = 400
+) -> go.Figure:
+    """
+    Crée un graphique avec plusieurs lignes.
+    """
+    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8']
+    
+    fig = go.Figure()
+    
+    for i, y_col in enumerate(y_cols):
+        fig.add_trace(go.Scatter(
+            x=data[x_col],
+            y=data[y_col],
+            mode='lines+markers',
+            name=y_col.replace('_', ' ').title(),
+            line=dict(color=colors[i % len(colors)], width=3),
+            marker=dict(size=6)
+        ))
+    
+    fig.update_layout(
+        title=title,
+        title_x=0.5,
+        height=height,
+        template="plotly_white",
+        xaxis_title=x_col.replace('_', ' ').title(),
+        yaxis_title="Valeurs",
+        hovermode='x unified'
+    )
+    
+    return fig
+
+
+def create_heatmap(
+    data: pd.DataFrame,
+    title: str = "Carte de chaleur",
+    height: int = 400
+) -> go.Figure:
+    """
+    Crée une carte de chaleur à partir d'une matrice de corrélation.
+    """
+    # Calculer la matrice de corrélation pour les colonnes numériques
+    numeric_cols = data.select_dtypes(include=[np.number]).columns
+    corr_matrix = data[numeric_cols].corr()
+    
+    fig = px.imshow(
+        corr_matrix,
+        title=title,
+        color_continuous_scale="RdBu_r",
+        aspect="auto"
+    )
+    
+    fig.update_layout(
+        height=height,
+        title_x=0.5
+    )
+    
+    return fig
+
+
+def create_gauge_chart(
+    value: float,
+    title: str = "Indicateur",
+    min_val: float = 0,
+    max_val: float = 100,
+    height: int = 300
+) -> go.Figure:
+    """
+    Crée un graphique en jauge.
+    """
+    fig = go.Figure(go.Indicator(
+        mode="gauge+number+delta",
+        value=value,
+        domain={'x': [0, 1], 'y': [0, 1]},
+        title={'text': title},
+        delta={'reference': (max_val + min_val) / 2},
+        gauge={
+            'axis': {'range': [min_val, max_val]},
+            'bar': {'color': "#FF6B6B"},
+            'steps': [
+                {'range': [min_val, max_val * 0.5], 'color': "lightgray"},
+                {'range': [max_val * 0.5, max_val * 0.8], 'color': "gray"}
+            ],
+            'threshold': {
+                'line': {'color': "red", 'width': 4},
+                'thickness': 0.75,
+                'value': max_val * 0.9
+            }
+        }
+    ))
+    
+    fig.update_layout(height=height)
+    return fig
+
+
+def create_comparison_chart(
+    data1: pd.DataFrame,
+    data2: pd.DataFrame,
+    x_col: str,
+    y_col: str,
+    label1: str = "Série 1",
+    label2: str = "Série 2",
+    title: str = "Comparaison",
+    height: int = 400
+) -> go.Figure:
+    """
+    Crée un graphique de comparaison entre deux séries.
+    """
+    fig = make_subplots(
+        rows=1, cols=2,
+        subplot_titles=[label1, label2],
+        specs=[[{"secondary_y": False}, {"secondary_y": False}]]
+    )
+    
+    fig.add_trace(
+        go.Scatter(x=data1[x_col], y=data1[y_col], name=label1, line=dict(color='#FF6B6B')),
+        row=1, col=1
+    )
+    
+    fig.add_trace(
+        go.Scatter(x=data2[x_col], y=data2[y_col], name=label2, line=dict(color='#4ECDC4')),
+        row=1, col=2
+    )
+    
+    fig.update_layout(
+        title_text=title,
+        title_x=0.5,
+        height=height,
+        showlegend=False
+    )
+    
+    return fig
+
+
+# Fonctions utilitaires pour les démos
+def generate_sample_data(n_points: int = 100) -> pd.DataFrame:
+    """Génère des données d'exemple pour tester les graphiques."""
+    np.random.seed(42)
+    
+    dates = pd.date_range(start='2024-01-01', periods=n_points, freq='D')
+    
+    data = pd.DataFrame({
+        'date': dates,
+        'sales': np.random.normal(1000, 200, n_points).astype(int),
+        'visits': np.random.normal(500, 100, n_points).astype(int),
+        'conversion_rate': np.random.normal(0.05, 0.01, n_points),
+        'category': np.random.choice(['A', 'B', 'C'], n_points),
+        'temperature': np.random.normal(20, 5, n_points),
+        'humidity': np.random.normal(60, 10, n_points)
+    })
+    
+    return data
+
+
+def demo_charts():
+    """Fonction de démonstration des graphiques."""
+    st.title("🎨 Démonstration des composants graphiques")
+    
+    # Générer des données d'exemple
+    df = generate_sample_data(50)
+    
+    # Graphique linéaire
+    st.subheader("📈 Graphique linéaire")
+    fig_line = create_line_chart(df, 'date', 'sales', "Évolution des ventes")
+    st.plotly_chart(fig_line, use_container_width=True)
+    
+    # Graphique en barres
+    st.subheader("📊 Graphique en barres")
+    category_data = df.groupby('category')['sales'].sum().reset_index()
+    fig_bar = create_bar_chart(category_data, 'category', 'sales', "Ventes par catégorie")
+    st.plotly_chart(fig_bar, use_container_width=True)
+    
+    # Graphique circulaire
+    st.subheader("🥧 Graphique circulaire")
+    fig_pie = create_pie_chart(category_data, 'category', 'sales', "Répartition des ventes")
+    st.plotly_chart(fig_pie, use_container_width=True)
+
+
+if __name__ == "__main__":
+    # Test des composants
+    st.set_page_config(page_title="Test Charts", layout="wide")
+    demo_charts()

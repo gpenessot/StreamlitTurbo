@@ -1,0 +1,79 @@
+# Streamlit Demo Template - Lead Magnet Version
+# Version simple mais professionnelle pour attirer les débutants
+
+_templates_suffix: .jinja
+_subdirectory: template
+
+project_name:
+  type: str
+  help: "Nom de votre projet Streamlit"
+  placeholder: "Mon Super Dashboard"
+
+project_slug:
+  type: str
+  help: "Nom technique du projet (sans espaces ni caractères spéciaux)"
+  placeholder: "mon_super_dashboard"
+  validator: "{% if not project_slug.replace('_', '').replace('-', '').isalnum() %}Le nom technique doit contenir uniquement des lettres, chiffres, tirets et underscores{% endif %}"
+
+project_description:
+  type: str
+  help: "Description courte de votre projet"
+  placeholder: "Une application Streamlit moderne et intuitive"
+
+author_name:
+  type: str
+  help: "Votre nom complet"
+  placeholder: "Jean Dupont"
+
+author_email:
+  type: str
+  help: "Votre email"
+  placeholder: "jean.dupont@example.com"
+  validator: "{% if '@' not in author_email %}Veuillez entrer un email valide{% endif %}"
+
+python_version:
+  type: str
+  help: "Version Python minimale"
+  default: "3.9"
+  choices:
+    - "3.9"
+    - "3.10"
+    - "3.11"
+    - "3.12"
+
+use_sample_data:
+  type: bool
+  help: "Inclure des données d'exemple pour tester l'app ?"
+  default: true
+
+streamlit_theme:
+  type: str
+  help: "Thème par défaut de l'interface"
+  default: "light"
+  choices:
+    - "light"
+    - "dark"
+    - "auto"
+
+include_analytics_page:
+  type: bool
+  help: "Inclure une page d'analytics de démonstration ?"
+  default: true
+
+_message_after_copy: |
+  
+  🎉 Votre template Streamlit démo a été créé avec succès !
+  
+  📁 Votre projet: {{ project_name }}
+  📂 Répertoire: {{ project_slug }}
+  
+  🚀 Prochaines étapes:
+  1. cd {{ project_slug }}
+  2. pip install -r requirements.txt
+  3. streamlit run main.py
+  
+  💡 Ce template démo vous donne un aperçu des bonnes pratiques Streamlit.
+     Pour une version complète avec tests, CI/CD, déploiement et bien plus,
+     découvrez notre formation avancée !
+  
+  📚 Besoin d'aide ? Consultez le README.md généré

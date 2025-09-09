@@ -1,0 +1,262 @@
+"""
+Page Settings - Configuration et paramètres de l'application
+"""
+
+import streamlit as st
+from datetime import datetime
+
+# Configuration de la page
+st.set_page_config(
+    page_title="Settings - {{ project_name }}",
+    page_icon="⚙️",
+    layout="wide"
+)
+
+def main():
+    """Page principale des paramètres."""
+    st.title("⚙️ Paramètres")
+    st.markdown("Configurez votre application selon vos besoins")
+    
+    # Initialiser les valeurs par défaut dans session_state
+    if 'user_name' not in st.session_state:
+        st.session_state.user_name = "{{ author_name }}"
+    if 'notifications_enabled' not in st.session_state:
+        st.session_state.notifications_enabled = True
+    if 'theme_preference' not in st.session_state:
+        st.session_state.theme_preference = "{{ streamlit_theme }}"
+    if 'data_refresh_interval' not in st.session_state:
+        st.session_state.data_refresh_interval = 60
+    
+    # Onglets pour organiser les paramètres
+    tab1, tab2, tab3, tab4 = st.tabs(["👤 Profil", "🎨 Apparence", "📊 Données", "🔔 Notifications"])
+    
+    with tab1:
+        st.subheader("👤 Informations du profil")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            user_name = st.text_input(
+                "Nom d'utilisateur",
+                value=st.session_state.user_name,
+                help="Votre nom d'affichage dans l'application"
+            )
+            
+            user_email = st.text_input(
+                "Email",
+                value="{{ author_email }}",
+                help="Votre adresse email pour les notifications"
+            )
+            
+            user_role = st.selectbox(
+                "Rôle",
+                ["Admin", "Utilisateur", "Visiteur"],
+                index=0,
+                help="Votre niveau d'accès dans l'application"
+            )
+        
+        with col2:
+            st.markdown("#### 📊 Statistiques d'utilisation")
+            st.metric("Connexions totales", "247")
+            st.metric("Dernière connexion", "Il y a 2 minutes")
+            st.metric("Temps passé", "12h 34m")
+            
+        if st.button("💾 Sauvegarder le profil", type="primary"):
+            st.session_state.user_name = user_name
+            st.success("✅ Profil sauvegardé avec succès !")
+    
+    with tab2:
+        st.subheader("🎨 Personnalisation de l'apparence")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            theme = st.selectbox(
+                "Thème de l'interface",
+                ["light", "dark", "auto"],
+                index=["light", "dark", "auto"].index(st.session_state.theme_preference),
+                help="Choisissez votre thème préféré"
+            )
+            
+            layout_width = st.selectbox(
+                "Largeur de la mise en page",
+                ["centered", "wide"],
+                index=0,
+                help="Largeur par défaut des pages"
+            )
+            
+            sidebar_state = st.selectbox(
+                "État initial de la sidebar",
+                ["expanded", "collapsed", "auto"],
+                index=0
+            )
+        
+        with col2:
+            st.markdown("#### 🎨 Aperçu du thème")
+            
+            # Simuler un aperçu avec des couleurs
+            if theme == "light":
+                st.success("🌞 Thème clair sélectionné")
+                st.markdown("""
+                <div style='padding: 1rem; background: #f0f2f6; border-radius: 0.5rem; color: #262730;'>
+                    Exemple de contenu avec le thème clair
+                </div>
+                """, unsafe_allow_html=True)
+            elif theme == "dark":
+                st.info("🌙 Thème sombre sélectionné")
+                st.markdown("""
+                <div style='padding: 1rem; background: #0e1117; border-radius: 0.5rem; color: #fafafa;'>
+                    Exemple de contenu avec le thème sombre
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.warning("🔄 Thème automatique sélectionné")
+        
+        if st.button("🎨 Appliquer le thème", type="primary"):
+            st.session_state.theme_preference = theme
+            st.success(f"✅ Thème '{theme}' appliqué ! Rechargez la page pour voir les changements.")
+    
+    with tab3:
+        st.subheader("📊 Configuration des données")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            refresh_interval = st.slider(
+                "Intervalle de rafraîchissement (secondes)",
+                min_value=10,
+                max_value=300,
+                value=st.session_state.data_refresh_interval,
+                step=10,
+                help="Fréquence de mise à jour automatique des données"
+            )
+            
+            cache_duration = st.selectbox(
+                "Durée du cache",
+                ["1 minute", "5 minutes", "15 minutes", "1 heure"],
+                index=1,
+                help="Durée de conservation des données en cache"
+            )
+            
+            max_records = st.number_input(
+                "Nombre maximum d'enregistrements",
+                min_value=100,
+                max_value=10000,
+                value=1000,
+                step=100,
+                help="Limite d'enregistrements à afficher dans les tableaux"
+            )
+        
+        with col2:
+            st.markdown("#### 📈 Options d'export")
+            
+            export_format = st.multiselect(
+                "Formats d'export disponibles",
+                ["CSV", "Excel", "JSON", "PDF"],
+                default=["CSV", "Excel"],
+                help="Formats de fichiers pour l'export des données"
+            )
+            
+            auto_backup = st.checkbox(
+                "Sauvegarde automatique",
+                value=True,
+                help="Sauvegarder automatiquement les paramètres"
+            )
+            
+            compress_exports = st.checkbox(
+                "Compresser les exports",
+                value=False,
+                help="Compresser les fichiers exportés (ZIP)"
+            )
+        
+        if st.button("📊 Sauvegarder la configuration", type="primary"):
+            st.session_state.data_refresh_interval = refresh_interval
+            st.success("✅ Configuration des données sauvegardée !")
+    
+    with tab4:
+        st.subheader("🔔 Paramètres de notification")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            notifications_enabled = st.checkbox(
+                "Activer les notifications",
+                value=st.session_state.notifications_enabled,
+                help="Recevoir des notifications de l'application"
+            )
+            
+            if notifications_enabled:
+                email_notifications = st.checkbox(
+                    "Notifications par email",
+                    value=True,
+                    help="Recevoir des notifications par email"
+                )
+                
+                browser_notifications = st.checkbox(
+                    "Notifications du navigateur",
+                    value=False,
+                    help="Afficher des notifications dans le navigateur"
+                )
+                
+                notification_frequency = st.selectbox(
+                    "Fréquence des notifications",
+                    ["Immédiate", "Quotidienne", "Hebdomadaire"],
+                    index=0
+                )
+        
+        with col2:
+            st.markdown("#### 📧 Types de notifications")
+            
+            if notifications_enabled:
+                notify_data_updates = st.checkbox("Mises à jour de données", True)
+                notify_errors = st.checkbox("Erreurs système", True)
+                notify_reports = st.checkbox("Rapports automatiques", False)
+                notify_maintenance = st.checkbox("Maintenance programmée", True)
+            else:
+                st.info("Activez les notifications pour configurer les types")
+        
+        if st.button("🔔 Sauvegarder les notifications", type="primary"):
+            st.session_state.notifications_enabled = notifications_enabled
+            st.success("✅ Paramètres de notification sauvegardés !")
+    
+    # Section de debug/informations système
+    with st.expander("🔧 Informations système"):
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("#### 📋 Configuration actuelle")
+            st.json({
+                "user_name": st.session_state.user_name,
+                "theme": st.session_state.theme_preference,
+                "notifications": st.session_state.notifications_enabled,
+                "refresh_interval": st.session_state.data_refresh_interval,
+                "timestamp": datetime.now().isoformat()
+            })
+        
+        with col2:
+            st.markdown("#### 🔄 Actions système")
+            
+            if st.button("🗑️ Réinitialiser les paramètres"):
+                # Réinitialiser tous les paramètres
+                for key in list(st.session_state.keys()):
+                    del st.session_state[key]
+                st.rerun()
+            
+            if st.button("📥 Exporter la configuration"):
+                st.download_button(
+                    "📁 Télécharger config.json",
+                    data=str(st.session_state),
+                    file_name=f"config_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+                    mime="application/json"
+                )
+    
+    # Footer
+    st.markdown("---")
+    st.markdown("""
+    💡 **Note :** Ces paramètres sont stockés dans la session actuelle. 
+    Dans la version complète du template, vous trouverez une gestion persistante 
+    des paramètres utilisateur avec une base de données.
+    """)
+
+if __name__ == "__main__":
+    main()

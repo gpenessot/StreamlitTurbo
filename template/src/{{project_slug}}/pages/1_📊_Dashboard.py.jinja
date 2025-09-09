@@ -1,0 +1,200 @@
+"""
+Page Dashboard - Démonstration des capacités de visualisation
+"""
+
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+from datetime import datetime, timedelta
+import numpy as np
+{% if use_sample_data %}
+import os
+{% endif %}
+
+# Configuration de la page
+st.set_page_config(
+    page_title="Dashboard - {{ project_name }}",
+    page_icon="📊",
+    layout="wide"
+)
+
+def load_sample_data():
+    """Charge les données d'exemple."""
+    {% if use_sample_data %}
+    try:
+        # Tenter de charger les données depuis le fichier CSV
+        data_path = os.path.join("data", "sample_data.csv")
+        if os.path.exists(data_path):
+            return pd.read_csv(data_path)
+    except Exception:
+        pass
+    {% endif %}
+    
+    # Générer des données d'exemple si pas de fichier
+    np.random.seed(42)
+    dates = pd.date_range(start='2024-01-01', end='2024-12-31', freq='D')
+    
+    data = pd.DataFrame({
+        'date': dates,
+        'ventes': np.random.normal(1000, 200, len(dates)).astype(int),
+        'visitors': np.random.normal(500, 100, len(dates)).astype(int),
+        'conversion_rate': np.random.normal(0.05, 0.01, len(dates)).round(3),
+        'category': np.random.choice(['A', 'B', 'C'], len(dates))
+    })
+    
+    # Ajouter une tendance
+    data['ventes'] = data['ventes'] + np.arange(len(dates)) * 2
+    data['visitors'] = data['visitors'] + np.arange(len(dates)) * 1
+    
+    return data
+
+def create_metrics_cards(df):
+    """Crée les cartes de métriques principales."""
+    total_sales = df['ventes'].sum()
+    total_visitors = df['visitors'].sum()
+    avg_conversion = df['conversion_rate'].mean()
+    
+    # Calculs pour les variations (simulées)
+    recent_data = df.tail(30)
+    prev_data = df.iloc[-60:-30]
+    
+    sales_change = ((recent_data['ventes'].sum() - prev_data['ventes'].sum()) / prev_data['ventes'].sum()) * 100
+    visitors_change = ((recent_data['visitors'].sum() - prev_data['visitors'].sum()) / prev_data['visitors'].sum()) * 100
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.metric(
+            "💰 Ventes totales",
+            f"{total_sales:,}€",
+            f"{sales_change:+.1f}%"
+        )
+    
+    with col2:
+        st.metric(
+            "👥 Visiteurs",
+            f"{total_visitors:,}",
+            f"{visitors_change:+.1f}%"
+        )
+    
+    with col3:
+        st.metric(
+            "📈 Taux de conversion",
+            f"{avg_conversion:.1%}",
+            "0.2%"
+        )
+    
+    with col4:
+        st.metric(
+            "💎 Valeur moyenne",
+            f"{total_sales/total_visitors:.2f}€",
+            "+5.2%"
+        )
+
+def main():
+    """Page principale du dashboard."""
+    st.title("📊 Dashboard Analytics")
+    st.markdown("Vue d'ensemble des performances de votre application")
+    
+    # Charger les données
+    with st.spinner("Chargement des données..."):
+        df = load_sample_data()
+    
+    # Métriques principales
+    st.subheader("📈 Métriques clés")
+    create_metrics_cards(df)
+    
+    st.markdown("---")
+    
+    # Graphiques
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("📊 Évolution des ventes")
+        
+        # Graphique temporel des ventes
+        fig_sales = px.line(
+            df, 
+            x='date', 
+            y='ventes',
+            title="Évolution quotidienne des ventes",
+            template="plotly_white"
+        )
+        fig_sales.update_traces(line_color='#FF6B6B')
+        fig_sales.update_layout(height=400)
+        st.plotly_chart(fig_sales, use_container_width=True)
+    
+    with col2:
+        st.subheader("👥 Répartition par catégorie")
+        
+        # Graphique en camembert
+        category_sales = df.groupby('category')['ventes'].sum().reset_index()
+        fig_pie = px.pie(
+            category_sales,
+            values='ventes',
+            names='category',
+            title="Répartition des ventes par catégorie",
+            color_discrete_sequence=['#FF6B6B', '#4ECDC4', '#45B7D1']
+        )
+        fig_pie.update_layout(height=400)
+        st.plotly_chart(fig_pie, use_container_width=True)
+    
+    # Tableau de données
+    st.subheader("📋 Données détaillées")
+    
+    # Filtres
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        start_date = st.date_input(
+            "Date de début",
+            value=df['date'].min().date(),
+            min_value=df['date'].min().date(),
+            max_value=df['date'].max().date()
+        )
+    
+    with col2:
+        end_date = st.date_input(
+            "Date de fin",
+            value=df['date'].max().date(),
+            min_value=df['date'].min().date(),
+            max_value=df['date'].max().date()
+        )
+    
+    with col3:
+        selected_categories = st.multiselect(
+            "Catégories",
+            options=df['category'].unique(),
+            default=df['category'].unique()
+        )
+    
+    # Filtrer les données
+    filtered_df = df[
+        (df['date'].dt.date >= start_date) &
+        (df['date'].dt.date <= end_date) &
+        (df['category'].isin(selected_categories))
+    ].copy()
+    
+    # Afficher le tableau
+    st.dataframe(
+        filtered_df.style.format({
+            'ventes': '{:,}€',
+            'visitors': '{:,}',
+            'conversion_rate': '{:.1%}'
+        }),
+        use_container_width=True,
+        hide_index=True
+    )
+    
+    # Footer de la page
+    st.markdown("---")
+    st.markdown("""
+    💡 **Astuce :** Ce dashboard démontre comment structurer des visualisations 
+    interactives dans Streamlit. Dans la version complète du template, vous trouverez 
+    des fonctionnalités avancées comme la mise en cache, les connexions base de données, 
+    et bien plus !
+    """)
+
+if __name__ == "__main__":
+    main()
