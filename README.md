@@ -175,7 +175,7 @@ just dev
 
 #### 🚀 **Développement Express**
 - ⚡ **Justfile + uv** : Un seul commande pour tout (setup, dev, deploy)
-- 🔧 **Outils pré-configurés** : Black, flake8, mypy, pre-commit
+- 🔧 **Outils pré-configurés** : Ruff, mypy, pre-commit
 - 🧪 **Tests starter kit** : Pytest + fixtures + coverage
 - 📊 **Monitoring intégré** : Logs, métriques, alertes
 
@@ -186,10 +186,9 @@ just dev
 - 🔐 **Variables d'environnement** chiffrées
 
 #### ☁️ **Déploiement 1-Click**
-- 🚀 **Scripts de déploiement** Streamlit Cloud, Heroku, AWS
+- 🚀 **Scripts de déploiement** HuggingFace Spaces, Streamlit Cloud, Render, Railway
 - 🐳 **Docker** prêt à l'emploi
 - 📦 **GitHub Actions** configurées (CI/CD complet)
-- 🌐 **DNS custom + SSL** automatique
 
 #### 🎨 **Design System Professionnel**
 - 💫 **CSS custom** moderne (bye bye le look Streamlit basic)
@@ -254,25 +253,11 @@ just dev
 
 ---
 
-## 🔥 **Témoignages utilisateurs :**
-
-> *"Ce template m'a permis de livrer un dashboard en 2 jours au lieu de 2 semaines. Un gain de temps énorme !"*  
-> **— Marc, Consultant Data**
-
-> *"La structure est tellement propre que l'équipe de dev a adopté le template pour tous nos projets Streamlit."*  
-> **— Jennifer, CTO startup FinTech**
-
-> *"ROI immédiat : le template a payé la formation dès le premier projet !"*  
-> **— David, Freelance ML Engineer**
-
----
-
 ## 📞 **Contact & Support**
 
 - 📧 **Email Pro** : gael.penessot@gmail.com
 - 💼 **LinkedIn** : [Gaël Penessot](https://www.linkedin.com/in/gael-penessot/)  
 - 🐛 **Issues** : [GitHub Issues](https://github.com/gpenessot/StreamlitTurbo/issues)
-- 💬 **Discord VIP** : Accès inclus avec [Streamlit Unleashed](https://www.mes-formations-data.fr/formation/streamlit-unleashed)
 
 ---
 
@@ -282,7 +267,7 @@ just dev
 ✅ **Architecture enterprise** avec expertise développement  
 ✅ **Économie garantie** de 40h de développement  
 ✅ **ROI immédiat** dès le premier projet  
-✅ **Support premium** et communauté Discord  
+✅ **Support premium** et communauté WhatsApp  
 ✅ **Mises à jour à vie** + nouveaux templates  
 
 ### 🎯 **Votre choix aujourd'hui :**
