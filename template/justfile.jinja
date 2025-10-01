@@ -12,8 +12,8 @@ setup:
     uv init --python {{ python_version }}
     @echo "🐍 Création de l'environnement virtuel..."
     uv venv --python {{ python_version }}
-    @echo "📚 Installation des dépendances..."
-    uv pip install -r requirements.txt
+    @echo "📚 Installation des dépendances depuis pyproject.toml..."
+    uv sync
     @echo "✅ Setup terminé ! Lancez 'just run' pour démarrer l'app."
 
 # 🚀 Lancement de l'application Streamlit
@@ -21,10 +21,28 @@ run:
     @echo "🚀 Lancement de {{ project_name }}..."
     uv run streamlit run main.py
 
-# 📦 Installation des dépendances uniquement
-install:
-    @echo "📦 Installation des dépendances..."
-    uv pip install -r requirements.txt
+# 📦 Installation/mise à jour des dépendances depuis pyproject.toml
+sync:
+    @echo "📦 Synchronisation des dépendances..."
+    uv sync
+
+# 📦 Ajout d'une nouvelle dépendance
+add PACKAGE:
+    @echo "📦 Ajout de {{ PACKAGE }}..."
+    uv add {{ PACKAGE }}
+    @echo "✅ {{ PACKAGE }} ajouté au pyproject.toml."
+
+# 📦 Ajout d'une dépendance de développement
+add-dev PACKAGE:
+    @echo "🔧 Ajout de {{ PACKAGE }} (dev)..."
+    uv add --dev {{ PACKAGE }}
+    @echo "✅ {{ PACKAGE }} ajouté aux dépendances de développement."
+
+# 📄 Génération du requirements.txt pour déploiement (Streamlit Cloud)
+requirements:
+    @echo "📄 Génération du requirements.txt depuis pyproject.toml..."
+    uv pip compile pyproject.toml -o requirements.txt
+    @echo "✅ requirements.txt généré pour le déploiement."
 
 # 🐍 Création de l'environnement virtuel uniquement
 venv:
@@ -48,28 +66,10 @@ dev:
     @echo "🔧 Lancement en mode développement..."
     uv run streamlit run main.py --server.runOnSave=true --server.developmentMode=true
 
-# 📦 Ajout d'une nouvelle dépendance
-add PACKAGE:
-    @echo "📦 Ajout de {{ PACKAGE }}..."
-    uv add {{ PACKAGE }}
-    @echo "✅ {{ PACKAGE }} ajouté aux dépendances."
-
-# 📦 Ajout d'une dépendance de développement
-add-dev PACKAGE:
-    @echo "🔧 Ajout de {{ PACKAGE }} (dev)..."
-    uv add --dev {{ PACKAGE }}
-    @echo "✅ {{ PACKAGE }} ajouté aux dépendances de développement."
-
 # 🧪 Tests (si présents)
 test:
     @echo "🧪 Lancement des tests..."
     uv run pytest tests/ -v
-
-# 📄 Génération du requirements.txt
-freeze:
-    @echo "📄 Génération du requirements.txt..."
-    uv pip freeze > requirements.txt
-    @echo "✅ requirements.txt mis à jour."
 
 # ℹ️ Informations sur le projet
 info:
@@ -85,15 +85,15 @@ help:
     @echo "🚀 {{ project_name }} - Commandes disponibles:"
     @echo ""
     @echo "🎯 Commandes principales:"
-    @echo "  just setup     - Setup complet du projet (init + venv + install)"
+    @echo "  just setup     - Setup complet du projet (init + venv + sync)"
     @echo "  just run       - Lancer l'application Streamlit"
     @echo "  just dev       - Lancer en mode développement"
     @echo ""
-    @echo "📦 Gestion des dépendances:"
-    @echo "  just install           - Installer les dépendances"
+    @echo "📦 Gestion des dépendances avec uv:"
+    @echo "  just sync              - Synchroniser les dépendances depuis pyproject.toml"
     @echo "  just add PACKAGE       - Ajouter une dépendance"
     @echo "  just add-dev PACKAGE   - Ajouter une dépendance de dev"
-    @echo "  just freeze            - Générer requirements.txt"
+    @echo "  just requirements      - Générer requirements.txt pour déploiement"
     @echo ""
     @echo "🔧 Maintenance:"
     @echo "  just venv      - Créer l'environnement virtuel"
@@ -106,8 +106,10 @@ help:
     @echo "  just help      - Afficher cette aide"
     @echo ""
     @echo "💡 Usage rapide:"
-    @echo "  1️⃣ just setup   # Premier lancement"
-    @echo "  2️⃣ just run     # Lancer l'app"
+    @echo "  1️⃣ just setup        # Premier lancement"
+    @echo "  2️⃣ just run          # Lancer l'app"
+    @echo "  3️⃣ just add pandas   # Ajouter une lib"
+    @echo "  4️⃣ just requirements # Avant déploiement"
 
 # Commande par défaut (affiche l'aide)
 default: help
