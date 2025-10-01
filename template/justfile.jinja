@@ -1,3 +1,218 @@
+# 🚀 {{ project_name }} - Justfile Cross-Platform
+# Compatible Windows (PowerShell), Linux et macOS
+
+# Configuration automatique du shell selon l'OS
+set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
+
+# Variables
+PYTHON_VERSION := "{{ python_version }}"
+PROJECT_NAME := "{{ project_slug }}"
+
+# 🎯 Setup complet du projet en une commande
+setup:
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "🚀 Setup complet de {{ project_name }}..." -ForegroundColor Green
+        @Write-Host "📦 Initialisation du projet avec uv..." -ForegroundColor Cyan
+    {{{{ else }}}}
+        @echo "🚀 Setup complet de {{ project_name }}..."
+        @echo "📦 Initialisation du projet avec uv..."
+    {{{{ endif }}}}
+    uv init --python {{ python_version }}
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "🐍 Création de l'environnement virtuel..." -ForegroundColor Cyan
+    {{{{ else }}}}
+        @echo "🐍 Création de l'environnement virtuel..."
+    {{{{ endif }}}}
+    uv venv --python {{ python_version }}
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "📚 Installation des dépendances..." -ForegroundColor Cyan
+    {{{{ else }}}}
+        @echo "📚 Installation des dépendances..."
+    {{{{ endif }}}}
+    uv sync
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "✅ Setup terminé ! Lancez 'just run' pour démarrer l'app." -ForegroundColor Green
+    {{{{ else }}}}
+        @echo "✅ Setup terminé ! Lancez 'just run' pour démarrer l'app."
+    {{{{ endif }}}}
+
+# 🚀 Lancement de l'application Streamlit
+run:
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "🚀 Lancement de {{ project_name }}..." -ForegroundColor Green
+    {{{{ else }}}}
+        @echo "🚀 Lancement de {{ project_name }}..."
+    {{{{ endif }}}}
+    uv run streamlit run main.py
+
+# 📦 Synchronisation des dépendances
+sync:
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "📦 Synchronisation des dépendances..." -ForegroundColor Cyan
+    {{{{ else }}}}
+        @echo "📦 Synchronisation des dépendances..."
+    {{{{ endif }}}}
+    uv sync
+
+# 📦 Ajout d'une nouvelle dépendance
+add PACKAGE:
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "📦 Ajout de {{{{ PACKAGE }}}}..." -ForegroundColor Cyan
+    {{{{ else }}}}
+        @echo "📦 Ajout de {{{{ PACKAGE }}}}..."
+    {{{{ endif }}}}
+    uv add {{{{ PACKAGE }}}}
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "✅ {{{{ PACKAGE }}}} ajouté." -ForegroundColor Green
+    {{{{ else }}}}
+        @echo "✅ {{{{ PACKAGE }}}} ajouté."
+    {{{{ endif }}}}
+
+# 📦 Ajout d'une dépendance de développement
+add-dev PACKAGE:
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "🔧 Ajout de {{{{ PACKAGE }}}} (dev)..." -ForegroundColor Cyan
+    {{{{ else }}}}
+        @echo "🔧 Ajout de {{{{ PACKAGE }}}} (dev)..."
+    {{{{ endif }}}}
+    uv add --dev {{{{ PACKAGE }}}}
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "✅ {{{{ PACKAGE }}}} ajouté." -ForegroundColor Green
+    {{{{ else }}}}
+        @echo "✅ {{{{ PACKAGE }}}} ajouté."
+    {{{{ endif }}}}
+
+# 📄 Génération du requirements.txt pour déploiement
+requirements:
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "📄 Génération du requirements.txt..." -ForegroundColor Cyan
+    {{{{ else }}}}
+        @echo "📄 Génération du requirements.txt..."
+    {{{{ endif }}}}
+    uv pip compile pyproject.toml -o requirements.txt
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "✅ requirements.txt généré." -ForegroundColor Green
+    {{{{ else }}}}
+        @echo "✅ requirements.txt généré."
+    {{{{ endif }}}}
+
+# 🐍 Création de l'environnement virtuel
+venv:
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "🐍 Création de l'environnement virtuel..." -ForegroundColor Cyan
+    {{{{ else }}}}
+        @echo "🐍 Création de l'environnement virtuel..."
+    {{{{ endif }}}}
+    uv venv --python {{ python_version }}
+
+# 🧹 Nettoyage de l'environnement (cross-platform avec Python)
+clean:
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "🧹 Nettoyage de l'environnement..." -ForegroundColor Yellow
+    {{{{ else }}}}
+        @echo "🧹 Nettoyage de l'environnement..."
+    {{{{ endif }}}}
+    python -c "import shutil, pathlib; [shutil.rmtree(p, ignore_errors=True) for p in ['.venv', *pathlib.Path('.').rglob('__pycache__'), *pathlib.Path('.').rglob('*.pyc'), *pathlib.Path('.').rglob('*.pyo')]]"
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "✅ Nettoyage terminé." -ForegroundColor Green
+    {{{{ else }}}}
+        @echo "✅ Nettoyage terminé."
+    {{{{ endif }}}}
+
+# 🔄 Réinstallation complète
+reset: clean setup
+
+# 📊 Lancement en mode développement
+dev:
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "🔧 Lancement en mode développement..." -ForegroundColor Cyan
+    {{{{ else }}}}
+        @echo "🔧 Lancement en mode développement..."
+    {{{{ endif }}}}
+    uv run streamlit run main.py --server.runOnSave=true --server.developmentMode=true
+
+# 🧪 Tests
+test:
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "🧪 Lancement des tests..." -ForegroundColor Cyan
+    {{{{ else }}}}
+        @echo "🧪 Lancement des tests..."
+    {{{{ endif }}}}
+    uv run pytest tests/ -v
+
+# ℹ️ Informations sur le projet
+info:
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "📋 Informations sur {{ project_name }}:" -ForegroundColor Cyan
+        @Write-Host "  📁 Projet: {{ project_name }}"
+        @Write-Host "  🔧 Slug: {{ project_slug }}"
+        @Write-Host "  🐍 Python: {{ python_version }}"
+        @Write-Host "  👤 Auteur: {{ author_name }}"
+        @Write-Host "  📧 Email: {{ author_email }}"
+        @Write-Host "  💻 OS: Windows"
+    {{{{ else }}}}
+        @echo "📋 Informations sur {{ project_name }}:"
+        @echo "  📁 Projet: {{ project_name }}"
+        @echo "  🔧 Slug: {{ project_slug }}"
+        @echo "  🐍 Python: {{ python_version }}"
+        @echo "  👤 Auteur: {{ author_name }}"
+        @echo "  📧 Email: {{ author_email }}"
+        @echo "  💻 OS: {{{{ os_family() }}}}"
+    {{{{ endif }}}}
+
+# 📚 Aide - Liste toutes les commandes
+help:
+    {{{{ if os_family() == "windows" }}}}
+        @Write-Host "🚀 {{ project_name }} - Commandes disponibles:" -ForegroundColor Green
+        @Write-Host ""
+        @Write-Host "🎯 Commandes principales:" -ForegroundColor Yellow
+        @Write-Host "  just setup     - Setup complet du projet"
+        @Write-Host "  just run       - Lancer l'application"
+        @Write-Host "  just dev       - Mode développement"
+        @Write-Host ""
+        @Write-Host "📦 Gestion des dépendances:" -ForegroundColor Yellow
+        @Write-Host "  just sync              - Synchroniser"
+        @Write-Host "  just add PACKAGE       - Ajouter une lib"
+        @Write-Host "  just add-dev PACKAGE   - Ajouter une lib de dev"
+        @Write-Host "  just requirements      - Générer requirements.txt"
+        @Write-Host ""
+        @Write-Host "🔧 Maintenance:" -ForegroundColor Yellow
+        @Write-Host "  just clean     - Nettoyer"
+        @Write-Host "  just reset     - Réinstaller"
+        @Write-Host "  just test      - Tests"
+        @Write-Host ""
+        @Write-Host "ℹ️ Informations:" -ForegroundColor Yellow
+        @Write-Host "  just info      - Infos projet"
+        @Write-Host "  just help      - Cette aide"
+    {{{{ else }}}}
+        @echo "🚀 {{ project_name }} - Commandes disponibles:"
+        @echo ""
+        @echo "🎯 Commandes principales:"
+        @echo "  just setup     - Setup complet du projet"
+        @echo "  just run       - Lancer l'application"
+        @echo "  just dev       - Mode développement"
+        @echo ""
+        @echo "📦 Gestion des dépendances:"
+        @echo "  just sync              - Synchroniser"
+        @echo "  just add PACKAGE       - Ajouter une lib"
+        @echo "  just add-dev PACKAGE   - Ajouter une lib de dev"
+        @echo "  just requirements      - Générer requirements.txt"
+        @echo ""
+        @echo "🔧 Maintenance:"
+        @echo "  just clean     - Nettoyer"
+        @echo "  just reset     - Réinstaller"
+        @echo "  just test      - Tests"
+        @echo ""
+        @echo "ℹ️ Informations:"
+        @echo "  just info      - Infos projet"
+        @echo "  just help      - Cette aide"
+    {{{{ endif }}}}
+
+# Commande par défaut
+default: help
+# Configuration pour Windows - DOIT être en première ligne
+set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
+
 # 🚀 {{ project_name }} - Justfile
 # Automatisation complète avec uv pour un développement express
 
@@ -7,109 +222,109 @@ PROJECT_NAME := "{{ project_slug }}"
 
 # 🎯 Setup complet du projet en une commande
 setup:
-    @echo "🚀 Setup complet de {{ project_name }}..."
-    @echo "📦 Initialisation du projet avec uv..."
+    @Write-Host "🚀 Setup complet de {{ project_name }}..." -ForegroundColor Green
+    @Write-Host "📦 Initialisation du projet avec uv..." -ForegroundColor Cyan
     uv init --python {{ python_version }}
-    @echo "🐍 Création de l'environnement virtuel..."
+    @Write-Host "🐍 Création de l'environnement virtuel..." -ForegroundColor Cyan
     uv venv --python {{ python_version }}
-    @echo "📚 Installation des dépendances depuis pyproject.toml..."
+    @Write-Host "📚 Installation des dépendances depuis pyproject.toml..." -ForegroundColor Cyan
     uv sync
-    @echo "✅ Setup terminé ! Lancez 'just run' pour démarrer l'app."
+    @Write-Host "✅ Setup terminé ! Lancez 'just run' pour démarrer l'app." -ForegroundColor Green
 
 # 🚀 Lancement de l'application Streamlit
 run:
-    @echo "🚀 Lancement de {{ project_name }}..."
+    @Write-Host "🚀 Lancement de {{ project_name }}..." -ForegroundColor Green
     uv run streamlit run main.py
 
 # 📦 Installation/mise à jour des dépendances depuis pyproject.toml
 sync:
-    @echo "📦 Synchronisation des dépendances..."
+    @Write-Host "📦 Synchronisation des dépendances..." -ForegroundColor Cyan
     uv sync
 
 # 📦 Ajout d'une nouvelle dépendance
 add PACKAGE:
-    @echo "📦 Ajout de {{ PACKAGE }}..."
-    uv add {{ PACKAGE }}
-    @echo "✅ {{ PACKAGE }} ajouté au pyproject.toml."
+    @Write-Host "📦 Ajout de {{{{ PACKAGE }}}}..." -ForegroundColor Cyan
+    uv add {{{{ PACKAGE }}}}
+    @Write-Host "✅ {{{{ PACKAGE }}}} ajouté au pyproject.toml." -ForegroundColor Green
 
 # 📦 Ajout d'une dépendance de développement
 add-dev PACKAGE:
-    @echo "🔧 Ajout de {{ PACKAGE }} (dev)..."
-    uv add --dev {{ PACKAGE }}
-    @echo "✅ {{ PACKAGE }} ajouté aux dépendances de développement."
+    @Write-Host "🔧 Ajout de {{{{ PACKAGE }}}} (dev)..." -ForegroundColor Cyan
+    uv add --dev {{{{ PACKAGE }}}}
+    @Write-Host "✅ {{{{ PACKAGE }}}} ajouté aux dépendances de développement." -ForegroundColor Green
 
 # 📄 Génération du requirements.txt pour déploiement (Streamlit Cloud)
 requirements:
-    @echo "📄 Génération du requirements.txt depuis pyproject.toml..."
+    @Write-Host "📄 Génération du requirements.txt depuis pyproject.toml..." -ForegroundColor Cyan
     uv pip compile pyproject.toml -o requirements.txt
-    @echo "✅ requirements.txt généré pour le déploiement."
+    @Write-Host "✅ requirements.txt généré pour le déploiement." -ForegroundColor Green
 
 # 🐍 Création de l'environnement virtuel uniquement
 venv:
-    @echo "🐍 Création de l'environnement virtuel..."
+    @Write-Host "🐍 Création de l'environnement virtuel..." -ForegroundColor Cyan
     uv venv --python {{ python_version }}
 
-# 🧹 Nettoyage de l'environnement
+# 🧹 Nettoyage de l'environnement (compatible Windows)
 clean:
-    @echo "🧹 Nettoyage de l'environnement..."
-    rm -rf .venv/
-    rm -rf __pycache__/
-    find . -name "*.pyc" -delete
-    find . -name "*.pyo" -delete
-    @echo "✅ Nettoyage terminé."
+    @Write-Host "🧹 Nettoyage de l'environnement..." -ForegroundColor Yellow
+    @if (Test-Path .venv) { Remove-Item -Recurse -Force .venv }
+    @Get-ChildItem -Recurse -Filter "__pycache__" | Remove-Item -Recurse -Force
+    @Get-ChildItem -Recurse -Filter "*.pyc" | Remove-Item -Force
+    @Get-ChildItem -Recurse -Filter "*.pyo" | Remove-Item -Force
+    @Write-Host "✅ Nettoyage terminé." -ForegroundColor Green
 
 # 🔄 Réinstallation complète
 reset: clean setup
 
 # 📊 Lancement avec mode debug
 dev:
-    @echo "🔧 Lancement en mode développement..."
+    @Write-Host "🔧 Lancement en mode développement..." -ForegroundColor Cyan
     uv run streamlit run main.py --server.runOnSave=true --server.developmentMode=true
 
 # 🧪 Tests (si présents)
 test:
-    @echo "🧪 Lancement des tests..."
+    @Write-Host "🧪 Lancement des tests..." -ForegroundColor Cyan
     uv run pytest tests/ -v
 
 # ℹ️ Informations sur le projet
 info:
-    @echo "📋 Informations sur {{ project_name }}:"
-    @echo "  📁 Projet: {{ project_name }}"
-    @echo "  🔧 Slug: {{ project_slug }}"
-    @echo "  🐍 Python: {{ python_version }}"
-    @echo "  👤 Auteur: {{ author_name }}"
-    @echo "  📧 Email: {{ author_email }}"
+    @Write-Host "📋 Informations sur {{ project_name }}:" -ForegroundColor Cyan
+    @Write-Host "  📁 Projet: {{ project_name }}"
+    @Write-Host "  🔧 Slug: {{ project_slug }}"
+    @Write-Host "  🐍 Python: {{ python_version }}"
+    @Write-Host "  👤 Auteur: {{ author_name }}"
+    @Write-Host "  📧 Email: {{ author_email }}"
 
 # 📚 Aide - Liste toutes les commandes disponibles
 help:
-    @echo "🚀 {{ project_name }} - Commandes disponibles:"
-    @echo ""
-    @echo "🎯 Commandes principales:"
-    @echo "  just setup     - Setup complet du projet (init + venv + sync)"
-    @echo "  just run       - Lancer l'application Streamlit"
-    @echo "  just dev       - Lancer en mode développement"
-    @echo ""
-    @echo "📦 Gestion des dépendances avec uv:"
-    @echo "  just sync              - Synchroniser les dépendances depuis pyproject.toml"
-    @echo "  just add PACKAGE       - Ajouter une dépendance"
-    @echo "  just add-dev PACKAGE   - Ajouter une dépendance de dev"
-    @echo "  just requirements      - Générer requirements.txt pour déploiement"
-    @echo ""
-    @echo "🔧 Maintenance:"
-    @echo "  just venv      - Créer l'environnement virtuel"
-    @echo "  just clean     - Nettoyer l'environnement"
-    @echo "  just reset     - Réinstallation complète"
-    @echo "  just test      - Lancer les tests"
-    @echo ""
-    @echo "ℹ️ Informations:"
-    @echo "  just info      - Infos sur le projet"
-    @echo "  just help      - Afficher cette aide"
-    @echo ""
-    @echo "💡 Usage rapide:"
-    @echo "  1️⃣ just setup        # Premier lancement"
-    @echo "  2️⃣ just run          # Lancer l'app"
-    @echo "  3️⃣ just add pandas   # Ajouter une lib"
-    @echo "  4️⃣ just requirements # Avant déploiement"
+    @Write-Host "🚀 {{ project_name }} - Commandes disponibles:" -ForegroundColor Green
+    @Write-Host ""
+    @Write-Host "🎯 Commandes principales:" -ForegroundColor Yellow
+    @Write-Host "  just setup     - Setup complet du projet (init + venv + sync)"
+    @Write-Host "  just run       - Lancer l'application Streamlit"
+    @Write-Host "  just dev       - Lancer en mode développement"
+    @Write-Host ""
+    @Write-Host "📦 Gestion des dépendances avec uv:" -ForegroundColor Yellow
+    @Write-Host "  just sync              - Synchroniser les dépendances depuis pyproject.toml"
+    @Write-Host "  just add PACKAGE       - Ajouter une dépendance"
+    @Write-Host "  just add-dev PACKAGE   - Ajouter une dépendance de dev"
+    @Write-Host "  just requirements      - Générer requirements.txt pour déploiement"
+    @Write-Host ""
+    @Write-Host "🔧 Maintenance:" -ForegroundColor Yellow
+    @Write-Host "  just venv      - Créer l'environnement virtuel"
+    @Write-Host "  just clean     - Nettoyer l'environnement"
+    @Write-Host "  just reset     - Réinstallation complète"
+    @Write-Host "  just test      - Lancer les tests"
+    @Write-Host ""
+    @Write-Host "ℹ️ Informations:" -ForegroundColor Yellow
+    @Write-Host "  just info      - Infos sur le projet"
+    @Write-Host "  just help      - Afficher cette aide"
+    @Write-Host ""
+    @Write-Host "💡 Usage rapide:" -ForegroundColor Cyan
+    @Write-Host "  1️⃣ just setup        # Premier lancement"
+    @Write-Host "  2️⃣ just run          # Lancer l'app"
+    @Write-Host "  3️⃣ just add pandas   # Ajouter une lib"
+    @Write-Host "  4️⃣ just requirements # Avant déploiement"
 
 # Commande par défaut (affiche l'aide)
 default: help
