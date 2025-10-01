@@ -9,8 +9,6 @@
 
 ## 🎬 **Démonstration : De zéro à Hero en 3 minutes**
 
-![Demo Template](https://via.placeholder.com/800x400/FF6B6B/FFFFFF?text=DEMO+EN+3+MINUTES)
-
 **Pendant que les autres développeurs perdent 4h à configurer :**
 - ❌ Structure de fichiers
 - ❌ Configuration Streamlit  
