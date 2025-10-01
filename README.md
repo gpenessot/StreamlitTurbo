@@ -1,284 +1,232 @@
-# ⚡ StreamlitTurbo - Template Démo
+# ⚡ StreamlitTurbo - Template Professionnel
 
-> **Template professionnel pour développeurs Streamlit** 🎯  
+> **Template moderne pour développeurs Streamlit** 🎯  
 > **Économise 4h de setup sur chaque projet** ⏱️
 
-**Version démo gratuite** du système complet qui transforme vos idées en applications Streamlit professionnelles en 3 minutes chrono.
+Template professionnel utilisant **uv** et **pyproject.toml** pour un développement moderne et efficace.
 
 ---
 
-## 🎬 **Démonstration : De zéro à Hero en 3 minutes**
+## 🎬 **Démarrage Rapide en 3 minutes**
 
-**Pendant que les autres développeurs perdent 4h à configurer :**
-- ❌ Structure de fichiers
-- ❌ Configuration Streamlit  
-- ❌ Composants de base
-- ❌ Système de navigation
-- ❌ Gestion d'état
+### Prérequis
+- Python 3.9+
+- [uv](https://github.com/astral-sh/uv) installé (`pip install uv`)
+- [just](https://github.com/casey/just) installé (optionnel mais recommandé)
+- [Copier](https://copier.readthedocs.io/) installé
 
-**Vous, vous lancez une seule commande et c'est prêt !** ✨
-
----
-
-## ⚡ **Pourquoi ce template fait gagner du temps immédiatement**
-
-### 🏗️ **Structure modulaire professionnelle**
-```
-mon-app/
-├── 📄 main.py                 # Point d'entrée optimisé
-├── 📁 src/mon_app/           # Code métier organisé
-│   ├── 📁 pages/             # Navigation multi-pages
-│   ├── 📁 components/        # Composants réutilisables
-│   ├── 📁 utils/            # Fonctions helper
-│   └── 📁 config/           # Configuration centralisée
-├── 📁 .streamlit/           # Config Streamlit optimisée
-└── 📁 data/                 # Données d'exemple incluses
-```
-
-### 🎯 **Ce que vous obtenez instantanément :**
-- ✅ **Dashboard Analytics** avec métriques KPI
-- ✅ **Page Paramètres** complète (profil, thèmes, notifications)  
-- ✅ **Sidebar intelligente** avec navigation et infos session
-- ✅ **Composants charts** Plotly prêts à l'emploi
-- ✅ **Fonctions utilitaires** (formatage, cache, validation)
-- ✅ **Thèmes personnalisés** (fini le look basic Streamlit)
-- ✅ **Données d'exemple** pour tester immédiatement
-
----
-
-## ⚡ **Installation Express avec uv + justfile (30 secondes)**
+### Installation Express
 
 ```bash
 # 1. Installer Copier
-uv add copier
+pip install copier
+# ou avec uv
+uv tool install copier
 
-# 2. Générer votre projet
-copier copy https://github.com/gpenessot/StreamlitTurbo mon-app
+# 2. Générer votre projet depuis le template
+copier copy https://github.com/gpenessot/StreamlitTurbo.git mon-app-streamlit
 
-# 3. Setup complet automatique
-cd mon-app && just setup
+# 3. Entrer dans le projet
+cd mon-app-streamlit
 
-# 4. Lancer l'application
-just run              # Production
-just dev              # Développement avec hot-reload
+# 4. Setup automatique complet (avec just)
+just setup
+
+# 5. Lancer l'application
+just run
 ```
 
-**Boom !** Votre app Streamlit pro est en ligne avec le thème moderne ! 🎉  
-Une seule commande `just setup` fait tout le travail. ⚡
+**Alternative sans just :**
+```bash
+# Setup manuel
+uv init --python 3.11
+uv venv
+uv sync
+
+# Lancer l'app
+uv run streamlit run main.py
+```
 
 ---
 
-## 🎨 **Interface Moderne vs Streamlit Basique**
+## 🏗️ **Structure du Projet**
 
-| Streamlit de base | StreamlitTurbo |
-|---|---|
-| ❌ Interface générique | ✅ Design sur-mesure |
-| ❌ Navigation confuse | ✅ UX optimisée |
-| ❌ Composants éparpillés | ✅ Architecture modulaire |
-
----
-
-## 📋 **Fonctionnalités de cette version DÉMO**
-
-### ✨ **Ce qui est inclus (version gratuite)**
-
-#### 🏠 **Page d'accueil professionnelle**
-- Message de bienvenue dynamique
-- Navigation intuitive
-- Design moderne (bye bye le look Streamlit basique)
-
-#### 📊 **Dashboard Analytics complet**
-- 📈 **Métriques KPI** avec évolutions en temps réel
-- 🎨 **4 types de graphiques** Plotly prêts à l'emploi
-- 🔍 **Filtres dynamiques** par date et catégorie
-- 📥 **Export des données** en un clic
-
-#### ⚙️ **Page Paramètres avancée**
-- 👤 **Gestion profil** utilisateur
-- 🎨 **Thèmes personnalisés** (light/dark/auto)
-- 🔔 **Système de notifications** configurable
-- 💾 **Sauvegarde automatique** des préférences
-
-#### 🧩 **Composants réutilisables**
-- 🧭 **Sidebar intelligente** avec infos session
-- 📊 **Bibliothèque de charts** Plotly
-- 🔧 **50+ fonctions utilitaires** (formatage, cache, validation)
+```
+mon-app/
+├── 📄 main.py                 # Point d'entrée
+├── 📄 pyproject.toml          # Gestion des dépendances avec uv
+├── 📄 justfile                # Automatisation des tâches
+├── 📁 src/mon_app/           # Code source
+│   ├── 📁 pages/             # Pages Streamlit
+│   ├── 📁 components/        # Composants réutilisables
+│   ├── 📁 utils/            # Utilitaires
+│   └── 📁 config/           # Configuration
+├── 📁 .streamlit/           # Config Streamlit
+├── 📁 data/                 # Données (optionnel)
+└── 📁 tests/               # Tests (optionnel)
+```
 
 ---
 
-## 🚀 **Mais ce n'est que la partie émergée de l'iceberg...**
+## ⚡ **Commandes Just**
 
-### ⚠️ **Ce qui MANQUE dans cette version démo :**
+Le template inclut un `justfile` pour automatiser toutes les tâches courantes :
 
-| Fonctionnalité | Version Démo 🎭 | **StreamlitTurbo Pro** 🚀 |
+### Commandes principales
+```bash
+just setup          # Setup complet du projet
+just run            # Lancer l'application
+just dev            # Lancer en mode développement
+just help           # Voir toutes les commandes
+```
+
+### Gestion des dépendances
+```bash
+just add pandas     # Ajouter une dépendance
+just add-dev pytest # Ajouter une dépendance de dev
+just sync           # Synchroniser les dépendances
+just requirements   # Générer requirements.txt pour déploiement
+```
+
+### Maintenance
+```bash
+just clean          # Nettoyer l'environnement
+just reset          # Réinstallation complète
+just test           # Lancer les tests
+just info           # Infos sur le projet
+```
+
+---
+
+## 📦 **Gestion des Dépendances**
+
+### Workflow moderne avec pyproject.toml
+
+Le template utilise **pyproject.toml** comme source de vérité pour les dépendances :
+
+```bash
+# Ajouter une nouvelle dépendance
+just add plotly
+
+# Ou manuellement avec uv
+uv add plotly
+
+# Synchroniser les dépendances
+just sync
+```
+
+### Déploiement sur Streamlit Cloud
+
+Streamlit Cloud nécessite un **requirements.txt**. Générez-le facilement :
+
+```bash
+just requirements
+```
+
+Cette commande crée un `requirements.txt` à partir de votre `pyproject.toml`.
+
+**Important :** 
+- ✅ Modifiez toujours `pyproject.toml` (pas `requirements.txt`)
+- ✅ Régénérez `requirements.txt` avant chaque déploiement
+- ✅ Committez les deux fichiers dans Git
+
+---
+
+## 🎨 **Ce que vous obtenez instantanément**
+
+### ✨ **Architecture Professionnelle**
+- ✅ Structure modulaire claire
+- ✅ Séparation des préoccupations
+- ✅ Composants réutilisables
+- ✅ Configuration centralisée
+
+### 📊 **Exemples Fonctionnels**
+- ✅ Dashboard Analytics avec KPI
+- ✅ Page Paramètres complète
+- ✅ Sidebar intelligente
+- ✅ Composants charts Plotly
+- ✅ 50+ fonctions utilitaires
+
+### 🔧 **Outils Modernes**
+- ✅ **uv** pour la gestion des dépendances
+- ✅ **pyproject.toml** comme standard
+- ✅ **just** pour l'automatisation
+- ✅ Configuration Streamlit optimisée
+- ✅ Support GitHub Codespaces
+
+---
+
+## 🚀 **Déploiement**
+
+### Sur Streamlit Community Cloud
+
+1. **Préparez votre repo GitHub**
+```bash
+# Générez requirements.txt pour le déploiement
+just requirements
+
+# Committez tout
+git add .
+git commit -m "Ready for deployment"
+git push
+```
+
+2. **Déployez sur Streamlit Cloud**
+   - Allez sur [share.streamlit.io](https://share.streamlit.io)
+   - Connectez votre repo GitHub
+   - Sélectionnez le fichier `main.py`
+   - Cliquez sur **Deploy** !
+
+### Sur d'autres plateformes
+
+Le template fonctionne sur toutes les plateformes supportant Python :
+- Heroku
+- Railway
+- Render
+- AWS / GCP / Azure
+
+---
+
+## 🎯 **Différences avec la version Pro**
+
+| Fonctionnalité | Version Gratuite 🎭 | **StreamlitTurbo Pro** 🚀 |
 |---|---|---|
-| **🏗️ Architecture** | Structure de base | Architecture enterprise avec patterns avancés |
-| **🔐 Authentification** | ❌ Pas d'auth | ✅ **Système complet** (login, roles, sessions) |
-| **☁️ Déploiement** | ❌ Manuel et galère | ✅ **1-click deploy** (Streamlit Cloud, Heroku, AWS) |
-| **🎨 Design System** | ❌ CSS basique | ✅ **Thèmes pro + CSS custom** |
-| **📊 Monitoring** | ❌ Aucun tracking | ✅ **Analytics intégrés** + logging professionnel |
-| **🧪 Tests** | ❌ Pas de tests | ✅ **Suite de tests complète** (pytest, coverage) |
-| **⚙️ Outils dev** | ❌ Setup manuel | ✅ **Makefile/Justfile** pour tout automatiser |
-| **🚀 CI/CD** | ❌ Déploiement amateur | ✅ **GitHub Actions** configurées |
-| **🗄️ Base de données** | ❌ Fichiers CSV | ✅ **Connecteurs DB** (PostgreSQL, MongoDB, etc.) |
-| **📱 Responsive** | ❌ Desktop only | ✅ **Mobile-first design** |
-| **🔒 Sécurité** | ❌ Vulnérable | ✅ **Sécurisation complète** + best practices |
-| **📖 Documentation** | ❌ README basique | ✅ **Doc auto-générée** + guides déploiement |
+| **Architecture** | Structure de base | Architecture enterprise |
+| **Authentification** | ❌ Non incluse | ✅ Système complet |
+| **Déploiement** | ❌ Manuel | ✅ 1-click deploy |
+| **Tests** | ❌ Non inclus | ✅ Suite complète |
+| **CI/CD** | ❌ Non inclus | ✅ GitHub Actions |
+| **Base de données** | ❌ Non incluse | ✅ Connecteurs DB |
+| **Monitoring** | ❌ Non inclus | ✅ Analytics intégrés |
+
+**[🔥 Découvrir Streamlit Unleashed](https://www.mes-formations-data.fr/formation/streamlit-unleashed)** - Formation complète avec templates premium
 
 ---
 
-## ⏱️ **Économie de temps réelle**
+## 📚 **Ressources**
 
-### 🕐 **Sans le template Pro :**
-- ⏰ **2-3 jours** pour setup l'architecture  
-- ⏰ **1 jour** pour l'authentification
-- ⏰ **1 jour** pour le déploiement
-- ⏰ **2 jours** pour les tests et CI/CD
-- ⏰ **1 jour** pour le monitoring
-- **TOTAL : 1 semaine de développement** 😵
-
-### ⚡ **Avec StreamlitTurbo :**
-- ✅ **3 minutes** pour générer le projet
-- ✅ **5 minutes** pour personnaliser
-- ✅ **2 minutes** pour déployer
-- **TOTAL : 10 minutes** 🚀
-
-**⏰ Économie = 39h50 de développement !**  
-*Au tarif freelance moyen (60€/h), ça représente **2 390€ économisés** !*
+- 📖 [Documentation Streamlit](https://docs.streamlit.io)
+- 🎨 [Galerie Streamlit](https://streamlit.io/gallery)
+- 💬 [Forum Communauté](https://discuss.streamlit.io)
+- 🚀 [uv - Gestionnaire Python moderne](https://github.com/astral-sh/uv)
+- ⚡ [just - Command runner](https://github.com/casey/just)
 
 ---
 
-## 💎 **Vous voulez la version COMPLÈTE ?**
+## 📞 **Support & Contact**
 
-### 🔥 **StreamlitTurbo Pro** 
-*Template professionnel avec architecture enterprise*
-
-![Streamlit Unleashed](https://via.placeholder.com/600x300/FF6B6B/FFFFFF?text=STREAMLIT+UNLEASHED)
-
-### 🎁 **Ce que vous obtenez en PLUS :**
-
-#### 🚀 **Développement Express**
-- ⚡ **Justfile + uv** : Un seul commande pour tout (setup, dev, deploy)
-- 🔧 **Outils pré-configurés** : Ruff, mypy, pre-commit
-- 🧪 **Tests starter kit** : Pytest + fixtures + coverage
-- 📊 **Monitoring intégré** : Logs, métriques, alertes
-
-#### 🔐 **Sécurité & Auth Enterprise**
-- 🛡️ **Système d'authentification** complet (login, register, reset)  
-- 👥 **Gestion des rôles** (admin, user, viewer)
-- 🔒 **Sessions sécurisées** + protection CSRF
-- 🔐 **Variables d'environnement** chiffrées
-
-#### ☁️ **Déploiement 1-Click**
-- 🚀 **Scripts de déploiement** HuggingFace Spaces, Streamlit Cloud, Render, Railway
-- 🐳 **Docker** prêt à l'emploi
-- 📦 **GitHub Actions** configurées (CI/CD complet)
-
-#### 🎨 **Design System Professionnel**
-- 💫 **CSS custom** moderne (bye bye le look Streamlit basic)
-- 📱 **Responsive design** mobile-first
-- 🎨 **Thèmes avancés** avec variables CSS
-- 🖼️ **Composants UI** premium
-
-#### 🗄️ **Base de données & Intégrations**
-- 🐘 **PostgreSQL, MongoDB** ready
-- 📊 **Connecteurs** Snowflake, BigQuery, etc.
-- ⚡ **Cache Redis** pour les performances
-- 🔄 **Migrations automatiques**
-
-### ⏰ **Offre limitée - Streamlit Unleashed :**
-- ~~247€~~ **197€** jusqu'au 15 novembre
-- 🎁 **4 templates premium** inclus (Analytics, Chatbot, Mapping, Dashboard temps réel)
-- 💬 **Communauté WhatsApp privée**
-- 🏆 **Défi LinkedIn** avec récompenses top 3
-
----
-
-## 🚀 **ACCÈS VIP à StreamlitTurbo Pro**
-
-### 👉 **[STREAMLIT UNLEASHED - Accès immédiat](https://www.mes-formations-data.fr/formation/streamlit-unleashed)**
-
-🎯 **Formation complète Streamlit** avec :
-- ✅ **6 modules complets** (Foundation, Interactivité, Navigation, Performance, Déploiement, Écosystème)
-- ✅ **5 projets concrets** avec code source
-- ✅ **4 templates premium** (Analytics, Chatbot, Mapping, Dashboard temps réel)
-- ✅ **Communauté WhatsApp privée**
-- ✅ **Accès à vie** au contenu
-- ✅ **Défi LinkedIn** avec récompenses
-
-### 💡 **Pourquoi choisir Streamlit Unleashed ?**
-
-**🏆 Expertise unique :**
-- ✅ **Années d'expérience** en développement data
-- ✅ **50+ apps Streamlit** déployées en production
-- ✅ **Templates testés** sur de nombreux projets
-- ✅ **Méthodes éprouvées** dans l'industrie
-
-**⚡ Résultats garantis :**
-- 🚀 **Apps en production** en 24h
-- 💰 **Économisez des semaines** de développement  
-- 🎯 **Code quality** niveau enterprise
-- 🔧 **Stack technique** complète maîtrisée
-
----
-
-### 🎁 **BONUS INCLUS**
-
-1. **📊 4 templates premium** (Analytics, Chatbot, Mapping, Dashboard temps réel)
-2. **💬 Communauté WhatsApp privée** pour échanger avec d'autres apprenants
-3. **🏆 Défi LinkedIn** avec récompenses pour les top 3 projets
-
-### ⏰ **Offre de lancement limitée - Jusqu'au 15 novembre !**
-
-**[👉 OBTENIR STREAMLIT UNLEASHED MAINTENANT](https://www.mes-formations-data.fr/formation/streamlit-unleashed)**
-
-*⚡ Accès immédiat*
-
----
-
-## 📞 **Contact & Support**
-
-- 📧 **Email Pro** : gael.penessot@gmail.com
-- 💼 **LinkedIn** : [Gaël Penessot](https://www.linkedin.com/in/gael-penessot/)  
+- 📧 **Email** : gael.penessot@gmail.com
+- 💼 **LinkedIn** : [Gaël Penessot](https://www.linkedin.com/in/gael-penessot/)
 - 🐛 **Issues** : [GitHub Issues](https://github.com/gpenessot/StreamlitTurbo/issues)
 
 ---
 
-## 🏆 **Récapitulatif : Pourquoi StreamlitTurbo Pro ?**
+## 📝 **Licence**
 
-✅ **Template professionnel** testé sur 50+ projets  
-✅ **Architecture enterprise** avec expertise développement  
-✅ **Économie garantie** de 40h de développement  
-✅ **ROI immédiat** dès le premier projet  
-✅ **Support premium** et communauté WhatsApp  
-✅ **Mises à jour à vie** + nouveaux templates  
+MIT License - Libre d'utilisation et de modification
 
-### 🎯 **Votre choix aujourd'hui :**
-
-**Option A** : Continuer à perdre des heures sur le setup  
-**Option B** : Utiliser le système qui a fait ses preuves  
-
-**[👉 CHOISIR L'OPTION B - STREAMLIT TURBO PRO](https://www.mes-formations-data.fr/formation/streamlit-unleashed)**
+**Créé avec ❤️ par [Gaël Penessot](https://www.mes-formations-data.fr)**
 
 ---
 
-## 📝 **Licence & Crédits**
-
-- 📜 **Licence** : MIT (libre d'utilisation et modification)
-- 👨‍💻 **Créé par** : [Gaël Penessot](https://www.mes-formations-data.fr) - Formateur Streamlit & Data  
-- ⭐ **Version Pro** disponible dans [Streamlit Unleashed](https://www.mes-formations-data.fr/formation/streamlit-unleashed)
-
----
-
-### 🚀 **Prêt à transformer votre workflow Streamlit ?**
-
-**Ce template démo vous a convaincu ? C'est juste un aperçu !**
-
-**[🔥 ACCÈS VIP à la version complète](https://www.mes-formations-data.fr/formation/streamlit-unleashed)**
-
-*⏰ Offre limitée - Jusqu'au 15 novembre à 197€ au lieu de 247€*
-
----
-
-⭐ **Ce template vous aide ?** Donnez-lui une étoile et partagez-le !  
-🔄 **Restez connecté** pour les prochaines mises à jour template !
+⭐ **Ce template vous aide ?** Donnez-lui une étoile sur GitHub !
