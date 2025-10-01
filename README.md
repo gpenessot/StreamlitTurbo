@@ -74,7 +74,6 @@ Une seule commande `just setup` fait tout le travail. ⚡
 
 | Streamlit de base | StreamlitTurbo |
 |---|---|
-| ![Basic Streamlit](https://via.placeholder.com/300x200/CCCCCC/000000?text=Basic+Streamlit) | ![Pro Template](https://via.placeholder.com/300x200/FF6B6B/FFFFFF?text=Pro+Template) |
 | ❌ Interface générique | ✅ Design sur-mesure |
 | ❌ Navigation confuse | ✅ UX optimisée |
 | ❌ Composants éparpillés | ✅ Architecture modulaire |
@@ -190,7 +189,7 @@ Une seule commande `just setup` fait tout le travail. ⚡
 - 🔄 **Migrations automatiques**
 
 ### ⏰ **Offre limitée - Streamlit Unleashed :**
-- ~~147€~~ **97€** jusqu'au 28 septembre
+- ~~247€~~ **197€** jusqu'au 15 novembre
 - 🎁 **4 templates premium** inclus (Analytics, Chatbot, Mapping, Dashboard temps réel)
 - 💬 **Communauté WhatsApp privée**
 - 🏆 **Défi LinkedIn** avec récompenses top 3
@@ -231,7 +230,7 @@ Une seule commande `just setup` fait tout le travail. ⚡
 2. **💬 Communauté WhatsApp privée** pour échanger avec d'autres apprenants
 3. **🏆 Défi LinkedIn** avec récompenses pour les top 3 projets
 
-### ⏰ **Offre limitée - Jusqu'au 28 septembre !**
+### ⏰ **Offre de lancement limitée - Jusqu'au 15 novembre !**
 
 **[👉 OBTENIR STREAMLIT UNLEASHED MAINTENANT](https://www.mes-formations-data.fr/formation/streamlit-unleashed)**
 
@@ -279,7 +278,7 @@ Une seule commande `just setup` fait tout le travail. ⚡
 
 **[🔥 ACCÈS VIP à la version complète](https://www.mes-formations-data.fr/formation/streamlit-unleashed)**
 
-*⏰ Offre limitée - Jusqu'au 28 septembre à 97€ au lieu de 147€*
+*⏰ Offre limitée - Jusqu'au 15 novembre à 197€ au lieu de 247€*
 
 ---
 
