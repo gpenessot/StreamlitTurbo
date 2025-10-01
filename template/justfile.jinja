@@ -1,6 +1,92 @@
 # 🚀 {{ project_name }} - Justfile Cross-Platform
 # Compatible Windows (PowerShell), Linux et macOS
 
+# Configuration du shell selon l'OS - Just détecte automatiquement
+set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
+
+# Variables
+PYTHON_VERSION := "{{ python_version }}"
+PROJECT_NAME := "{{ project_slug }}"
+
+# Détection de l'OS (variable Just)
+is_windows := if os() == "windows" { "true" } else { "false" }
+
+# 🎯 Setup complet du projet en une commande
+setup:
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "🚀 Setup complet de {{ PROJECT_NAME }}..." -ForegroundColor Green` } else { `echo "🚀 Setup complet de {{ PROJECT_NAME }}..."` } }}{% endraw %}
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "📦 Initialisation avec uv..." -ForegroundColor Cyan` } else { `echo "📦 Initialisation avec uv..."` } }}{% endraw %}
+    uv init --python {{ python_version }}
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "🐍 Création de l'environnement virtuel..." -ForegroundColor Cyan` } else { `echo "🐍 Création de l'environnement virtuel..."` } }}{% endraw %}
+    uv venv --python {{ python_version }}
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "📚 Installation des dépendances..." -ForegroundColor Cyan` } else { `echo "📚 Installation des dépendances..."` } }}{% endraw %}
+    uv sync
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "✅ Setup terminé ! Lancez 'just run'" -ForegroundColor Green` } else { `echo "✅ Setup terminé ! Lancez 'just run'"` } }}{% endraw %}
+
+# 🚀 Lancement de l'application Streamlit
+run:
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "🚀 Lancement de {{ PROJECT_NAME }}..." -ForegroundColor Green` } else { `echo "🚀 Lancement de {{ PROJECT_NAME }}..."` } }}{% endraw %}
+    uv run streamlit run main.py
+
+# 📦 Synchronisation des dépendances
+sync:
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "📦 Synchronisation..." -ForegroundColor Cyan` } else { `echo "📦 Synchronisation..."` } }}{% endraw %}
+    uv sync
+
+# 📦 Ajout d'une nouvelle dépendance
+add PACKAGE:
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "📦 Ajout de {{ PACKAGE }}..." -ForegroundColor Cyan` } else { `echo "📦 Ajout de {{ PACKAGE }}..."` } }}{% endraw %}
+    uv add {% raw %}{{ PACKAGE }}{% endraw %}
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "✅ Ajouté !" -ForegroundColor Green` } else { `echo "✅ Ajouté !"` } }}{% endraw %}
+
+# 📦 Ajout d'une dépendance de développement
+add-dev PACKAGE:
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "🔧 Ajout de {{ PACKAGE }} (dev)..." -ForegroundColor Cyan` } else { `echo "🔧 Ajout de {{ PACKAGE }} (dev)..."` } }}{% endraw %}
+    uv add --dev {% raw %}{{ PACKAGE }}{% endraw %}
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "✅ Ajouté !" -ForegroundColor Green` } else { `echo "✅ Ajouté !"` } }}{% endraw %}
+
+# 📄 Génération du requirements.txt pour déploiement
+requirements:
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "📄 Génération du requirements.txt..." -ForegroundColor Cyan` } else { `echo "📄 Génération du requirements.txt..."` } }}{% endraw %}
+    uv pip compile pyproject.toml -o requirements.txt
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "✅ Généré !" -ForegroundColor Green` } else { `echo "✅ Généré !"` } }}{% endraw %}
+
+# 🐍 Création de l'environnement virtuel
+venv:
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "🐍 Création du venv..." -ForegroundColor Cyan` } else { `echo "🐍 Création du venv..."` } }}{% endraw %}
+    uv venv --python {{ python_version }}
+
+# 🧹 Nettoyage de l'environnement
+clean:
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "🧹 Nettoyage..." -ForegroundColor Yellow` } else { `echo "🧹 Nettoyage..."` } }}{% endraw %}
+    {% raw %}@{{ if is_windows == "true" { `if (Test-Path .venv) { Remove-Item -Recurse -Force .venv }; Get-ChildItem -Recurse -Filter "__pycache__" | Remove-Item -Recurse -Force; Get-ChildItem -Recurse -Filter "*.pyc" | Remove-Item -Force` } else { `rm -rf .venv __pycache__ .pytest_cache; find . -type f -name "*.pyc" -delete; find . -type d -name "__pycache__" -delete` } }}{% endraw %}
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "✅ Nettoyé !" -ForegroundColor Green` } else { `echo "✅ Nettoyé !"` } }}{% endraw %}
+
+# 🔄 Réinstallation complète
+reset: clean setup
+
+# 📊 Lancement en mode développement
+dev:
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "🔧 Mode développement..." -ForegroundColor Cyan` } else { `echo "🔧 Mode développement..."` } }}{% endraw %}
+    uv run streamlit run main.py --server.runOnSave=true --server.developmentMode=true
+
+# 🧪 Tests
+test:
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "🧪 Tests..." -ForegroundColor Cyan` } else { `echo "🧪 Tests..."` } }}{% endraw %}
+    uv run pytest tests/ -v
+
+# ℹ️ Informations sur le projet
+info:
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "📋 {{ PROJECT_NAME }}" -ForegroundColor Cyan; Write-Host "  🐍 Python {{ PYTHON_VERSION }}"; Write-Host "  💻 Windows"` } else { `echo "📋 {{ PROJECT_NAME }}"; echo "  🐍 Python {{ PYTHON_VERSION }}"; echo "  💻 $(uname -s)"` } }}{% endraw %}
+
+# 📚 Aide - Liste toutes les commandes
+help:
+    {% raw %}@{{ if is_windows == "true" { `Write-Host "🚀 {{ PROJECT_NAME }} - Commandes:" -ForegroundColor Green; Write-Host ""; Write-Host "🎯 Principales:" -ForegroundColor Yellow; Write-Host "  just setup  - Setup complet"; Write-Host "  just run    - Lancer l'app"; Write-Host "  just dev    - Mode dev"; Write-Host ""; Write-Host "📦 Dépendances:" -ForegroundColor Yellow; Write-Host "  just sync         - Synchroniser"; Write-Host "  just add PKG      - Ajouter"; Write-Host "  just requirements - Générer requirements.txt"; Write-Host ""; Write-Host "🔧 Autres:" -ForegroundColor Yellow; Write-Host "  just clean - Nettoyer"; Write-Host "  just test  - Tests"; Write-Host "  just info  - Infos"` } else { `echo "🚀 {{ PROJECT_NAME }} - Commandes:"; echo ""; echo "🎯 Principales:"; echo "  just setup  - Setup complet"; echo "  just run    - Lancer l'app"; echo "  just dev    - Mode dev"; echo ""; echo "📦 Dépendances:"; echo "  just sync         - Synchroniser"; echo "  just add PKG      - Ajouter"; echo "  just requirements - Générer requirements.txt"; echo ""; echo "🔧 Autres:"; echo "  just clean - Nettoyer"; echo "  just test  - Tests"; echo "  just info  - Infos"` } }}{% endraw %}
+
+# Commande par défaut
+default: help
+# 🚀 {{ project_name }} - Justfile Cross-Platform
+# Compatible Windows (PowerShell), Linux et macOS
+
 # Configuration automatique du shell selon l'OS
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
 
