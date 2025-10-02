@@ -6,6 +6,12 @@
 Auteur: {{ author_name }} <{{ author_email }}>
 """
 
+import sys
+from pathlib import Path
+
+# Ajouter le dossier src au PYTHONPATH
+sys.path.insert(0, str(Path(__file__).parent / "src"))
+
 import streamlit as st
 
 # Configuration de la page

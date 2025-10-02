@@ -2,9 +2,53 @@
 runOnSave = true
 maxUploadSize = 200
 enableXsrfProtection = true
+enableStaticServing = true
 
 [browser]
 gatherUsageStats = false
+
+# Custom Fonts
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/fonts/Poppins-Regular.ttf"
+style = "normal"
+weight = 400
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/fonts/Poppins-Medium.ttf"
+style = "normal"
+weight = 500
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/fonts/Poppins-SemiBold.ttf"
+style = "normal"
+weight = 600
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/fonts/Poppins-Bold.ttf"
+style = "normal"
+weight = 700
+
+[[theme.fontFaces]]
+family = "Lato"
+url = "app/static/fonts/Lato-Regular.ttf"
+style = "normal"
+weight = 400
+
+[[theme.fontFaces]]
+family = "Lato"
+url = "app/static/fonts/Lato-Bold.ttf"
+style = "normal"
+weight = 700
+
+[[theme.fontFaces]]
+family = "Lato"
+url = "app/static/fonts/Lato-Italic.ttf"
+style = "italic"
+weight = 400
 
 {% if streamlit_theme == "dark" %}
 # Theme Dark - Style Spotify
@@ -20,7 +64,8 @@ borderColor = "#7c7c7c"
 showWidgetBorder = true
 baseRadius = "0.3rem"
 buttonRadius = "full"
-font = "Poppins"
+font = "Lato"
+headingFont = "Poppins"
 headingFontWeights = [600, 500, 500, 500, 500, 500]
 headingFontSizes = ["3rem", "2.5rem", "2.25rem", "2rem", "1.5rem"]
 codeFont = "SpaceMono"
@@ -50,7 +95,8 @@ borderColor = "#d3d2ca"
 showWidgetBorder = true
 baseRadius = "0.75rem"
 buttonRadius = "full"
-font = "SpaceGrotesk"
+font = "Lato"
+headingFont = "Poppins"
 headingFontWeights = [600, 500, 500, 500, 500, 500]
 headingFontSizes = ["3rem", "2.5rem", "2.25rem", "2rem", "1.5rem"]
 codeFont = "SpaceMono"
@@ -80,7 +126,8 @@ borderColor = "#c5d0de"
 showWidgetBorder = true
 baseRadius = "0.5rem"
 buttonRadius = "full"
-font = "Inter"
+font = "Lato"
+headingFont = "Poppins"
 headingFontWeights = [600, 500, 500, 500, 500, 500]
 headingFontSizes = ["3rem", "2.5rem", "2.25rem", "2rem", "1.5rem"]
 codeFont = "SpaceMono"
@@ -110,7 +157,8 @@ borderColor = "#a7d4c4"
 showWidgetBorder = true
 baseRadius = "0.6rem"
 buttonRadius = "full"
-font = "Poppins"
+font = "Lato"
+headingFont = "Poppins"
 headingFontWeights = [600, 500, 500, 500, 500, 500]
 headingFontSizes = ["3rem", "2.5rem", "2.25rem", "2rem", "1.5rem"]
 codeFont = "SpaceMono"
@@ -130,5 +178,6 @@ dataframeHeaderBackgroundColor = "#c8e5d9"
 # Theme Auto - Suit le systeme
 [theme]
 base = "{{ streamlit_theme }}"
-font = "Poppins"
+font = "Lato"
+headingFont = "Poppins"
 {% endif %}

@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
-from {{ project_slug }}.components.footer import render_footer
+from {{ project_slug | replace('-', '_') }}.components.footer import render_footer
 
 def main():
     """Dashboard avec graphiques interactifs."""
@@ -17,7 +17,7 @@ def main():
     # Generer des donnees d'exemple
     @st.cache_data
     def load_sample_data():
-        dates = pd.date_range(start='2024-01-01', end='2024-12-31', freq='D')
+        dates = pd.date_range(start='2025-01-01', end='2025-12-31', freq='D')
         np.random.seed(42)
         
         data = pd.DataFrame({
@@ -34,9 +34,9 @@ def main():
     
     # Filtres
     st.subheader(":material/filter_alt: Filtres")
-    
-    col1, col2, col3 = st.columns(3)
-    
+
+    col1, col2 = st.columns([2, 3])
+
     with col1:
         start_date = st.date_input(
             "Date debut",
@@ -44,7 +44,7 @@ def main():
             min_value=df['date'].min().date(),
             max_value=df['date'].max().date()
         )
-    
+
     with col2:
         end_date = st.date_input(
             "Date fin",
@@ -52,13 +52,15 @@ def main():
             min_value=df['date'].min().date(),
             max_value=df['date'].max().date()
         )
-    
-    with col3:
-        categories = st.multiselect(
-            "Categories",
-            options=df['category'].unique(),
-            default=df['category'].unique()
-        )
+
+    st.write("**Categories**")
+    categories = st.pills(
+        "Categories",
+        options=df['category'].unique().tolist(),
+        default=df['category'].unique().tolist(),
+        selection_mode="multi",
+        label_visibility="collapsed"
+    )
     
     # Filtrer les donnees
     filtered_df = df[
@@ -83,7 +85,7 @@ def main():
             template="plotly_dark" if st.get_option("theme.base") == "dark" else "plotly_white"
         )
         fig_line.update_traces(line_color='#1ed760')
-        st.plotly_chart(fig_line, width='stretch)
+        st.plotly_chart(fig_line)
     
     with col2:
         st.subheader(":material/pie_chart: Repartition par categorie")
@@ -96,7 +98,7 @@ def main():
             title="Ventes par categorie",
             color_discrete_sequence=['#1ed760', '#ffc862', '#2d46b9']
         )
-        st.plotly_chart(fig_pie, width='stretch)
+        st.plotly_chart(fig_pie)
     
     st.markdown("---")
     
@@ -105,7 +107,7 @@ def main():
     
     st.dataframe(
         filtered_df[['date', 'ventes', 'visitors', 'conversion_rate', 'category']].head(100),
-        width='stretch,
+        width="stretch",
         hide_index=True
     )
 

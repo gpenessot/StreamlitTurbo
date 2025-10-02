@@ -3,7 +3,7 @@ Page Parametres - Configuration de l'application
 """
 
 import streamlit as st
-from {{ project_slug }}.components.footer import render_footer
+from {{ project_slug | replace('-', '_') }}.components.footer import render_footer
 
 def main():
     """Page de parametres."""
