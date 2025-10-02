@@ -7,6 +7,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
+from ..components.footer import render_footer
 
 def main():
     """Dashboard avec graphiques interactifs."""
@@ -82,7 +83,7 @@ def main():
             template="plotly_dark" if st.get_option("theme.base") == "dark" else "plotly_white"
         )
         fig_line.update_traces(line_color='#1ed760')
-        st.plotly_chart(fig_line, use_container_width=True)
+        st.plotly_chart(fig_line, width='stretch)
     
     with col2:
         st.subheader(":material/pie_chart: Repartition par categorie")
@@ -95,7 +96,7 @@ def main():
             title="Ventes par categorie",
             color_discrete_sequence=['#1ed760', '#ffc862', '#2d46b9']
         )
-        st.plotly_chart(fig_pie, use_container_width=True)
+        st.plotly_chart(fig_pie, width='stretch)
     
     st.markdown("---")
     
@@ -104,9 +105,12 @@ def main():
     
     st.dataframe(
         filtered_df[['date', 'ventes', 'visitors', 'conversion_rate', 'category']].head(100),
-        use_container_width=True,
+        width='stretch,
         hide_index=True
     )
+
+    # Footer en fin de page
+    render_footer()
 
 if __name__ == "__main__":
     main()

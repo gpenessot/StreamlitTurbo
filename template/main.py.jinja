@@ -13,7 +13,7 @@ st.set_page_config(
     page_title="{{ project_name }}",
     page_icon=":material/dashboard:",
     layout="wide",
-    initial_sidebar_state="collapsed"  # Pas de sidebar
+    initial_sidebar_state="collapsed"
 )
 
 # Definition des pages avec navigation top
@@ -38,10 +38,6 @@ pages = [
 
 # Navigation en position top
 page = st.navigation(pages, position="top")
-
-# Footer
-from src.{{ project_slug | replace('-', '_') }}.components.footer import render_footer
-render_footer()
 
 # Execution de la page
 page.run()

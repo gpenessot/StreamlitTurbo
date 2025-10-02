@@ -5,6 +5,7 @@ Page d'accueil - {{ project_name }}
 import streamlit as st
 import pandas as pd
 import numpy as np
+from ..components.footer import render_footer
 
 def main():
     """Page d'accueil avec KPI et presentation."""
@@ -102,6 +103,9 @@ def main():
     )
     
     st.line_chart(chart_data, height=300)
+
+    # Footer en fin de page
+    render_footer()
 
 if __name__ == "__main__":
     main()
