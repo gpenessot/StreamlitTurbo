@@ -11,9 +11,9 @@ project_name:
 
 project_slug:
   type: str
-  help: "Nom technique du projet (sans espaces ni caractères spéciaux)"
+  help: "Nom technique du projet (sans espaces ni caracteres speciaux)"
   placeholder: "mon_super_dashboard"
-  validator: "{% if not project_slug.replace('_', '').replace('-', '').isalnum() %}Le nom technique doit contenir uniquement des lettres, chiffres, tirets et underscores{% endif %}"
+  validator: "{% if not project_slug.replace('_', '').isalnum() %}Le nom technique doit contenir uniquement des lettres, chiffres et underscores (pas de tirets){% endif %}"
 
 project_description:
   type: str
