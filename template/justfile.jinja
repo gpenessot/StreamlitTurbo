@@ -10,8 +10,7 @@ PROJECT_NAME := "{{ project_slug }}"
 # Setup complet du projet
 setup:
     @echo "Configuration du projet..."
-    @if not exist pyproject.toml (uv init --python {{PYTHON_VERSION}})
-    uv venv --python {{PYTHON_VERSION}}
+    uv venv --python {% raw %}{{PYTHON_VERSION}}{% endraw %}
     uv sync
     @echo "Setup termine!"
 
@@ -19,23 +18,23 @@ setup:
 run:
     uv run streamlit run main.py
 
-# Synchronisation des dépendances
+# Synchronisation des dependances
 sync:
     uv sync
 
-# Ajout d'une dépendance
+# Ajout d'une dependance
 add PACKAGE:
     uv add {% raw %}{{ PACKAGE }}{% endraw %}
 
-# Ajout d'une dépendance de dev
+# Ajout d'une dependance de dev
 add-dev PACKAGE:
     uv add --dev {% raw %}{{ PACKAGE }}{% endraw %}
 
-# Génération du requirements.txt
+# Generation du requirements.txt
 requirements:
     uv pip compile pyproject.toml -o requirements.txt
 
-# Création de l'environnement virtuel
+# Creation de l'environnement virtuel
 venv:
     uv venv --python {{ python_version }}
 
@@ -43,10 +42,10 @@ venv:
 clean:
     python -c "import shutil, pathlib; [shutil.rmtree(p, ignore_errors=True) for p in [pathlib.Path('.venv')] if p.exists()]; [p.unlink() for p in pathlib.Path('.').rglob('*.pyc')]; [shutil.rmtree(p, ignore_errors=True) for p in pathlib.Path('.').rglob('__pycache__')]"
 
-# Réinstallation complète
+# Reinstallation complete
 reset: clean setup
 
-# Mode développement
+# Mode developpement
 dev:
     uv run streamlit run main.py --server.runOnSave=true --server.developmentMode=true
 
@@ -67,7 +66,7 @@ help:
     @echo "Principales:"
     @echo "  just setup  - Setup complet"
     @echo "  just run    - Lancer l'application"
-    @echo "  just dev    - Mode développement"
+    @echo "  just dev    - Mode developpement"
     @echo ""
     @echo "Dependances:"
     @echo "  just sync              - Synchroniser"
@@ -80,5 +79,5 @@ help:
     @echo "  just reset - Reinstaller"
     @echo "  just test  - Tests"
 
-# Commande par défaut
+# Commande par defaut
 default: help
