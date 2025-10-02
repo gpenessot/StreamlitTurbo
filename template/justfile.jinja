@@ -1,4 +1,4 @@
-# 🚀 {{ project_name }} - Justfile
+# {{ project_name }} - Justfile
 # Compatible Windows, Linux, macOS
 
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
@@ -7,75 +7,77 @@ set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
 PYTHON_VERSION := "{{ python_version }}"
 PROJECT_NAME := "{{ project_slug }}"
 
-# 🎯 Setup complet du projet
+# Setup complet du projet
 setup:
-    uv init --python {{ python_version }}
-    uv venv --python {{ python_version }}
+    @echo "Configuration du projet..."
+    @if not exist pyproject.toml (uv init --python {{PYTHON_VERSION}})
+    uv venv --python {{PYTHON_VERSION}}
     uv sync
+    @echo "Setup termine!"
 
-# 🚀 Lancement de l'application
+# Lancement de l'application
 run:
     uv run streamlit run main.py
 
-# 📦 Synchronisation des dépendances
+# Synchronisation des dépendances
 sync:
     uv sync
 
-# 📦 Ajout d'une dépendance
+# Ajout d'une dépendance
 add PACKAGE:
     uv add {% raw %}{{ PACKAGE }}{% endraw %}
 
-# 📦 Ajout d'une dépendance de dev
+# Ajout d'une dépendance de dev
 add-dev PACKAGE:
     uv add --dev {% raw %}{{ PACKAGE }}{% endraw %}
 
-# 📄 Génération du requirements.txt
+# Génération du requirements.txt
 requirements:
     uv pip compile pyproject.toml -o requirements.txt
 
-# 🐍 Création de l'environnement virtuel
+# Création de l'environnement virtuel
 venv:
     uv venv --python {{ python_version }}
 
-# 🧹 Nettoyage (compatible toutes plateformes via Python)
+# Nettoyage (compatible toutes plateformes via Python)
 clean:
     python -c "import shutil, pathlib; [shutil.rmtree(p, ignore_errors=True) for p in [pathlib.Path('.venv')] if p.exists()]; [p.unlink() for p in pathlib.Path('.').rglob('*.pyc')]; [shutil.rmtree(p, ignore_errors=True) for p in pathlib.Path('.').rglob('__pycache__')]"
 
-# 🔄 Réinstallation complète
+# Réinstallation complète
 reset: clean setup
 
-# 📊 Mode développement
+# Mode développement
 dev:
     uv run streamlit run main.py --server.runOnSave=true --server.developmentMode=true
 
-# 🧪 Tests
+# Tests
 test:
     uv run pytest tests/ -v
 
-# ℹ️ Informations
+# Informations
 info:
-    @echo "📋 {{ project_name }}"
-    @echo "  🐍 Python: {{ python_version }}"
-    @echo "  👤 Auteur: {{ author_name }}"
+    @echo "{{ project_name }}"
+    @echo "  Python: {{ python_version }}"
+    @echo "  Auteur: {{ author_name }}"
 
-# 📚 Aide
+# Aide
 help:
-    @echo "🚀 {{ project_name }} - Commandes disponibles"
+    @echo "{{ project_name }} - Commandes disponibles"
     @echo ""
     @echo "Principales:"
     @echo "  just setup  - Setup complet"
     @echo "  just run    - Lancer l'application"
     @echo "  just dev    - Mode développement"
     @echo ""
-    @echo "Dépendances:"
+    @echo "Dependances:"
     @echo "  just sync              - Synchroniser"
     @echo "  just add PACKAGE       - Ajouter une lib"
     @echo "  just add-dev PACKAGE   - Ajouter une lib de dev"
-    @echo "  just requirements      - Générer requirements.txt"
+    @echo "  just requirements      - Generer requirements.txt"
     @echo ""
     @echo "Maintenance:"
     @echo "  just clean - Nettoyer"
-    @echo "  just reset - Réinstaller"
+    @echo "  just reset - Reinstaller"
     @echo "  just test  - Tests"
 
 # Commande par défaut
