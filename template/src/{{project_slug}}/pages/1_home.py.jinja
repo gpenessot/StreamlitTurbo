@@ -1,0 +1,107 @@
+"""
+Page d'accueil - {{ project_name }}
+"""
+
+import streamlit as st
+import pandas as pd
+import numpy as np
+
+def main():
+    """Page d'accueil avec KPI et presentation."""
+    
+    # Hero section
+    st.title(":material/rocket: {{ project_name }}")
+    st.markdown("*{{ project_description }}*")
+    
+    st.markdown("---")
+    
+    # KPI Section
+    st.subheader(":material/monitoring: Indicateurs cles")
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.metric(
+            label="Ventes totales",
+            value="2.3M",
+            delta="12%",
+            help="Evolution sur 30 jours"
+        )
+    
+    with col2:
+        st.metric(
+            label="Visiteurs",
+            value="45.2K",
+            delta="5%",
+            help="Visiteurs uniques ce mois"
+        )
+    
+    with col3:
+        st.metric(
+            label="Taux de conversion",
+            value="4.8%",
+            delta="0.2%",
+            help="Taux de conversion moyen"
+        )
+    
+    with col4:
+        st.metric(
+            label="Valeur moyenne",
+            value="51",
+            delta="-3%",
+            help="Panier moyen en euros"
+        )
+    
+    st.markdown("---")
+    
+    # Presentation du template
+    st.subheader(":material/info: A propos de ce template")
+    
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        st.markdown("""
+        ### Fonctionnalites
+        
+        Ce template Streamlit moderne inclut :
+        
+        - :material/check: **Navigation top** sans sidebar
+        - :material/check: **Icones Material Design** integrees
+        - :material/check: **Themes personnalisables** (dark, light, auto)
+        - :material/check: **Architecture modulaire** et maintenable
+        - :material/check: **Components reutilisables** prets a l'emploi
+        - :material/check: **Gestion UV** pour dependencies modernes
+        
+        ### Utilisation
+        
+        Naviguez via le menu en haut pour explorer :
+        - **Dashboard** : Visualisations et graphiques interactifs
+        - **Parametres** : Configuration de l'application
+        """)
+    
+    with col2:
+        st.info("""
+        **Version:** 1.0.0
+        
+        **Auteur:** {{ author_name }}
+        
+        **Email:** {{ author_email }}
+        
+        **Python:** {{ python_version }}+
+        """)
+    
+    st.markdown("---")
+    
+    # Quick stats demo
+    st.subheader(":material/analytics: Apercu rapide")
+    
+    # Generer des donnees d'exemple
+    chart_data = pd.DataFrame(
+        np.random.randn(20, 3),
+        columns=["Produit A", "Produit B", "Produit C"]
+    )
+    
+    st.line_chart(chart_data, height=300)
+
+if __name__ == "__main__":
+    main()

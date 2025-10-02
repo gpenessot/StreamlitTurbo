@@ -1,0 +1,112 @@
+"""
+Page Dashboard - Visualisations et analytics
+"""
+
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+import numpy as np
+
+def main():
+    """Dashboard avec graphiques interactifs."""
+    
+    st.title(":material/insert_chart: Dashboard Analytics")
+    
+    # Generer des donnees d'exemple
+    @st.cache_data
+    def load_sample_data():
+        dates = pd.date_range(start='2024-01-01', end='2024-12-31', freq='D')
+        np.random.seed(42)
+        
+        data = pd.DataFrame({
+            'date': dates,
+            'ventes': np.random.normal(1000, 200, len(dates)).astype(int) + np.arange(len(dates)) * 2,
+            'visitors': np.random.normal(500, 100, len(dates)).astype(int) + np.arange(len(dates)),
+            'conversion_rate': np.random.normal(0.05, 0.01, len(dates)).round(3),
+            'category': np.random.choice(['Electronique', 'Mode', 'Maison'], len(dates))
+        })
+        
+        return data
+    
+    df = load_sample_data()
+    
+    # Filtres
+    st.subheader(":material/filter_alt: Filtres")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        start_date = st.date_input(
+            "Date debut",
+            value=df['date'].min().date(),
+            min_value=df['date'].min().date(),
+            max_value=df['date'].max().date()
+        )
+    
+    with col2:
+        end_date = st.date_input(
+            "Date fin",
+            value=df['date'].max().date(),
+            min_value=df['date'].min().date(),
+            max_value=df['date'].max().date()
+        )
+    
+    with col3:
+        categories = st.multiselect(
+            "Categories",
+            options=df['category'].unique(),
+            default=df['category'].unique()
+        )
+    
+    # Filtrer les donnees
+    filtered_df = df[
+        (df['date'].dt.date >= start_date) &
+        (df['date'].dt.date <= end_date) &
+        (df['category'].isin(categories))
+    ]
+    
+    st.markdown("---")
+    
+    # Graphiques
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader(":material/show_chart: Evolution des ventes")
+        
+        fig_line = px.line(
+            filtered_df,
+            x='date',
+            y='ventes',
+            title="Ventes quotidiennes",
+            template="plotly_dark" if st.get_option("theme.base") == "dark" else "plotly_white"
+        )
+        fig_line.update_traces(line_color='#1ed760')
+        st.plotly_chart(fig_line, use_container_width=True)
+    
+    with col2:
+        st.subheader(":material/pie_chart: Repartition par categorie")
+        
+        category_sales = filtered_df.groupby('category')['ventes'].sum().reset_index()
+        fig_pie = px.pie(
+            category_sales,
+            values='ventes',
+            names='category',
+            title="Ventes par categorie",
+            color_discrete_sequence=['#1ed760', '#ffc862', '#2d46b9']
+        )
+        st.plotly_chart(fig_pie, use_container_width=True)
+    
+    st.markdown("---")
+    
+    # Tableau de donnees
+    st.subheader(":material/table: Donnees detaillees")
+    
+    st.dataframe(
+        filtered_df[['date', 'ventes', 'visitors', 'conversion_rate', 'category']].head(100),
+        use_container_width=True,
+        hide_index=True
+    )
+
+if __name__ == "__main__":
+    main()

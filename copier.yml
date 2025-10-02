@@ -48,12 +48,13 @@ use_sample_data:
 
 streamlit_theme:
   type: str
-  help: "Thème par défaut de l'interface"
-  default: "light"
+  help: "Theme par defaut de l'interface"
+  default: "dark"
   choices:
-    - "light"
-    - "dark"
-    - "auto"
+    Dark (Spotify style): "dark"
+    Light (Eclair style): "light"
+    Blue (Corporate): "blue"
+    Green (Nature): "green"
 
 include_analytics_page:
   type: bool

@@ -3,12 +3,45 @@
 {{ project_name }}
 {{ project_description }}
 
-Point d'entrée principal de l'application Streamlit.
 Auteur: {{ author_name }} <{{ author_email }}>
 """
 
 import streamlit as st
-from src.{{ project_slug }} import __main__
 
-if __name__ == "__main__":
-    __main__.main()
+# Configuration de la page
+st.set_page_config(
+    page_title="{{ project_name }}",
+    page_icon=":material/dashboard:",
+    layout="wide",
+    initial_sidebar_state="collapsed"  # Pas de sidebar
+)
+
+# Definition des pages avec navigation top
+pages = [
+    st.Page(
+        "src/{{ project_slug | replace('-', '_') }}/pages/1_home.py",
+        title="Accueil",
+        icon=":material/home:",
+        default=True
+    ),
+    st.Page(
+        "src/{{ project_slug | replace('-', '_') }}/pages/2_dashboard.py",
+        title="Dashboard",
+        icon=":material/insert_chart:"
+    ),
+    st.Page(
+        "src/{{ project_slug | replace('-', '_') }}/pages/3_settings.py",
+        title="Parametres",
+        icon=":material/settings:"
+    ),
+]
+
+# Navigation en position top
+page = st.navigation(pages, position="top")
+
+# Footer
+from src.{{ project_slug | replace('-', '_') }}.components.footer import render_footer
+render_footer()
+
+# Execution de la page
+page.run()

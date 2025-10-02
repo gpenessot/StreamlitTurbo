@@ -1,24 +1,134 @@
-[global]
-# Configuration globale de l'application
-
 [server]
-# Rechargement automatique des fichiers
 runOnSave = true
-
-# Taille maximale des fichiers uploades (en MB)
 maxUploadSize = 200
-
-# Protection CSRF
 enableXsrfProtection = true
 
-[theme]
-# Theme de l'interface moderne et elegant
-base = "{{ streamlit_theme }}"
-primaryColor = "slateBlue"
-backgroundColor = "mintCream"
-secondaryBackgroundColor = "darkSeaGreen"
-textColor = "#262730"
-
 [browser]
-# Ne pas collecter les statistiques d'usage
 gatherUsageStats = false
+
+{% if streamlit_theme == "dark" %}
+# Theme Dark - Style Spotify
+[theme]
+base = "dark"
+primaryColor = "#1ed760"
+backgroundColor = "#2a2a2a"
+secondaryBackgroundColor = "#121212"
+codeBackgroundColor = "#121212"
+textColor = "#ffffff"
+linkColor = "#1ed760"
+borderColor = "#7c7c7c"
+showWidgetBorder = true
+baseRadius = "0.3rem"
+buttonRadius = "full"
+font = "Poppins"
+headingFontWeights = [600, 500, 500, 500, 500, 500]
+headingFontSizes = ["3rem", "2.5rem", "2.25rem", "2rem", "1.5rem"]
+codeFont = "SpaceMono"
+codeFontSize = "0.75rem"
+showSidebarBorder = true
+chartCategoricalColors = ["#ffc862", "#2d46b9", "#b49bc8"]
+
+[theme.sidebar]
+backgroundColor = "#121212"
+secondaryBackgroundColor = "#000000"
+codeBackgroundColor = "#2a2a2a"
+borderColor = "#696969"
+headingFontSizes = ["1.6rem", "1.4rem", "1.2rem"]
+dataframeHeaderBackgroundColor = "#1a1a1a"
+
+{% elif streamlit_theme == "light" %}
+# Theme Light - Style Eclair
+[theme]
+base = "light"
+primaryColor = "#cb785c"
+backgroundColor = "#fdfdf8"
+secondaryBackgroundColor = "#ecebe3"
+codeBackgroundColor = "#ecebe4"
+textColor = "#3d3a2a"
+linkColor = "#3d3a2a"
+borderColor = "#d3d2ca"
+showWidgetBorder = true
+baseRadius = "0.75rem"
+buttonRadius = "full"
+font = "SpaceGrotesk"
+headingFontWeights = [600, 500, 500, 500, 500, 500]
+headingFontSizes = ["3rem", "2.5rem", "2.25rem", "2rem", "1.5rem"]
+codeFont = "SpaceMono"
+codeFontSize = "0.75rem"
+showSidebarBorder = true
+chartCategoricalColors = ["#0ea5e9", "#059669", "#fbbf24"]
+
+[theme.sidebar]
+backgroundColor = "#f0f0ec"
+secondaryBackgroundColor = "#ecebe3"
+codeBackgroundColor = "#e4e4e0"
+borderColor = "#d3d2ca"
+headingFontSizes = ["1.6rem", "1.4rem", "1.2rem"]
+dataframeHeaderBackgroundColor = "#e4e4e0"
+
+{% elif streamlit_theme == "blue" %}
+# Theme Blue - Style Corporate Professionnel
+[theme]
+base = "light"
+primaryColor = "#0066cc"
+backgroundColor = "#f5f7fa"
+secondaryBackgroundColor = "#e8edf3"
+codeBackgroundColor = "#dce4ec"
+textColor = "#1a1a2e"
+linkColor = "#0066cc"
+borderColor = "#c5d0de"
+showWidgetBorder = true
+baseRadius = "0.5rem"
+buttonRadius = "full"
+font = "Inter"
+headingFontWeights = [600, 500, 500, 500, 500, 500]
+headingFontSizes = ["3rem", "2.5rem", "2.25rem", "2rem", "1.5rem"]
+codeFont = "SpaceMono"
+codeFontSize = "0.75rem"
+showSidebarBorder = true
+chartCategoricalColors = ["#0066cc", "#00a8e8", "#003d82"]
+
+[theme.sidebar]
+backgroundColor = "#e8edf3"
+secondaryBackgroundColor = "#d9e2ec"
+codeBackgroundColor = "#c5d0de"
+borderColor = "#b8c5d6"
+headingFontSizes = ["1.6rem", "1.4rem", "1.2rem"]
+dataframeHeaderBackgroundColor = "#d9e2ec"
+
+{% elif streamlit_theme == "green" %}
+# Theme Green - Style Nature Moderne
+[theme]
+base = "light"
+primaryColor = "#059669"
+backgroundColor = "#f8faf9"
+secondaryBackgroundColor = "#e6f2ed"
+codeBackgroundColor = "#d1e7dd"
+textColor = "#1e3a2e"
+linkColor = "#047857"
+borderColor = "#a7d4c4"
+showWidgetBorder = true
+baseRadius = "0.6rem"
+buttonRadius = "full"
+font = "Poppins"
+headingFontWeights = [600, 500, 500, 500, 500, 500]
+headingFontSizes = ["3rem", "2.5rem", "2.25rem", "2rem", "1.5rem"]
+codeFont = "SpaceMono"
+codeFontSize = "0.75rem"
+showSidebarBorder = true
+chartCategoricalColors = ["#059669", "#10b981", "#34d399"]
+
+[theme.sidebar]
+backgroundColor = "#e6f2ed"
+secondaryBackgroundColor = "#d1e7dd"
+codeBackgroundColor = "#bbdccf"
+borderColor = "#a7d4c4"
+headingFontSizes = ["1.6rem", "1.4rem", "1.2rem"]
+dataframeHeaderBackgroundColor = "#c8e5d9"
+
+{% else %}
+# Theme Auto - Suit le systeme
+[theme]
+base = "{{ streamlit_theme }}"
+font = "Poppins"
+{% endif %}

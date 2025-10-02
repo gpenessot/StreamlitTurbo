@@ -1,0 +1,120 @@
+"""
+Page Parametres - Configuration de l'application
+"""
+
+import streamlit as st
+
+def main():
+    """Page de parametres."""
+    
+    st.title(":material/settings: Parametres")
+    
+    # Theme actuel
+    current_theme = st.get_option("theme.base")
+    st.info(f":material/palette: Theme actuel : **{current_theme}**")
+    
+    st.markdown("---")
+    
+    # Tabs pour organiser les parametres
+    tab1, tab2, tab3 = st.tabs([
+        ":material/person: Profil",
+        ":material/display_settings: Affichage", 
+        ":material/info: A propos"
+    ])
+    
+    with tab1:
+        st.subheader("Informations du profil")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            user_name = st.text_input(
+                "Nom d'utilisateur",
+                value="{{ author_name }}",
+                help="Votre nom d'affichage"
+            )
+            
+            user_email = st.text_input(
+                "Email",
+                value="{{ author_email }}",
+                help="Votre adresse email"
+            )
+        
+        with col2:
+            st.markdown("#### Statistiques")
+            st.metric("Sessions", "42")
+            st.metric("Dernier acces", "Aujourd'hui")
+        
+        if st.button(":material/save: Sauvegarder le profil", type="primary"):
+            st.success("Profil sauvegarde avec succes!")
+    
+    with tab2:
+        st.subheader("Preferences d'affichage")
+        
+        st.info("""
+        **Note:** Le theme (dark/light/auto) est configure dans `.streamlit/config.toml`
+        
+        Pour changer de theme, modifiez la variable `streamlit_theme` lors de la 
+        generation du template avec Copier.
+        """)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            layout = st.selectbox(
+                "Largeur de page",
+                ["Centree", "Large"],
+                index=1
+            )
+            
+            show_sidebar = st.checkbox(
+                "Afficher la sidebar",
+                value=False,
+                help="Navigation top par defaut"
+            )
+        
+        with col2:
+            animation_speed = st.slider(
+                "Vitesse des animations",
+                min_value=0,
+                max_value=100,
+                value=50,
+                help="0 = desactivees, 100 = rapides"
+            )
+    
+    with tab3:
+        st.subheader("A propos de l'application")
+        
+        st.markdown(f"""
+        ### {{ project_name }}
+        
+        **Description:** {{ project_description }}
+        
+        **Version:** 1.0.0
+        
+        **Auteur:** {{ author_name }}
+        
+        **Email:** {{ author_email }}
+        
+        **Python:** {{ python_version }}+
+        
+        **Streamlit:** >= 1.28.0
+        
+        ---
+        
+        ### Technologies utilisees
+        
+        - :material/language: **Streamlit** - Framework d'application
+        - :material/storage: **Pandas** - Manipulation de donnees
+        - :material/insert_chart: **Plotly** - Visualisations interactives
+        - :material/science: **NumPy** - Calculs numeriques
+        
+        ---
+        
+        ### Support
+        
+        Pour toute question ou probleme, contactez : {{ author_email }}
+        """)
+
+if __name__ == "__main__":
+    main()
