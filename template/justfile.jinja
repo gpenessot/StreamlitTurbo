@@ -10,7 +10,7 @@ PROJECT_NAME := "{{ project_slug }}"
 # Setup complet du projet
 setup:
     @echo "Configuration du projet..."
-    uv venv --python "{{ python_version }}
+    uv venv --python {{ python_version }}
     uv sync
     @echo "Setup termine!"
 
