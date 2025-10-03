@@ -1,45 +1,45 @@
 """
 Page Dashboard - Visualisations et analytics
+Démontre l'utilisation des composants réutilisables
 """
 
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-import numpy as np
-from {{ project_slug }}.components.footer import render_footer
+from {{ project_slug | replace('-', '_') }}.components.charts import (
+    create_line_chart,
+    create_pie_chart,
+    create_bar_chart,
+    create_multi_line_chart,
+    generate_sample_data
+)
+from {{ project_slug | replace('-', '_') }}.components.footer import render_footer
 
 def main():
-    """Dashboard avec graphiques interactifs."""
+    """Dashboard avec graphiques interactifs utilisant les composants modulaires."""
     
     st.title(":material/insert_chart: Dashboard Analytics")
+    st.markdown("*Démonstration des composants graphiques réutilisables*")
     
-    # Generer des donnees d'exemple
+    # ========================================
+    # CHARGEMENT DES DONNÉES
+    # ========================================
+    # Utiliser la fonction de génération du composant charts.py
     @st.cache_data
-    def load_sample_data():
-        dates = pd.date_range(start='2024-01-01', end='2024-12-31', freq='D')
-        np.random.seed(42)
-        
-        data = pd.DataFrame({
-            'date': dates,
-            'ventes': np.random.normal(1000, 200, len(dates)).astype(int) + np.arange(len(dates)) * 2,
-            'visitors': np.random.normal(500, 100, len(dates)).astype(int) + np.arange(len(dates)),
-            'conversion_rate': np.random.normal(0.05, 0.01, len(dates)).round(3),
-            'category': np.random.choice(['Electronique', 'Mode', 'Maison'], len(dates))
-        })
-        
-        return data
+    def load_data():
+        return generate_sample_data(365)  # 1 an de données
     
-    df = load_sample_data()
+    df = load_data()
     
-    # Filtres
+    # ========================================
+    # SECTION FILTRES
+    # ========================================
     st.subheader(":material/filter_alt: Filtres")
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns([2, 3])
     
     with col1:
         start_date = st.date_input(
-            "Date debut",
+            "Date début",
             value=df['date'].min().date(),
             min_value=df['date'].min().date(),
             max_value=df['date'].max().date()
@@ -53,62 +53,252 @@ def main():
             max_value=df['date'].max().date()
         )
     
-    with col3:
-        categories = st.multiselect(
-            "Categories",
-            options=df['category'].unique(),
-            default=df['category'].unique()
-        )
+    st.write("**Catégories**")
+    categories = st.pills(
+        "Categories",
+        options=df['category'].unique().tolist(),
+        default=df['category'].unique().tolist(),
+        selection_mode="multi",
+        label_visibility="collapsed"
+    )
     
-    # Filtrer les donnees
+    # Appliquer les filtres
     filtered_df = df[
         (df['date'].dt.date >= start_date) &
         (df['date'].dt.date <= end_date) &
         (df['category'].isin(categories))
     ]
     
+    # ========================================
+    # KPIs RAPIDES
+    # ========================================
     st.markdown("---")
     
-    # Graphiques
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        total_sales = filtered_df['sales'].sum()
+        st.metric(
+            "Ventes totales",
+            f"€{total_sales:,.0f}".replace(',', ' '),
+            delta=f"{filtered_df['sales'].pct_change().mean()*100:.1f}%"
+        )
+    
+    with col2:
+        total_visits = filtered_df['visits'].sum()
+        st.metric(
+            "Visiteurs",
+            f"{total_visits:,.0f}".replace(',', ' '),
+            delta=f"{filtered_df['visits'].pct_change().mean()*100:.1f}%"
+        )
+    
+    with col3:
+        avg_conversion = filtered_df['conversion_rate'].mean()
+        st.metric(
+            "Taux de conversion",
+            f"{avg_conversion*100:.2f}%",
+            delta=f"{(avg_conversion - 0.05)*100:.2f}%"
+        )
+    
+    with col4:
+        avg_basket = filtered_df['sales'].sum() / filtered_df['visits'].sum()
+        st.metric(
+            "Panier moyen",
+            f"€{avg_basket:.2f}",
+            delta="3.2%"
+        )
+    
+    # ========================================
+    # GRAPHIQUES LIGNE 1 - ÉVOLUTION
+    # ========================================
+    st.markdown("---")
+    
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader(":material/show_chart: Evolution des ventes")
+        st.subheader(":material/show_chart: Évolution des ventes")
         
-        fig_line = px.line(
+        # ✅ UTILISATION DU COMPOSANT RÉUTILISABLE
+        fig_line = create_line_chart(
             filtered_df,
-            x='date',
-            y='ventes',
+            x_col='date',
+            y_col='sales',
             title="Ventes quotidiennes",
-            template="plotly_dark" if st.get_option("theme.base") == "dark" else "plotly_white"
+            color='#1ed760',  # Couleur personnalisée
+            height=400
         )
-        fig_line.update_traces(line_color='#1ed760')
-        st.plotly_chart(fig_line, width='stretch)
+        st.plotly_chart(fig_line, use_container_width=True)
     
     with col2:
-        st.subheader(":material/pie_chart: Repartition par categorie")
+        st.subheader(":material/trending_up: Évolution des visiteurs")
         
-        category_sales = filtered_df.groupby('category')['ventes'].sum().reset_index()
-        fig_pie = px.pie(
-            category_sales,
-            values='ventes',
-            names='category',
-            title="Ventes par categorie",
-            color_discrete_sequence=['#1ed760', '#ffc862', '#2d46b9']
+        # ✅ UTILISATION DU COMPOSANT RÉUTILISABLE
+        fig_visits = create_line_chart(
+            filtered_df,
+            x_col='date',
+            y_col='visits',
+            title="Visiteurs quotidiens",
+            color='#2d46b9',
+            height=400
         )
-        st.plotly_chart(fig_pie, width='stretch)
+        st.plotly_chart(fig_visits, use_container_width=True)
     
+    # ========================================
+    # GRAPHIQUES LIGNE 2 - RÉPARTITION
+    # ========================================
     st.markdown("---")
     
-    # Tableau de donnees
-    st.subheader(":material/table: Donnees detaillees")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader(":material/pie_chart: Répartition par catégorie")
+        
+        # Agréger les données par catégorie
+        category_sales = filtered_df.groupby('category')['sales'].sum().reset_index()
+        
+        # ✅ UTILISATION DU COMPOSANT RÉUTILISABLE
+        fig_pie = create_pie_chart(
+            category_sales,
+            names_col='category',
+            values_col='sales',
+            title="Ventes par catégorie",
+            height=400
+        )
+        st.plotly_chart(fig_pie, use_container_width=True)
+    
+    with col2:
+        st.subheader(":material/bar_chart: Top 5 jours")
+        
+        # Sélectionner les 5 meilleurs jours
+        top_days = filtered_df.nlargest(5, 'sales')[['date', 'sales']].copy()
+        top_days['date_str'] = top_days['date'].dt.strftime('%d/%m')
+        
+        # ✅ UTILISATION DU COMPOSANT RÉUTILISABLE
+        fig_bar = create_bar_chart(
+            top_days,
+            x_col='date_str',
+            y_col='sales',
+            title="Top 5 journées de ventes",
+            color='#ffc862',
+            height=400
+        )
+        st.plotly_chart(fig_bar, use_container_width=True)
+    
+    # ========================================
+    # GRAPHIQUE MULTI-LIGNES
+    # ========================================
+    st.markdown("---")
+    st.subheader(":material/multiline_chart: Vue d'ensemble multi-métriques")
+    
+    # Préparer les données pour le graphique multi-lignes
+    # Normaliser les échelles pour comparaison visuelle
+    multi_df = filtered_df[['date', 'sales', 'visits']].copy()
+    multi_df['sales_normalized'] = (multi_df['sales'] / multi_df['sales'].max()) * 100
+    multi_df['visits_normalized'] = (multi_df['visits'] / multi_df['visits'].max()) * 100
+    
+    # ✅ UTILISATION DU COMPOSANT RÉUTILISABLE
+    fig_multi = create_multi_line_chart(
+        multi_df,
+        x_col='date',
+        y_cols=['sales_normalized', 'visits_normalized'],
+        title="Évolution comparée (normalisée à 100)",
+        height=400
+    )
+    st.plotly_chart(fig_multi, use_container_width=True)
+    
+    st.caption("*Données normalisées pour comparaison visuelle*")
+    
+    # ========================================
+    # TABLEAU DE DONNÉES
+    # ========================================
+    st.markdown("---")
+    st.subheader(":material/table: Données détaillées")
+    
+    # Options d'affichage
+    col1, col2 = st.columns([3, 1])
+    
+    with col2:
+        show_all = st.checkbox("Afficher tout", value=False)
+    
+    # Afficher le tableau
+    display_df = filtered_df if show_all else filtered_df.head(100)
     
     st.dataframe(
-        filtered_df[['date', 'ventes', 'visitors', 'conversion_rate', 'category']].head(100),
-        width='stretch,
-        hide_index=True
+        display_df[['date', 'sales', 'visits', 'conversion_rate', 'category']],
+        width="stretch",
+        hide_index=True,
+        column_config={
+            "date": st.column_config.DateColumn("Date", format="DD/MM/YYYY"),
+            "sales": st.column_config.NumberColumn("Ventes", format="€%.0f"),
+            "visits": st.column_config.NumberColumn("Visites", format="%d"),
+            "conversion_rate": st.column_config.NumberColumn(
+                "Taux conversion",
+                format="%.2f%%",
+                help="Taux de conversion visiteurs → ventes"
+            ),
+            "category": st.column_config.TextColumn("Catégorie")
+        }
     )
-
+    
+    if not show_all:
+        st.caption(f"*Affichage des 100 premières lignes sur {len(filtered_df)} total*")
+    
+    # ========================================
+    # SECTION EXPORT
+    # ========================================
+    st.markdown("---")
+    st.subheader(":material/download: Export des données")
+    
+    col1, col2, col3 = st.columns([1, 1, 2])
+    
+    with col1:
+        # Export CSV
+        csv = filtered_df.to_csv(index=False)
+        st.download_button(
+            label=":material/description: Télécharger CSV",
+            data=csv,
+            file_name="dashboard_data.csv",
+            mime="text/csv"
+        )
+    
+    with col2:
+        # Export des statistiques
+        stats = filtered_df.describe().to_csv()
+        st.download_button(
+            label=":material/analytics: Télécharger Stats",
+            data=stats,
+            file_name="dashboard_stats.csv",
+            mime="text/csv"
+        )
+    
+    # ========================================
+    # INFORMATIONS COMPLÉMENTAIRES
+    # ========================================
+    with st.expander(":material/info: À propos de ce dashboard"):
+        st.markdown("""
+        ### 📊 Composants utilisés
+        
+        Ce dashboard démontre l'utilisation des composants réutilisables définis dans `charts.py` :
+        
+        - ✅ `create_line_chart()` - Graphiques linéaires
+        - ✅ `create_pie_chart()` - Graphiques circulaires  
+        - ✅ `create_bar_chart()` - Graphiques en barres
+        - ✅ `create_multi_line_chart()` - Graphiques multi-lignes
+        - ✅ `generate_sample_data()` - Génération de données
+        
+        ### 🎯 Avantages de l'approche modulaire
+        
+        1. **Réutilisabilité** : Même code pour tous les graphiques
+        2. **Maintenance** : Un seul endroit à modifier pour changer le style
+        3. **Cohérence** : Apparence uniforme garantie
+        4. **Productivité** : Création rapide de nouveaux dashboards
+        
+        ### 🔧 Personnalisation
+        
+        Tous les paramètres (couleurs, hauteur, titres) sont personnalisables 
+        via les arguments des fonctions.
+        """)
+    
     # Footer en fin de page
     render_footer()
 
