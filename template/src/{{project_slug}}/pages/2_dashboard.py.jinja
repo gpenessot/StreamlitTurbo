@@ -5,7 +5,6 @@ Démontre l'utilisation des composants réutilisables
 
 import streamlit as st
 import pandas as pd
-<<<<<<< HEAD
 from {{ project_slug | replace('-', '_') }}.components.charts import (
     create_line_chart,
     create_pie_chart,
@@ -13,11 +12,6 @@ from {{ project_slug | replace('-', '_') }}.components.charts import (
     create_multi_line_chart,
     generate_sample_data
 )
-=======
-import plotly.express as px
-import plotly.graph_objects as go
-import numpy as np
->>>>>>> df322c8cc8dde79d0493035a28700d1de3c302f8
 from {{ project_slug | replace('-', '_') }}.components.footer import render_footer
 
 def main():
@@ -31,24 +25,8 @@ def main():
     # ========================================
     # Utiliser la fonction de génération du composant charts.py
     @st.cache_data
-<<<<<<< HEAD
     def load_data():
         return generate_sample_data(365)  # 1 an de données
-=======
-    def load_sample_data():
-        dates = pd.date_range(start='2025-01-01', end='2025-12-31', freq='D')
-        np.random.seed(42)
-        
-        data = pd.DataFrame({
-            'date': dates,
-            'ventes': np.random.normal(1000, 200, len(dates)).astype(int) + np.arange(len(dates)) * 2,
-            'visitors': np.random.normal(500, 100, len(dates)).astype(int) + np.arange(len(dates)),
-            'conversion_rate': np.random.normal(0.05, 0.01, len(dates)).round(3),
-            'category': np.random.choice(['Electronique', 'Mode', 'Maison'], len(dates))
-        })
-        
-        return data
->>>>>>> df322c8cc8dde79d0493035a28700d1de3c302f8
     
     df = load_data()
     
@@ -56,15 +34,9 @@ def main():
     # SECTION FILTRES
     # ========================================
     st.subheader(":material/filter_alt: Filtres")
-<<<<<<< HEAD
     
     col1, col2 = st.columns([2, 3])
     
-=======
-
-    col1, col2 = st.columns([2, 3])
-
->>>>>>> df322c8cc8dde79d0493035a28700d1de3c302f8
     with col1:
         start_date = st.date_input(
             "Date début",
@@ -80,13 +52,9 @@ def main():
             min_value=df['date'].min().date(),
             max_value=df['date'].max().date()
         )
-<<<<<<< HEAD
-    
+   
     st.write("**Catégories**")
-=======
 
-    st.write("**Categories**")
->>>>>>> df322c8cc8dde79d0493035a28700d1de3c302f8
     categories = st.pills(
         "Categories",
         options=df['category'].unique().tolist(),
@@ -160,12 +128,7 @@ def main():
             color='#1ed760',  # Couleur personnalisée
             height=400
         )
-<<<<<<< HEAD
-        st.plotly_chart(fig_line, use_container_width=True)
-=======
-        fig_line.update_traces(line_color='#1ed760')
-        st.plotly_chart(fig_line)
->>>>>>> df322c8cc8dde79d0493035a28700d1de3c302f8
+        st.plotly_chart(fig_line, width="stretch")
     
     with col2:
         st.subheader(":material/trending_up: Évolution des visiteurs")
@@ -179,11 +142,7 @@ def main():
             color='#2d46b9',
             height=400
         )
-<<<<<<< HEAD
-        st.plotly_chart(fig_visits, use_container_width=True)
-=======
-        st.plotly_chart(fig_pie)
->>>>>>> df322c8cc8dde79d0493035a28700d1de3c302f8
+        st.plotly_chart(fig_visits, width="stretch")
     
     # ========================================
     # GRAPHIQUES LIGNE 2 - RÉPARTITION
@@ -266,7 +225,6 @@ def main():
     display_df = filtered_df if show_all else filtered_df.head(100)
     
     st.dataframe(
-<<<<<<< HEAD
         display_df[['date', 'sales', 'visits', 'conversion_rate', 'category']],
         width="stretch",
         hide_index=True,
@@ -281,7 +239,6 @@ def main():
             ),
             "category": st.column_config.TextColumn("Catégorie")
         }
-=======
     )
     
     if not show_all:
