@@ -128,7 +128,7 @@ def main():
             color='#1ed760',  # Couleur personnalisée
             height=400
         )
-        st.plotly_chart(fig_line, width="stretch")
+        st.plotly_chart(fig_line, use_container_width=True)
     
     with col2:
         st.subheader(":material/trending_up: Évolution des visiteurs")
@@ -142,7 +142,7 @@ def main():
             color='#2d46b9',
             height=400
         )
-        st.plotly_chart(fig_visits, width="stretch")
+        st.plotly_chart(fig_visits, use_container_width=True)
     
     # ========================================
     # GRAPHIQUES LIGNE 2 - RÉPARTITION
@@ -165,7 +165,7 @@ def main():
             title="Ventes par catégorie",
             height=400
         )
-        st.plotly_chart(fig_pie, width="stretch")
+        st.plotly_chart(fig_pie, use_container_width=True)
     
     with col2:
         st.subheader(":material/bar_chart: Top 5 jours")
@@ -183,7 +183,7 @@ def main():
             color='#ffc862',
             height=400
         )
-        st.plotly_chart(fig_bar, width="stretch")
+        st.plotly_chart(fig_bar, use_container_width=True)
     
     # ========================================
     # GRAPHIQUE MULTI-LIGNES
@@ -205,7 +205,7 @@ def main():
         title="Évolution comparée (normalisée à 100)",
         height=400
     )
-    st.plotly_chart(fig_multi, width="stretch")
+    st.plotly_chart(fig_multi, use_container_width=True)
     
     st.caption("*Données normalisées pour comparaison visuelle*")
     
