@@ -331,18 +331,18 @@ def demo_charts():
     # Graphique linéaire
     st.subheader("📈 Graphique linéaire")
     fig_line = create_line_chart(df, 'date', 'sales', "Évolution des ventes")
-    st.plotly_chart(fig_line, use_container_width=True)
+    st.plotly_chart(fig_line, width="stretch")
     
     # Graphique en barres
     st.subheader("📊 Graphique en barres")
     category_data = df.groupby('category')['sales'].sum().reset_index()
     fig_bar = create_bar_chart(category_data, 'category', 'sales', "Ventes par catégorie")
-    st.plotly_chart(fig_bar, use_container_width=True)
+    st.plotly_chart(fig_bar, width="stretch")
     
     # Graphique circulaire
     st.subheader("🥧 Graphique circulaire")
     fig_pie = create_pie_chart(category_data, 'category', 'sales', "Répartition des ventes")
-    st.plotly_chart(fig_pie, use_container_width=True)
+    st.plotly_chart(fig_pie, width="stretch")
 
 
 if __name__ == "__main__":
