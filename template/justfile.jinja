@@ -1,16 +1,16 @@
-# {{ project_name }} - Justfile
+# Mon App Streamlit - Justfile
 # Compatible Windows, Linux, macOS
 
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
 
 # Variables
-PYTHON_VERSION := "{{ python_version }}"
-PROJECT_NAME := "{{ project_slug }}"
+PYTHON_VERSION := "3.12"
+PROJECT_NAME := "mon_app_streamlit"
 
 # Setup complet du projet
 setup:
     @echo "Configuration du projet..."
-    uv venv --python {% raw %}{{PYTHON_VERSION}}{% endraw %}
+    uv venv --python {{PYTHON_VERSION}}
     uv sync
     @echo "Setup termine!"
 
@@ -24,11 +24,26 @@ sync:
 
 # Ajout d'une dependance
 add PACKAGE:
-    uv add {% raw %}{{ PACKAGE }}{% endraw %}
+    uv add {{ PACKAGE }}
 
 # Ajout d'une dependance de dev
 add-dev PACKAGE:
-    uv add --dev {% raw %}{{ PACKAGE }}{% endraw %}
+    uv add --dev {{ PACKAGE }}
+
+# Formatage du code avec ruff
+format:
+    @echo "Formatage du code avec ruff..."
+    uv run ruff format .
+    @echo "Done!"
+
+# Verification de la qualite du code avec ruff
+lint:
+    @echo "Verification du code avec ruff..."
+    uv run ruff check .
+    @echo "All checks passed! ✨"
+
+# Formatage ET verification (combo pratique)
+check: format lint
 
 # Generation du requirements.txt
 requirements:
@@ -36,7 +51,7 @@ requirements:
 
 # Creation de l'environnement virtuel
 venv:
-    uv venv --python {{ python_version }}
+    uv venv --python 3.12
 
 # Nettoyage (compatible toutes plateformes via Python)
 clean:
@@ -55,18 +70,23 @@ test:
 
 # Informations
 info:
-    @echo "{{ project_name }}"
-    @echo "  Python: {{ python_version }}"
-    @echo "  Auteur: {{ author_name }}"
+    @echo "Mon App Streamlit"
+    @echo "  Python: 3.12"
+    @echo "  Auteur: Gael"
 
 # Aide
 help:
-    @echo "{{ project_name }} - Commandes disponibles"
+    @echo "Mon App Streamlit - Commandes disponibles"
     @echo ""
     @echo "Principales:"
     @echo "  just setup  - Setup complet"
     @echo "  just run    - Lancer l'application"
     @echo "  just dev    - Mode developpement"
+    @echo ""
+    @echo "Qualite du code:"
+    @echo "  just format - Formater le code"
+    @echo "  just lint   - Verifier la qualite"
+    @echo "  just check  - Format + Lint"
     @echo ""
     @echo "Dependances:"
     @echo "  just sync              - Synchroniser"
