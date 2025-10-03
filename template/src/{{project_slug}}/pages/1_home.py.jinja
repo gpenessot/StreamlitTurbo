@@ -5,7 +5,7 @@ Page d'accueil - {{ project_name }}
 import streamlit as st
 import pandas as pd
 import numpy as np
-from {{ project_slug }}.components.footer import render_footer
+from {{ project_slug | replace('-', '_') }}.components.footer import render_footer
 
 def main():
     """Page d'accueil avec KPI et presentation."""
