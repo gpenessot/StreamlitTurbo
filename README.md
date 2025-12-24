@@ -15,6 +15,44 @@ Template professionnel utilisant **uv** et **pyproject.toml** pour un développe
 - [just](https://github.com/casey/just) installé (optionnel mais recommandé)
 - [Copier](https://copier.readthedocs.io/) installé
 
+#### Installation de Just
+
+**Linux :**
+```bash
+# Avec le script d'installation (recommandé)
+curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to ~/bin
+
+# Avec un package manager
+# Debian/Ubuntu
+sudo apt install just
+
+# Arch Linux
+sudo pacman -S just
+
+# Fedora
+sudo dnf install just
+```
+
+**Windows :**
+```powershell
+# Avec Scoop (recommandé)
+scoop install just
+
+# Avec Chocolatey
+choco install just
+
+# Avec Winget
+winget install --id Casey.Just
+```
+
+**macOS :**
+```bash
+# Avec Homebrew
+brew install just
+```
+
+Pour plus d'options d'installation, consultez la [documentation officielle](https://github.com/casey/just#installation).
+
 ### Installation Express
 
 ```bash
