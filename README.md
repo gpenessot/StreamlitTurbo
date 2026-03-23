@@ -183,7 +183,7 @@ Cette commande crée un `requirements.txt` à partir de votre `pyproject.toml`.
 - ✅ Page Paramètres complète
 - ✅ Sidebar intelligente
 - ✅ Composants charts Plotly
-- ✅ 50+ fonctions utilitaires
+- ✅ 20+ fonctions utilitaires
 
 ### 🔧 **Outils Modernes**
 - ✅ **uv** pour la gestion des dépendances
