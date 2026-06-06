@@ -61,6 +61,11 @@ include_analytics_page:
   help: "Inclure une page d'analytics de démonstration ?"
   default: true
 
+include_ai_review:
+  type: bool
+  help: "Inclure la page de revue de code IA ? (nécessite une clé ANTHROPIC_API_KEY dans .env)"
+  default: true
+
 _message_after_copy: |
   
   🎉 Votre template Streamlit démo a été créé avec succès !
@@ -71,7 +76,8 @@ _message_after_copy: |
   🚀 Prochaines étapes:
   1. cd {{ project_slug }}
   2. pip install -r requirements.txt
-  3. streamlit run main.py
+  3. Créez un fichier .env avec votre ANTHROPIC_API_KEY (pour la revue de code IA)
+  4. streamlit run main.py
   
   💡 Ce template démo vous donne un aperçu des bonnes pratiques Streamlit.
      Pour une version complète avec tests, CI/CD, déploiement et bien plus,

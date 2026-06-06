@@ -1,0 +1,173 @@
+"""
+Revue de code IA - Moteur de feedback automatique via Claude API
+"""
+
+import json
+import hashlib
+import os
+from datetime import datetime
+from pathlib import Path
+from typing import Optional
+
+MAX_REVIEWS_PER_USER = 3
+REVIEWS_DB = Path("data/reviews.json")
+
+
+def _hash_email(email: str) -> str:
+    return hashlib.sha256(email.strip().lower().encode()).hexdigest()[:20]
+
+
+def _load_db() -> dict:
+    if REVIEWS_DB.exists():
+        try:
+            with open(REVIEWS_DB) as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError):
+            return {}
+    return {}
+
+
+def _save_db(data: dict) -> None:
+    REVIEWS_DB.parent.mkdir(parents=True, exist_ok=True)
+    with open(REVIEWS_DB, "w") as f:
+        json.dump(data, f, indent=2)
+
+
+def get_review_stats(email: str) -> dict:
+    """Retourne le nombre de revues utilisées et restantes pour un email."""
+    key = _hash_email(email)
+    data = _load_db()
+    user_data = data.get(key, {"count": 0, "reviews": []})
+    used = user_data.get("count", 0)
+    return {
+        "used": used,
+        "remaining": max(0, MAX_REVIEWS_PER_USER - used),
+        "max": MAX_REVIEWS_PER_USER,
+        "can_review": used < MAX_REVIEWS_PER_USER,
+    }
+
+
+def _record_review(email: str, code_snippet: str) -> None:
+    key = _hash_email(email)
+    data = _load_db()
+    if key not in data:
+        data[key] = {"count": 0, "reviews": []}
+    data[key]["count"] += 1
+    data[key]["reviews"].append({
+        "date": datetime.now().isoformat(),
+        "lines": len(code_snippet.splitlines()),
+    })
+    _save_db(data)
+
+
+def review_code(code: str, focus: str = "general") -> str:
+    """
+    Envoie le code à Claude pour revue pédagogique.
+    Retourne un feedback markdown structuré.
+    """
+    try:
+        import anthropic
+    except ImportError:
+        return "**Erreur :** Le package `anthropic` n'est pas installé. Exécutez `pip install anthropic`."
+
+    api_key = os.getenv("ANTHROPIC_API_KEY")
+    if not api_key:
+        return "**Erreur :** Clé API manquante. Ajoutez `ANTHROPIC_API_KEY` dans votre fichier `.env`."
+
+    focus_map = {
+        "general": "analyse générale du code (qualité, lisibilité, bonnes pratiques)",
+        "performance": "performance et optimisation (caching, session_state, requêtes)",
+        "streamlit": "bonnes pratiques Streamlit (widgets, layout, UX, navigation)",
+        "architecture": "architecture et organisation du code (séparation des responsabilités, modularité)",
+    }
+    focus_description = focus_map.get(focus, focus_map["general"])
+
+    system_prompt = """Tu es un expert Python et Streamlit senior, formateur bienveillant et pédagogue.
+Tu fais des revues de code pour des apprenants qui apprennent Streamlit.
+
+Ton feedback doit être :
+- Constructif et encourageant (jamais condescendant)
+- Précis avec des exemples de code concrets
+- Orienté apprentissage (explique le POURQUOI)
+- Rédigé en français
+
+Utilise EXACTEMENT cette structure markdown :
+
+## Score global : X/10
+*Une phrase de justification du score.*
+
+---
+
+## Ce qui fonctionne bien
+- Element 1 avec explication courte
+- Element 2 avec explication courte
+
+---
+
+## Problèmes détectés
+Pour chaque problème, montre le code problématique et la correction :
+
+**Problème :** Description du problème
+
+```python
+# Code actuel (problématique)
+exemple_code_probleme()
+```
+
+```python
+# Version corrigée
+exemple_code_corrige()
+```
+
+---
+
+## Suggestions d'amélioration
+- Suggestion 1 spécifique avec exemple si pertinent
+- Suggestion 2 spécifique
+
+---
+
+## Extrait amélioré
+Montre un court exemple de code qui illustre 1 ou 2 améliorations clés avec des commentaires explicatifs.
+
+```python
+# Code amélioré avec commentaires pédagogiques
+```
+
+Reste concis : 500 mots maximum au total."""
+
+    client = anthropic.Anthropic(api_key=api_key)
+
+    message = client.messages.create(
+        model="claude-opus-4-8",
+        max_tokens=2048,
+        system=system_prompt,
+        messages=[
+            {
+                "role": "user",
+                "content": f"""Fais une revue de code Streamlit avec ce focus : **{focus_description}**.
+
+Voici le code à analyser :
+
+```python
+{code}
+```""",
+            }
+        ],
+    )
+
+    return message.content[0].text
+
+
+def submit_review(email: str, code: str, focus: str = "general") -> Optional[str]:
+    """
+    Point d'entrée principal : vérifie le quota, appelle l'IA, enregistre.
+    Retourne le feedback ou None si quota dépassé.
+    """
+    stats = get_review_stats(email)
+    if not stats["can_review"]:
+        return None
+
+    feedback = review_code(code, focus)
+    _record_review(email, code)
+    return feedback

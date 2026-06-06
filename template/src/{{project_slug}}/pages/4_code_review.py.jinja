@@ -1,0 +1,209 @@
+"""
+Revue de code IA - {{ project_name }}
+Feedback automatique sur votre code Streamlit via Claude API
+"""
+
+import streamlit as st
+from {{ project_slug | replace('-', '_') }}.utils.ai_review import get_review_stats, submit_review
+from {{ project_slug | replace('-', '_') }}.components.footer import render_footer
+
+
+FOCUS_OPTIONS = {
+    "general": ("Analyse générale", ":material/search:"),
+    "streamlit": ("Bonnes pratiques Streamlit", ":material/dashboard:"),
+    "performance": ("Performance & optimisation", ":material/speed:"),
+    "architecture": ("Architecture du code", ":material/account_tree:"),
+}
+
+MAX_CODE_CHARS = 8_000
+
+
+def _render_quota_banner(stats: dict) -> None:
+    remaining = stats["remaining"]
+    used = stats["used"]
+    max_r = stats["max"]
+
+    if remaining == 0:
+        st.error(
+            f":material/block: Tu as utilisé tes **{max_r} revues disponibles**. "
+            "Contacte le formateur pour obtenir des revues supplémentaires.",
+            icon=None,
+        )
+    elif remaining == 1:
+        st.warning(
+            f":material/warning: Il te reste **1 revue** sur {max_r}. Utilise-la sur ton meilleur code !",
+            icon=None,
+        )
+    else:
+        st.info(
+            f":material/reviews: **{remaining} revues disponibles** sur {max_r} "
+            f"({used} déjà utilisée{'s' if used > 1 else ''}).",
+            icon=None,
+        )
+
+
+def _render_feedback(feedback: str) -> None:
+    st.markdown("---")
+    st.subheader(":material/lightbulb: Feedback de l'IA")
+
+    # Extraire et afficher le score en avant si présent
+    lines = feedback.splitlines()
+    score_line = next((l for l in lines if "Score global" in l), None)
+    if score_line:
+        score_text = score_line.replace("#", "").strip()
+        st.markdown(f"### {score_text}")
+
+    st.markdown(feedback)
+
+
+def main():
+    st.title(":material/code_blocks: Revue de code IA")
+    st.markdown(
+        "Dépose ton code Streamlit et reçois un **feedback personnalisé** "
+        "généré par l'IA en quelques secondes."
+    )
+
+    st.markdown("---")
+
+    # --- Identification apprenant ---
+    st.subheader(":material/person: Identification")
+    email = st.text_input(
+        "Ton adresse email",
+        placeholder="prenom.nom@example.com",
+        help="Utilisé uniquement pour suivre tes revues disponibles.",
+        key="review_email",
+    )
+
+    if not email or "@" not in email:
+        st.caption("Entre ton email pour accéder à tes revues disponibles.")
+        render_footer()
+        return
+
+    stats = get_review_stats(email)
+    _render_quota_banner(stats)
+
+    if not stats["can_review"]:
+        render_footer()
+        return
+
+    st.markdown("---")
+
+    # --- Saisie du code ---
+    st.subheader(":material/upload_file: Ton code")
+
+    input_method = st.radio(
+        "Comment veux-tu soumettre ton code ?",
+        options=["Coller le code", "Importer un fichier .py"],
+        horizontal=True,
+        label_visibility="collapsed",
+    )
+
+    code = ""
+
+    if input_method == "Coller le code":
+        code = st.text_area(
+            "Code Python / Streamlit",
+            placeholder="# Colle ton code ici\nimport streamlit as st\n\nst.title('Mon app')\n...",
+            height=300,
+            max_chars=MAX_CODE_CHARS,
+            key="review_code_input",
+        )
+        if code:
+            lines = len(code.splitlines())
+            chars = len(code)
+            st.caption(f"{lines} lignes · {chars}/{MAX_CODE_CHARS} caractères")
+
+    else:
+        uploaded = st.file_uploader(
+            "Importer un fichier Python",
+            type=["py"],
+            help=f"Fichier .py uniquement · max {MAX_CODE_CHARS // 1000}K caractères",
+        )
+        if uploaded:
+            raw = uploaded.read().decode("utf-8", errors="replace")
+            if len(raw) > MAX_CODE_CHARS:
+                st.warning(
+                    f"Fichier trop long ({len(raw)} caractères). "
+                    f"Seuls les {MAX_CODE_CHARS} premiers caractères seront analysés."
+                )
+                code = raw[:MAX_CODE_CHARS]
+            else:
+                code = raw
+            st.code(code, language="python", line_numbers=True)
+
+    st.markdown("---")
+
+    # --- Choix du focus ---
+    st.subheader(":material/tune: Focus de l'analyse")
+    focus_cols = st.columns(len(FOCUS_OPTIONS))
+    selected_focus = st.session_state.get("selected_focus", "general")
+
+    for idx, (key, (label, icon)) in enumerate(FOCUS_OPTIONS.items()):
+        with focus_cols[idx]:
+            if st.button(
+                f"{icon} {label}",
+                use_container_width=True,
+                type="primary" if selected_focus == key else "secondary",
+                key=f"focus_{key}",
+            ):
+                st.session_state["selected_focus"] = key
+                selected_focus = key
+
+    st.caption(f"Focus sélectionné : **{FOCUS_OPTIONS[selected_focus][0]}**")
+
+    st.markdown("---")
+
+    # --- Soumission ---
+    col_btn, col_info = st.columns([1, 3])
+
+    with col_btn:
+        submit = st.button(
+            ":material/send: Analyser mon code",
+            type="primary",
+            use_container_width=True,
+            disabled=not bool(code and code.strip()),
+        )
+
+    with col_info:
+        if not code or not code.strip():
+            st.caption(":material/info: Entre ou importe du code pour activer l'analyse.")
+        else:
+            st.caption(
+                f":material/info: Cette analyse utilisera **1 revue** "
+                f"(il t'en restera {stats['remaining'] - 1})."
+            )
+
+    # --- Résultats ---
+    if submit and code and code.strip():
+        with st.spinner("Analyse en cours... L'IA lit ton code avec attention."):
+            feedback = submit_review(email, code.strip(), selected_focus)
+
+        if feedback is None:
+            st.error("Quota de revues épuisé. Contacte le formateur.")
+        elif feedback.startswith("**Erreur"):
+            st.error(feedback)
+        else:
+            st.success("Analyse terminée !")
+            _render_feedback(feedback)
+
+            # Stocker le dernier feedback dans session_state
+            st.session_state["last_feedback"] = feedback
+            st.session_state["last_focus"] = selected_focus
+
+            # Recharger les stats pour afficher le nouveau compteur
+            new_stats = get_review_stats(email)
+            st.markdown("---")
+            st.caption(
+                f":material/reviews: Il te reste **{new_stats['remaining']} revue(s)** disponible(s)."
+            )
+
+    # Afficher le dernier feedback si disponible
+    elif "last_feedback" in st.session_state and not submit:
+        with st.expander(":material/history: Dernière analyse", expanded=False):
+            st.markdown(st.session_state["last_feedback"])
+
+    render_footer()
+
+
+if __name__ == "__main__":
+    main()
