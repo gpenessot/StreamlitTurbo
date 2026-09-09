@@ -11,6 +11,7 @@ from {{ project_slug | replace('-', '_') }}.components.charts import (
     create_multi_line_chart,
     create_pie_chart,
     generate_sample_data,
+    theme_colors,
 )
 from {{ project_slug | replace('-', '_') }}.components.footer import render_footer
 
@@ -129,7 +130,6 @@ def main():
             x_col="date",
             y_col="sales",
             title="Ventes quotidiennes",
-            color="#1ed760",  # Couleur personnalisée
             height=400,
         )
         st.plotly_chart(fig_line)
@@ -143,7 +143,8 @@ def main():
             x_col="date",
             y_col="visits",
             title="Visiteurs quotidiens",
-            color="#2d46b9",
+            # Surcharge possible : ici la 2e couleur du theme au lieu de la 1re
+            color=theme_colors()[1],
             height=400,
         )
         st.plotly_chart(fig_visits)
@@ -184,7 +185,6 @@ def main():
             x_col="date_str",
             y_col="sales",
             title="Top 5 journées de ventes",
-            color="#ffc862",
             height=400,
         )
         st.plotly_chart(fig_bar)

@@ -15,10 +15,8 @@ def render_footer():
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.caption(
-            f":material/copyright: {datetime.now().year} "
-            "{{ project_name }} | v1.0.0"
-        )
+        project = "{{ project_name }}"
+        st.caption(f":material/copyright: {datetime.now().year} {project} | v1.0.0")
 
     with col2:
         st.caption(":material/code: Developpe par {{ author_name }}")

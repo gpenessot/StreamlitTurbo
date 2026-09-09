@@ -12,12 +12,24 @@ import streamlit as st
 from plotly.subplots import make_subplots
 
 
+def theme_colors() -> List[str]:
+    """
+    Palette categorielle du theme, definie dans .streamlit/config.toml
+    (`theme.chartCategoricalColors`). Repli sur la palette Plotly si absente.
+
+    Utilisez-la pour tout graphique custom afin qu'il suive le theme choisi
+    a la generation du projet.
+    """
+    colors = st.get_option("theme.chartCategoricalColors")
+    return list(colors) if colors else list(px.colors.qualitative.Plotly)
+
+
 def create_line_chart(
     data: pd.DataFrame,
     x_col: str,
     y_col: str,
     title: str = "Graphique linéaire",
-    color: str = "#FF6B6B",
+    color: Optional[str] = None,
     height: int = 400,
 ) -> go.Figure:
     """
@@ -28,16 +40,16 @@ def create_line_chart(
         x_col: Nom de la colonne pour l'axe X
         y_col: Nom de la colonne pour l'axe Y
         title: Titre du graphique
-        color: Couleur de la ligne
+        color: Couleur de la ligne (par defaut : 1re couleur du theme)
         height: Hauteur du graphique
 
     Returns:
         Figure Plotly
     """
-    fig = px.line(data, x=x_col, y=y_col, title=title, template="plotly_white")
+    fig = px.line(data, x=x_col, y=y_col, title=title)
 
     fig.update_traces(
-        line=dict(color=color, width=3),
+        line=dict(color=color or theme_colors()[0], width=3),
         hovertemplate=f"<b>{x_col}</b>: %<br>" + f"<b>{y_col}</b>: %<extra></extra>",
     )
 
@@ -57,16 +69,16 @@ def create_bar_chart(
     x_col: str,
     y_col: str,
     title: str = "Graphique en barres",
-    color: str = "#4ECDC4",
+    color: Optional[str] = None,
     height: int = 400,
 ) -> go.Figure:
     """
     Crée un graphique en barres personnalisé.
     """
-    fig = px.bar(data, x=x_col, y=y_col, title=title, template="plotly_white")
+    fig = px.bar(data, x=x_col, y=y_col, title=title)
 
     fig.update_traces(
-        marker_color=color,
+        marker_color=color or theme_colors()[1 % len(theme_colors())],
         hovertemplate=f"<b>{x_col}</b>: %<br>" + f"<b>{y_col}</b>: %<extra></extra>",
     )
 
@@ -90,10 +102,12 @@ def create_pie_chart(
     """
     Crée un graphique circulaire personnalisé.
     """
-    colors = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#FFA07A", "#98D8C8"]
-
     fig = px.pie(
-        data, values=values_col, names=names_col, title=title, color_discrete_sequence=colors
+        data,
+        values=values_col,
+        names=names_col,
+        title=title,
+        color_discrete_sequence=theme_colors(),
     )
 
     fig.update_traces(
@@ -128,8 +142,7 @@ def create_scatter_plot(
         size=size_col,
         color=color_col,
         title=title,
-        template="plotly_white",
-        color_continuous_scale="Viridis",
+        color_discrete_sequence=theme_colors(),
     )
 
     fig.update_layout(
@@ -152,7 +165,7 @@ def create_multi_line_chart(
     """
     Crée un graphique avec plusieurs lignes.
     """
-    colors = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#FFA07A", "#98D8C8"]
+    colors = theme_colors()
 
     fig = go.Figure()
 
@@ -172,7 +185,6 @@ def create_multi_line_chart(
         title=title,
         title_x=0.5,
         height=height,
-        template="plotly_white",
         xaxis_title=x_col.replace("_", " ").title(),
         yaxis_title="Valeurs",
         hovermode="x unified",
@@ -217,13 +229,13 @@ def create_gauge_chart(
             delta={"reference": (max_val + min_val) / 2},
             gauge={
                 "axis": {"range": [min_val, max_val]},
-                "bar": {"color": "#FF6B6B"},
+                "bar": {"color": theme_colors()[0]},
                 "steps": [
-                    {"range": [min_val, max_val * 0.5], "color": "lightgray"},
-                    {"range": [max_val * 0.5, max_val * 0.8], "color": "gray"},
+                    {"range": [min_val, max_val * 0.5], "color": "rgba(128,128,128,0.15)"},
+                    {"range": [max_val * 0.5, max_val * 0.8], "color": "rgba(128,128,128,0.3)"},
                 ],
                 "threshold": {
-                    "line": {"color": "red", "width": 4},
+                    "line": {"color": theme_colors()[-1], "width": 4},
                     "thickness": 0.75,
                     "value": max_val * 0.9,
                 },
@@ -255,14 +267,21 @@ def create_comparison_chart(
         specs=[[{"secondary_y": False}, {"secondary_y": False}]],
     )
 
+    palette = theme_colors()
+
     fig.add_trace(
-        go.Scatter(x=data1[x_col], y=data1[y_col], name=label1, line=dict(color="#FF6B6B")),
+        go.Scatter(x=data1[x_col], y=data1[y_col], name=label1, line=dict(color=palette[0])),
         row=1,
         col=1,
     )
 
     fig.add_trace(
-        go.Scatter(x=data2[x_col], y=data2[y_col], name=label2, line=dict(color="#4ECDC4")),
+        go.Scatter(
+            x=data2[x_col],
+            y=data2[y_col],
+            name=label2,
+            line=dict(color=palette[1 % len(palette)]),
+        ),
         row=1,
         col=2,
     )
