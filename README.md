@@ -2,10 +2,10 @@
 
 # StreamlitTurbo
 
-### Arrêtez de recommencer vos projets Streamlit de zéro.
+### Arrête de recommencer tes projets Streamlit de zéro.
 
 **Un template professionnel, généré en 30 secondes.**
-Architecture propre, thème soigné, outillage moderne — déjà là.
+Architecture propre, thème soigné, outillage moderne : déjà là.
 
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.50+-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://python.org)
@@ -16,31 +16,31 @@ Architecture propre, thème soigné, outillage moderne — déjà là.
 
 ---
 
-## Vous vous reconnaissez ?
+## Tu te reconnais ?
 
-Vous avez une idée d'app. Vous ouvrez un terminal. Et là :
+Tu as une idée d'app. Tu ouvres un terminal. Et là :
 
-- **Vous repartez d'un `app.py` vide.** Encore. Comme les six fois d'avant. Et vous
-  allez recopier la moitié du dernier projet en priant pour ne rien oublier.
-- **Votre app devient un plat de spaghettis à la 3e page.** Tout dans un fichier,
+- **Tu repars d'un `app.py` vide.** Encore. Comme les six fois d'avant. Et tu vas
+  recopier la moitié du dernier projet en priant pour ne rien oublier.
+- **Ton app devient un plat de spaghettis à la 3e page.** Tout dans un fichier,
   les graphiques dupliqués, un `if page ==` de 200 lignes.
-- **Vous ne savez pas ce qu'est « bien faire ».** `src/` ou pas ? Où mettre les
-  composants ? `requirements.txt` ou `pyproject.toml` ? Personne ne vous l'a montré.
-- **Votre app a l'air d'un prototype.** Le thème par défaut, la sidebar grise, les
+- **Tu ne sais pas ce qu'est « bien faire ».** `src/` ou pas ? Où mettre les
+  composants ? `requirements.txt` ou `pyproject.toml` ? Personne ne te l'a montré.
+- **Ton app a l'air d'un prototype.** Le thème par défaut, la sidebar grise, les
   emojis en guise d'icônes. Fonctionnel, mais impossible à montrer à un client.
-- **Le déploiement vous surprend à chaque fois.** Streamlit Cloud veut un
-  `requirements.txt`, vous avez un `pyproject.toml`, et il est 23h.
+- **Le déploiement te surprend à chaque fois.** Streamlit Cloud veut un
+  `requirements.txt`, tu as un `pyproject.toml`, et il est 23h.
 
-**Le coût réel : environ 4 heures perdues avant d'écrire votre première ligne
+**Le coût réel : environ 4 heures perdues avant d'écrire ta première ligne
 utile.** À chaque projet.
 
 ---
 
-## Ce que vous obtenez instantanément
+## Ce que tu obtiens instantanément
 
-Une seule commande, et vous démarrez à l'étape 12 au lieu de l'étape 1.
+Une seule commande, et tu démarres à l'étape 12 au lieu de l'étape 1.
 
-### Une architecture que vous n'avez pas à inventer
+### Une architecture que tu n'as pas à inventer
 
 Le layout `src/` que la communauté Python utilise, appliqué à Streamlit : pages,
 composants et utilitaires séparés. Ajouter une 8e page ne casse rien.
@@ -54,9 +54,9 @@ haut de page. **Montrable à un client dès la première minute.**
 
 ### Huit composants graphiques réutilisables
 
-`create_line_chart()`, `create_pie_chart()`, `create_gauge_chart()`… Vous appelez
-une fonction, vous ne recopiez plus 40 lignes de `update_layout()`. Et ils prennent
-automatiquement la palette du thème choisi — **aucune couleur en dur à maintenir**.
+`create_line_chart()`, `create_pie_chart()`, `create_gauge_chart()`… Tu appelles
+une fonction, tu ne recopies plus 40 lignes de `update_layout()`. Et ils prennent
+automatiquement la palette du thème choisi, **aucune couleur en dur à maintenir**.
 **Plus 20 fonctions utilitaires** : formatage FR, calculs de croissance, export CSV,
 cache.
 
@@ -68,19 +68,19 @@ cache.
 
 ### Un déploiement sans surprise
 
-`just requirements` génère le `requirements.txt` figé que Streamlit Cloud attend —
-et un `requirements.txt` fonctionnel est déjà livré. **Vous poussez, ça marche.**
+`just requirements` génère le `requirements.txt` figé que Streamlit Cloud attend,
+et un `requirements.txt` fonctionnel est déjà livré. **Tu pousses, ça marche.**
 
-### Un template qui vieillit avec vous
+### Un template qui vieillit avec toi
 
 Basé sur **Copier** : `copier update` récupère les améliorations du template dans
-vos projets déjà démarrés. **Pas un copier-coller mort.**
+tes projets déjà démarrés. **Pas un copier-coller mort.**
 
 ---
 
 ## Aperçu
 
-**Dashboard** — filtres par date et catégorie, KPI, 5 graphiques Plotly, export CSV.
+**Dashboard** : filtres par date et catégorie, KPI, 5 graphiques Plotly, export CSV.
 Chaque graphique est un appel de fonction, pas 40 lignes de `update_layout()`.
 
 ![Dashboard](docs/screenshots/dashboard.png)
@@ -91,7 +91,7 @@ Chaque graphique est un appel de fonction, pas 40 lignes de `update_layout()`.
 | Navigation en haut, KPI, présentation | Onglets, préférences en session |
 
 _Thème Spotify dark, polices Poppins + Lato, icônes Material, graphiques accordés à
-la palette du thème — sortie de génération, sans une ligne de CSS._
+la palette du thème. Sortie de génération, sans une ligne de CSS._
 
 ---
 
@@ -104,16 +104,16 @@ pip install uv          # gestionnaire de paquets ultra-rapide
 uv tool install copier  # générateur de projet
 ```
 
-`just` est optionnel mais recommandé — [comment l'installer](#faq).
+`just` est optionnel mais recommandé : [comment l'installer](#faq).
 
-### Générer votre projet
+### Générer ton projet
 
 ```bash
 copier copy https://github.com/gpenessot/StreamlitTurbo.git mon-app
 cd mon-app
 ```
 
-Copier vous pose six questions (nom, description, auteur, version de Python,
+Copier te pose six questions (nom, description, auteur, version de Python,
 thème) et écrit le projet complet.
 
 ### Lancer
@@ -175,18 +175,18 @@ git add . && git commit -m "Ready for deployment"
 git push
 ```
 
-Puis sur [share.streamlit.io](https://share.streamlit.io) : connectez le repo,
-sélectionnez `main.py`, **Deploy**.
+Puis sur [share.streamlit.io](https://share.streamlit.io) : connecte le repo,
+sélectionne `main.py`, **Deploy**.
 
-> **La règle à retenir :** modifiez toujours `pyproject.toml`, jamais
-> `requirements.txt` à la main. Régénérez-le avec `just requirements` avant chaque
+> **La règle à retenir :** modifie toujours `pyproject.toml`, jamais
+> `requirements.txt` à la main. Régénère-le avec `just requirements` avant chaque
 > déploiement.
 
 Fonctionne aussi sur Railway, Render, Heroku, AWS / GCP / Azure.
 
 ---
 
-## Et si vous voulez aller plus loin
+## Et si tu veux aller plus loin
 
 Ce template couvre le démarrage d'un projet. Il s'arrête volontairement là où
 commencent les vraies questions de production.
@@ -219,9 +219,9 @@ _La formation complète : de l'app qui marche à l'app qui tient en production._
 <details>
 <summary><b>Pourquoi Copier et pas un simple <code>git clone</code> ?</b></summary><br>
 
-Un clone est mort à la seconde où vous le faites. Copier remplace les noms,
+Un clone est mort à la seconde où tu le fais. Copier remplace les noms,
 l'auteur, le thème et la version de Python **partout** dans le projet. Surtout,
-`copier update` vous permet de récupérer plus tard les correctifs du template dans
+`copier update` te permet de récupérer plus tard les correctifs du template dans
 un projet déjà bien avancé.
 </details>
 
@@ -236,17 +236,17 @@ sont pas obligatoires.
 <details>
 <summary><b>Pourquoi la navigation est en haut et pas dans la sidebar ?</b></summary><br>
 
-`st.navigation(position="top")` libère toute la largeur pour vos données, ce qui
-compte sur un dashboard. Un composant `sidebar.py` est fourni si vous préférez :
-appelez `render_sidebar()` et passez `initial_sidebar_state="expanded"` dans
+`st.navigation(position="top")` libère toute la largeur pour tes données, ce qui
+compte sur un dashboard. Un composant `sidebar.py` est fourni si tu préfères :
+appelle `render_sidebar()` et passe `initial_sidebar_state="expanded"` dans
 `main.py`.
 </details>
 
 <details>
 <summary><b>Je peux changer de thème après la génération ?</b></summary><br>
 
-Oui. Tout est dans `.streamlit/config.toml` — couleurs, polices, rayons, palette
-des graphiques. Éditez, rechargez. Pas besoin de régénérer le projet.
+Oui. Tout est dans `.streamlit/config.toml` : couleurs, polices, rayons, palette
+des graphiques. Édite, recharge. Pas besoin de régénérer le projet.
 </details>
 
 <details>
@@ -295,7 +295,7 @@ sudo pacman -S just       # Arch
 
 ## Licence
 
-[MIT](LICENSE) — libre d'utilisation et de modification.
+[MIT](LICENSE), libre d'utilisation et de modification.
 
 ---
 
@@ -303,6 +303,6 @@ sudo pacman -S just       # Arch
 
 **Créé par [Gaël Penessot](https://www.mes-formations-data.fr)**
 
-Ce template vous fait gagner du temps ? Mettez-lui une étoile.
+Ce template te fait gagner du temps ? Mets-lui une étoile.
 
 </div>
