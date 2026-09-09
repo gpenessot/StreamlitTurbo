@@ -1,4 +1,4 @@
-# ⚡ StreamlitTurbo - Template Professionnel
+# ⚡ StreamlitTurbo - Template Pro
 
 > **Template moderne pour développeurs Streamlit** 🎯  
 > **Économise 4h de setup sur chaque projet** ⏱️
