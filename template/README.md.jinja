@@ -26,7 +26,8 @@ streamlit run main.py
 {{ project_slug }}/
 ├── main.py                    # Point d'entrée (navigation)
 ├── pyproject.toml             # Dépendances (source de vérité)
-├── requirements.txt           # Dépendances figées pour Streamlit Cloud
+├── uv.lock                    # Lock lu par Streamlit Cloud
+├── requirements.txt           # Fallback pour les plateformes sans uv
 ├── justfile                   # Commandes du projet
 ├── .streamlit/
 │   └── config.toml            # Thème et configuration Streamlit
@@ -51,7 +52,7 @@ just lint           # Vérifier le code (ruff)
 just check          # format + lint
 just test           # Lancer les tests (pytest)
 just add PACKAGE    # Ajouter une dépendance
-just requirements   # Régénérer requirements.txt avant déploiement
+just requirements   # Régénérer requirements.txt (plateformes sans uv)
 just help           # Toutes les commandes
 ```
 
@@ -73,12 +74,19 @@ Créez vos composants réutilisables dans `src/{{ project_slug }}/components/`.
 ## 🚢 Déploiement sur Streamlit Community Cloud
 
 ```bash
-just requirements          # régénère requirements.txt depuis pyproject.toml
 git add . && git commit -m "Ready for deployment" && git push
 ```
 
 Puis sur [share.streamlit.io](https://share.streamlit.io) : connectez le repo
 et sélectionnez `main.py`.
+
+Streamlit Cloud lit les dépendances dans cet ordre et **n'utilise qu'un seul
+fichier** : `uv.lock` → `Pipfile` → `environment.yml` → `requirements.txt` →
+`pyproject.toml`. Le `uv.lock` étant versionné, c'est lui qui sert : `just add`
+suffit, aucune régénération avant de pousser.
+
+`just requirements` reste utile pour les plateformes sans uv (Railway, Render,
+Heroku…).
 
 ## 🐍 Versions supportées
 

@@ -28,8 +28,8 @@ Tu as une idée d'app. Tu ouvres un terminal. Et là :
   composants ? `requirements.txt` ou `pyproject.toml` ? Personne ne te l'a montré.
 - **Ton app a l'air d'un prototype.** Le thème par défaut, la sidebar grise, les
   emojis en guise d'icônes. Fonctionnel, mais impossible à montrer à un client.
-- **Le déploiement te surprend à chaque fois.** Streamlit Cloud veut un
-  `requirements.txt`, tu as un `pyproject.toml`, et il est 23h.
+- **Le déploiement te surprend à chaque fois.** Quel fichier Streamlit Cloud
+  lit-il vraiment : `uv.lock`, `requirements.txt`, `pyproject.toml` ? Il est 23h.
 
 **Le coût réel : environ 4 heures perdues avant d'écrire ta première ligne
 utile.** À chaque projet.
@@ -68,8 +68,10 @@ cache.
 
 ### Un déploiement sans surprise
 
-`just requirements` génère le `requirements.txt` figé que Streamlit Cloud attend,
-et un `requirements.txt` fonctionnel est déjà livré. **Tu pousses, ça marche.**
+Streamlit Community Cloud lit directement le `uv.lock` du projet : rien à
+générer, versions exactement celles de ton poste. Un `requirements.txt` est aussi
+livré pour les plateformes sans uv (`just requirements` le régénère).
+**Tu pousses, ça marche.**
 
 ### Un template qui vieillit avec toi
 
@@ -140,7 +142,8 @@ pip install -r requirements.txt && streamlit run main.py
 mon-app/
 ├── main.py                    # Point d'entrée : navigation top
 ├── pyproject.toml             # Dépendances (source de vérité)
-├── requirements.txt           # Figé pour Streamlit Cloud
+├── uv.lock                    # Lock lu par Streamlit Cloud
+├── requirements.txt           # Fallback pour les plateformes sans uv
 ├── justfile                   # Toutes les commandes du projet
 ├── .streamlit/config.toml     # Thème, polices, couleurs de graphiques
 ├── src/mon_app/
@@ -160,17 +163,16 @@ mon-app/
 | `just check` | Formate **et** vérifie le code (ruff) |
 | `just test` | Lance les tests (pytest) |
 | `just add pandas` | Ajoute une dépendance |
-| `just requirements` | Régénère `requirements.txt` avant déploiement |
+| `just requirements` | Régénère `requirements.txt` (plateformes sans uv) |
 | `just help` | Affiche toutes les commandes |
 
 ---
 
 ## Déploiement
 
-**Streamlit Community Cloud**, en trois commandes :
+**Streamlit Community Cloud**, en deux commandes :
 
 ```bash
-just requirements
 git add . && git commit -m "Ready for deployment"
 git push
 ```
@@ -178,9 +180,15 @@ git push
 Puis sur [share.streamlit.io](https://share.streamlit.io) : connecte le repo,
 sélectionne `main.py`, **Deploy**.
 
-> **La règle à retenir :** modifie toujours `pyproject.toml`, jamais
-> `requirements.txt` à la main. Régénère-le avec `just requirements` avant chaque
-> déploiement.
+Streamlit Cloud cherche les fichiers de dépendances dans cet ordre et **n'en
+utilise qu'un seul** : `uv.lock` → `Pipfile` → `environment.yml` →
+`requirements.txt` → `pyproject.toml`. Le `uv.lock` du projet étant versionné,
+c'est lui qui est utilisé, et ton `just add` suffit à le tenir à jour.
+
+> **La règle à retenir :** modifie toujours `pyproject.toml` (via `just add`),
+> jamais `requirements.txt` à la main. Ce dernier ne sert qu'aux plateformes sans
+> uv (Railway, Render, Heroku…) : régénère-le avec `just requirements` avant de
+> déployer là-bas.
 
 Fonctionne aussi sur Railway, Render, Heroku, AWS / GCP / Azure.
 
