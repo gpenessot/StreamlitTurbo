@@ -14,11 +14,11 @@ from plotly.subplots import make_subplots
 
 def theme_colors() -> List[str]:
     """
-    Palette categorielle du theme, definie dans .streamlit/config.toml
+    Palette catégorielle du thème, définie dans .streamlit/config.toml
     (`theme.chartCategoricalColors`). Repli sur la palette Plotly si absente.
 
-    Utilisez-la pour tout graphique custom afin qu'il suive le theme choisi
-    a la generation du projet.
+    Utilisez-la pour tout graphique custom afin qu'il suive le thème choisi
+    à la génération du projet.
     """
     colors = st.get_option("theme.chartCategoricalColors")
     return list(colors) if colors else list(px.colors.qualitative.Plotly)
@@ -40,7 +40,7 @@ def create_line_chart(
         x_col: Nom de la colonne pour l'axe X
         y_col: Nom de la colonne pour l'axe Y
         title: Titre du graphique
-        color: Couleur de la ligne (par defaut : 1re couleur du theme)
+        color: Couleur de la ligne (par défaut : 1re couleur du thème)
         height: Hauteur du graphique
 
     Returns:

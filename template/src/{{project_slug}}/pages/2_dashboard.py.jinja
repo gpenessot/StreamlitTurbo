@@ -74,8 +74,8 @@ def main():
 
     if filtered_df.empty:
         st.warning(
-            ":material/filter_alt_off: Aucune donnee pour ces filtres. "
-            "Elargissez la periode ou selectionnez au moins une categorie."
+            ":material/filter_alt_off: Aucune donnée pour ces filtres. "
+            "Élargissez la période ou sélectionnez au moins une catégorie."
         )
         st.stop()
 
@@ -143,7 +143,7 @@ def main():
             x_col="date",
             y_col="visits",
             title="Visiteurs quotidiens",
-            # Surcharge possible : ici la 2e couleur du theme au lieu de la 1re
+            # Surcharge possible : ici la 2e couleur du thème au lieu de la 1re
             color=theme_colors()[1],
             height=400,
         )

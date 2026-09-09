@@ -1,5 +1,5 @@
 """
-Page Parametres - Configuration de l'application
+Page Paramètres - Configuration de l'application
 """
 
 import streamlit as st
@@ -8,22 +8,22 @@ from {{ project_slug | replace('-', '_') }}.components.footer import render_foot
 
 
 def main():
-    """Page de parametres."""
+    """Page de paramètres."""
 
-    st.title(":material/settings: Parametres")
+    st.title(":material/settings: Paramètres")
 
-    # Theme actuel
+    # Thème actuel
     current_theme = st.get_option("theme.base")
-    st.info(f":material/palette: Theme actuel : **{current_theme}**")
+    st.info(f":material/palette: Thème actuel : **{current_theme}**")
 
     st.markdown("---")
 
-    # Tabs pour organiser les parametres
+    # Tabs pour organiser les paramètres
     tab1, tab2, tab3 = st.tabs(
         [
             ":material/person: Profil",
             ":material/display_settings: Affichage",
-            ":material/info: A propos",
+            ":material/info: À propos",
         ]
     )
 
@@ -50,33 +50,33 @@ def main():
         with col2:
             st.markdown("#### Statistiques")
             st.metric("Sessions", "42")
-            st.metric("Dernier acces", "Aujourd'hui")
+            st.metric("Dernier accès", "Aujourd'hui")
 
         if st.button(":material/save: Sauvegarder le profil", type="primary"):
             st.success(
-                f"Profil sauvegarde : {st.session_state.user_name} ({st.session_state.user_email})"
+                f"Profil sauvegardé : {st.session_state.user_name} ({st.session_state.user_email})"
             )
 
     with tab2:
-        st.subheader("Preferences d'affichage")
+        st.subheader("Préférences d'affichage")
 
         st.info("""
-        **Note:** Le theme (dark/light/auto) est configure dans `.streamlit/config.toml`
+        **Note :** Le thème (dark/light/blue/green) est configuré dans `.streamlit/config.toml`
 
-        Pour changer de theme, modifiez la variable `streamlit_theme` lors de la
+        Pour changer de thème, modifiez la variable `streamlit_theme` lors de la
         generation du template avec Copier.
         """)
 
         col1, col2 = st.columns(2)
 
         with col1:
-            st.selectbox("Largeur de page", ["Centree", "Large"], index=1, key="layout")
+            st.selectbox("Largeur de page", ["Centrée", "Large"], index=1, key="layout")
 
             st.checkbox(
                 "Afficher la sidebar",
                 value=False,
                 key="show_sidebar",
-                help="Navigation top par defaut",
+                help="Navigation top par défaut",
             )
 
         with col2:
@@ -86,16 +86,16 @@ def main():
                 max_value=100,
                 value=50,
                 key="animation_speed",
-                help="0 = desactivees, 100 = rapides",
+                help="0 = désactivées, 100 = rapides",
             )
 
         st.caption(
-            "Ces preferences sont stockees dans `st.session_state` "
+            "Ces préférences sont stockées dans `st.session_state` "
             "et persistent pendant la session."
         )
 
     with tab3:
-        st.subheader("A propos de l'application")
+        st.subheader("À propos de l'application")
 
         st.markdown("""
         ### {{ project_name }}
@@ -114,18 +114,18 @@ def main():
 
         ---
 
-        ### Technologies utilisees
+        ### Technologies utilisées
 
         - :material/language: **Streamlit** - Framework d'application
-        - :material/storage: **Pandas** - Manipulation de donnees
+        - :material/storage: **Pandas** - Manipulation de données
         - :material/insert_chart: **Plotly** - Visualisations interactives
-        - :material/science: **NumPy** - Calculs numeriques
+        - :material/science: **NumPy** - Calculs numériques
 
         ---
 
         ### Support
 
-        Pour toute question ou probleme, contactez : {{ author_email }}
+        Pour toute question ou problème, contactez : {{ author_email }}
         """)
 
     # Footer en fin de page

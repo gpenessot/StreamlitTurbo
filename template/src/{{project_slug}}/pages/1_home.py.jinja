@@ -10,7 +10,7 @@ from {{ project_slug | replace('-', '_') }}.components.footer import render_foot
 
 
 def main():
-    """Page d'accueil avec KPI et presentation."""
+    """Page d'accueil avec KPI et présentation."""
 
     # Hero section
     st.title(":material/rocket: {{ project_name }}")
@@ -19,12 +19,12 @@ def main():
     st.markdown("---")
 
     # KPI Section
-    st.subheader(":material/monitoring: Indicateurs cles")
+    st.subheader(":material/monitoring: Indicateurs clés")
 
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric(label="Ventes totales", value="2.3M", delta="12%", help="Evolution sur 30 jours")
+        st.metric(label="Ventes totales", value="2.3M", delta="12%", help="Évolution sur 30 jours")
 
     with col2:
         st.metric(label="Visiteurs", value="45.2K", delta="5%", help="Visiteurs uniques ce mois")
@@ -39,29 +39,29 @@ def main():
 
     st.markdown("---")
 
-    # Presentation du template
-    st.subheader(":material/info: A propos de ce template")
+    # Présentation du template
+    st.subheader(":material/info: À propos de ce template")
 
     col1, col2 = st.columns([2, 1])
 
     with col1:
         st.markdown("""
-        ### Fonctionnalites
+        ### Fonctionnalités
 
         Ce template Streamlit moderne inclut :
 
         - :material/check: **Navigation top** sans sidebar
-        - :material/check: **Icones Material Design** integrees
-        - :material/check: **Themes personnalisables** (dark, light, blue, green)
+        - :material/check: **Icônes Material Design** intégrées
+        - :material/check: **Thèmes personnalisables** (dark, light, blue, green)
         - :material/check: **Architecture modulaire** et maintenable
-        - :material/check: **Components reutilisables** prets a l'emploi
-        - :material/check: **Gestion uv** pour des dependances modernes
+        - :material/check: **Composants réutilisables** prêts à l'emploi
+        - :material/check: **Gestion uv** pour des dépendances modernes
 
         ### Utilisation
 
         Naviguez via le menu en haut pour explorer :
         - **Dashboard** : Visualisations et graphiques interactifs
-        - **Parametres** : Configuration de l'application
+        - **Paramètres** : Configuration de l'application
         """)
 
     with col2:
@@ -78,9 +78,9 @@ def main():
     st.markdown("---")
 
     # Quick stats demo
-    st.subheader(":material/analytics: Apercu rapide")
+    st.subheader(":material/analytics: Aperçu rapide")
 
-    # Generer des donnees d'exemple
+    # Générer des données d'exemple
     chart_data = pd.DataFrame(
         np.random.randn(20, 3), columns=["Produit A", "Produit B", "Produit C"]
     )
