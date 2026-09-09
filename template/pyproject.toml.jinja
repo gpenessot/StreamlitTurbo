@@ -9,19 +9,21 @@ authors = [
 ]
 
 dependencies = [
-    "streamlit>=1.28.0",
+    # 1.50+ requis : st.navigation(position="top"), [[theme.fontFaces]],
+    # [theme.sidebar] et chartCategoricalColors utilises par ce template.
+    "streamlit>=1.50.0",
     "pandas>=2.0.0",
     "numpy>=1.24.0",
     "plotly>=5.15.0",
     "altair>=5.0.0",
     "python-dotenv>=1.0.0",
-{% if use_sample_data %}    "faker>=19.0.0",{% endif %}
 ]
 
-[project.optional-dependencies]
+# Groupe installe automatiquement par `uv sync` (PEP 735).
+[dependency-groups]
 dev = [
     "pytest>=7.4.0",
-    "ruff>=0.1.0",
+    "ruff>=0.6.0",
     "mypy>=1.7.0",
 ]
 
@@ -33,6 +35,10 @@ target-version = "py{{ python_version | replace('.', '') }}"
 select = ["E", "F", "I", "N", "W"]
 ignore = []
 
+[tool.ruff.lint.per-file-ignores]
+# Streamlit impose un prefixe numerique sur les fichiers de pages.
+"src/*/pages/*.py" = ["N999"]
+
 [tool.mypy]
 python_version = "{{ python_version }}"
 warn_return_any = true
@@ -41,6 +47,7 @@ disallow_untyped_defs = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]

@@ -1,13 +1,13 @@
-# 📦 Requirements.txt pour déploiement
+# Dependances de production - pour Streamlit Community Cloud
 #
-# Ce fichier est GÉNÉRÉ automatiquement depuis pyproject.toml
-# Ne modifiez pas ce fichier directement !
-#
-# Pour mettre à jour les dépendances :
-# 1. Modifiez pyproject.toml ou utilisez 'just add PACKAGE'
-# 2. Générez ce fichier avec 'just requirements'
-#
-# Ce fichier est nécessaire pour déployer sur Streamlit Cloud
+# Source de verite : pyproject.toml
+# Regenerez ce fichier apres tout changement de dependance :
+#     just requirements
+# (equivalent : uv export --no-dev --no-hashes --no-emit-project -o requirements.txt)
 
-# Pour générer les dépendances, exécutez :
-# just requirements
+streamlit>=1.50.0
+pandas>=2.0.0
+numpy>=1.24.0
+plotly>=5.15.0
+altair>=5.0.0
+python-dotenv>=1.0.0

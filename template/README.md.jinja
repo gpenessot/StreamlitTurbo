@@ -4,14 +4,19 @@
 
 ## 🚀 Installation
 
+### Avec uv + just (recommandé)
+
 ```bash
-# Cloner ou télécharger le projet
 cd {{ project_slug }}
+just setup     # crée le venv et installe tout (prod + dev)
+just run       # lance l'application
+```
 
-# Installer les dépendances
+### Avec pip
+
+```bash
+cd {{ project_slug }}
 pip install -r requirements.txt
-
-# Lancer l'application
 streamlit run main.py
 ```
 
@@ -19,45 +24,66 @@ streamlit run main.py
 
 ```
 {{ project_slug }}/
-├── main.py                    # Point d'entrée de l'application
-├── requirements.txt           # Dépendances Python
+├── main.py                    # Point d'entrée (navigation)
+├── pyproject.toml             # Dépendances (source de vérité)
+├── requirements.txt           # Dépendances figées pour Streamlit Cloud
+├── justfile                   # Commandes du projet
 ├── .streamlit/
-│   └── config.toml           # Configuration Streamlit
+│   └── config.toml            # Thème et configuration Streamlit
 ├── src/
 │   └── {{ project_slug }}/
-│       ├── pages/            # Pages de l'application
-│       ├── components/       # Composants réutilisables
-│       └── utils/           # Fonctions utilitaires
-{% if use_sample_data %}└── data/
-    └── sample_data.csv      # Données d'exemple
-{% endif %}```
+│       ├── pages/             # Pages de l'application
+│       ├── components/        # Composants réutilisables
+│       └── utils/             # Fonctions utilitaires
+├── data/
+│   └── sample_data.csv        # Données d'exemple
+└── tests/
+    └── test_helpers.py        # Tests unitaires
+```
 
-## 🎯 Fonctionnalités
+## ⚡ Commandes
 
-- ✅ Structure modulaire et professionnelle
-- ✅ Pages multiples avec navigation
-- ✅ Composants réutilisables
-- ✅ Configuration Streamlit optimisée
-{% if use_sample_data %}- ✅ Données d'exemple incluses{% endif %}
-{% if include_analytics_page %}- ✅ Dashboard d'analytics de démonstration{% endif %}
+```bash
+just run            # Lancer l'application
+just dev            # Lancer avec rechargement auto
+just format         # Formater le code (ruff)
+just lint           # Vérifier le code (ruff)
+just check          # format + lint
+just test           # Lancer les tests (pytest)
+just add PACKAGE    # Ajouter une dépendance
+just requirements   # Régénérer requirements.txt avant déploiement
+just help           # Toutes les commandes
+```
 
 ## 🎨 Personnalisation
 
 ### Thème
-Le thème par défaut est configuré sur `{{ streamlit_theme }}`. 
-Vous pouvez le modifier dans `.streamlit/config.toml`.
+Le thème est configuré sur `{{ streamlit_theme }}` dans `.streamlit/config.toml`
+(couleurs, polices, rayons, palette de graphiques). Modifiez-le directement,
+aucune régénération n'est nécessaire.
 
 ### Pages
-Ajoutez de nouvelles pages dans `src/{{ project_slug }}/pages/`.
-Le nommage `{numero}_{emoji}_{nom}.py` permet un tri automatique.
+Ajoutez vos pages dans `src/{{ project_slug }}/pages/` en suivant le nommage
+`{numero}_{nom}.py`, puis déclarez-les dans la liste `pages` de `main.py`
+via `st.Page(...)`.
 
 ### Composants
-Créez des composants réutilisables dans `src/{{ project_slug }}/components/`.
+Créez vos composants réutilisables dans `src/{{ project_slug }}/components/`.
+
+## 🚢 Déploiement sur Streamlit Community Cloud
+
+```bash
+just requirements          # régénère requirements.txt depuis pyproject.toml
+git add . && git commit -m "Ready for deployment" && git push
+```
+
+Puis sur [share.streamlit.io](https://share.streamlit.io) : connectez le repo
+et sélectionnez `main.py`.
 
 ## 🐍 Versions supportées
 
 - Python {{ python_version }}+
-- Streamlit 1.28.0+
+- Streamlit 1.50.0+
 
 ## 👨‍💻 Développé par
 
@@ -67,17 +93,11 @@ Créez des composants réutilisables dans `src/{{ project_slug }}/components/`.
 
 Ce template démo vous donne un aperçu des bonnes pratiques Streamlit.
 
-🎓 **Envie d'une version complète ?**
-- Tests automatisés
-- CI/CD avec GitHub Actions  
-- Déploiement cloud
-- Gestion avancée des états
-- Authentification utilisateur
-- Base de données intégrée
-- Monitoring et analytics
-- Documentation automatique
+🎓 **Envie de la version complète ?** Tests, CI/CD, déploiement cloud,
+authentification, connecteurs base de données, monitoring, gestion avancée
+des états.
 
-👉 **[Découvrez notre formation Streamlit avancée](https://votre-lien-formation.com)**
+👉 **[Streamlit Unleashed](https://www.mes-formations-data.fr/formation/streamlit-unleashed)**
 
 ---
 

@@ -19,7 +19,7 @@ st.set_page_config(
     page_title="{{ project_name }}",
     page_icon=":material/dashboard:",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed",
 )
 
 # Definition des pages avec navigation top
@@ -28,17 +28,17 @@ pages = [
         "src/{{ project_slug | replace('-', '_') }}/pages/1_home.py",
         title="Accueil",
         icon=":material/home:",
-        default=True
+        default=True,
     ),
     st.Page(
         "src/{{ project_slug | replace('-', '_') }}/pages/2_dashboard.py",
         title="Dashboard",
-        icon=":material/insert_chart:"
+        icon=":material/insert_chart:",
     ),
     st.Page(
         "src/{{ project_slug | replace('-', '_') }}/pages/3_settings.py",
         title="Parametres",
-        icon=":material/settings:"
+        icon=":material/settings:",
     ),
 ]
 

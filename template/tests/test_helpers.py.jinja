@@ -1,0 +1,51 @@
+"""
+Tests des fonctions utilitaires.
+
+Lancez-les avec `just test` (ou `uv run pytest`).
+"""
+
+import pandas as pd
+
+from {{ project_slug | replace('-', '_') }}.components.charts import generate_sample_data
+from {{ project_slug | replace('-', '_') }}.utils.helpers import (
+    calculate_growth_rate,
+    format_number,
+    format_percentage,
+    safe_divide,
+    truncate_text,
+)
+
+
+def test_format_number():
+    assert format_number(1234567) == "1 234 567"
+    assert format_number(1500, prefix="EUR ") == "EUR 1 500"
+    assert format_number(12.5, suffix=" EUR") == "12.50 EUR"
+
+
+def test_format_percentage():
+    assert format_percentage(0.1542) == "15.4%"
+    assert format_percentage(0.1542, decimals=2) == "15.42%"
+
+
+def test_safe_divide_handles_zero():
+    assert safe_divide(10, 2) == 5
+    assert safe_divide(10, 0) == 0.0
+    assert safe_divide(10, 0, default=-1) == -1
+
+
+def test_calculate_growth_rate():
+    assert calculate_growth_rate(150, 100) == 0.5
+    assert calculate_growth_rate(100, 0) == 0.0
+
+
+def test_truncate_text():
+    assert truncate_text("abc", 10) == "abc"
+    assert truncate_text("a" * 20, 10).endswith("...")
+    assert len(truncate_text("a" * 20, 10)) == 10
+
+
+def test_generate_sample_data_shape():
+    df = generate_sample_data(30)
+    assert isinstance(df, pd.DataFrame)
+    assert len(df) == 30
+    assert {"date", "sales", "visits", "category"} <= set(df.columns)

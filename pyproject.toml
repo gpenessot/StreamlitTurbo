@@ -1,7 +1,7 @@
 [project]
-name = "template-streamlit"
+name = "streamlit-turbo"
 version = "0.1.0"
-description = "Add your description here"
+description = "Template Copier pour demarrer un projet Streamlit moderne (uv, just, ruff)"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

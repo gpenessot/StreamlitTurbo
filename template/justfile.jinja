@@ -47,11 +47,11 @@ check: format lint
 
 # Generation du requirements.txt
 requirements:
-    uv pip compile pyproject.toml -o requirements.txt
+    uv export --no-dev --no-hashes --no-emit-project -o requirements.txt
 
 # Creation de l'environnement virtuel
 venv:
-    uv venv --python "{{ python_version }}
+    uv venv --python {{ python_version }}
 
 # Nettoyage (compatible toutes plateformes via Python)
 clean:
@@ -62,7 +62,7 @@ reset: clean setup
 
 # Mode developpement
 dev:
-    uv run streamlit run main.py --server.runOnSave=true --server.developmentMode=true
+    uv run streamlit run main.py --server.runOnSave=true
 
 # Tests
 test:

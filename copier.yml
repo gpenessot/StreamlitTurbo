@@ -1,6 +1,7 @@
-# Streamlit Demo Template - Lead Magnet Version
-# Version simple mais professionnelle pour attirer les débutants
+# StreamlitTurbo - Template Streamlit (version lead magnet)
+# Version complete : https://www.mes-formations-data.fr/formation/streamlit-unleashed
 
+_min_copier_version: "9.0.0"
 _templates_suffix: .jinja
 _subdirectory: template
 
@@ -34,17 +35,12 @@ author_email:
 python_version:
   type: str
   help: "Version Python minimale"
-  default: "3.9"
+  default: "3.12"
   choices:
-    - "3.9"
-    - "3.10"
     - "3.11"
     - "3.12"
-
-use_sample_data:
-  type: bool
-  help: "Inclure des données d'exemple pour tester l'app ?"
-  default: true
+    - "3.13"
+    - "3.14"
 
 streamlit_theme:
   type: str
@@ -56,25 +52,27 @@ streamlit_theme:
     Blue (Corporate): "blue"
     Green (Nature): "green"
 
-include_analytics_page:
-  type: bool
-  help: "Inclure une page d'analytics de démonstration ?"
-  default: true
-
 _message_after_copy: |
-  
-  🎉 Votre template Streamlit démo a été créé avec succès !
-  
-  📁 Votre projet: {{ project_name }}
-  📂 Répertoire: {{ project_slug }}
-  
-  🚀 Prochaines étapes:
-  1. cd {{ project_slug }}
-  2. pip install -r requirements.txt
-  3. streamlit run main.py
-  
-  💡 Ce template démo vous donne un aperçu des bonnes pratiques Streamlit.
-     Pour une version complète avec tests, CI/CD, déploiement et bien plus,
-     découvrez notre formation avancée !
-  
-  📚 Besoin d'aide ? Consultez le README.md généré
+
+  Votre projet Streamlit a ete cree avec succes !
+
+    Projet     : {{ project_name }}
+    Repertoire : {{ project_slug }}
+
+  Prochaines etapes (avec uv + just) :
+    1. cd {{ project_slug }}
+    2. just setup
+    3. just run
+
+  Sans just :
+    1. cd {{ project_slug }}
+    2. pip install -r requirements.txt
+    3. streamlit run main.py
+
+  Ce template demo montre les bonnes pratiques Streamlit de base.
+  Pour la version complete (tests, CI/CD, deploiement, authentification,
+  connecteurs base de donnees, monitoring) :
+
+    https://www.mes-formations-data.fr/formation/streamlit-unleashed
+
+  Besoin d'aide ? Consultez le README.md genere.

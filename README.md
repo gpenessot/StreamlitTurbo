@@ -10,7 +10,7 @@ Template professionnel utilisant **uv** et **pyproject.toml** pour un développe
 ## 🎬 **Démarrage Rapide en 3 minutes**
 
 ### Prérequis
-- Python 3.9+
+- Python 3.11+
 - [uv](https://github.com/astral-sh/uv) installé (`pip install uv`)
 - [just](https://github.com/casey/just) installé (optionnel mais recommandé)
 - [Copier](https://copier.readthedocs.io/) installé
@@ -76,13 +76,13 @@ just run
 
 **Alternative sans just :**
 ```bash
-# Setup manuel
-uv init --python 3.11
-uv venv
+# Avec uv
 uv sync
-
-# Lancer l'app
 uv run streamlit run main.py
+
+# Ou avec pip
+pip install -r requirements.txt
+streamlit run main.py
 ```
 
 ---
@@ -94,14 +94,14 @@ mon-app/
 ├── 📄 main.py                 # Point d'entrée
 ├── 📄 pyproject.toml          # Gestion des dépendances avec uv
 ├── 📄 justfile                # Automatisation des tâches
+├── 📄 requirements.txt        # Dépendances figées (Streamlit Cloud)
 ├── 📁 src/mon_app/           # Code source
 │   ├── 📁 pages/             # Pages Streamlit
 │   ├── 📁 components/        # Composants réutilisables
-│   ├── 📁 utils/            # Utilitaires
-│   └── 📁 config/           # Configuration
+│   └── 📁 utils/             # Utilitaires
 ├── 📁 .streamlit/           # Config Streamlit
-├── 📁 data/                 # Données (optionnel)
-└── 📁 tests/               # Tests (optionnel)
+├── 📁 data/                 # Données d'exemple
+└── 📁 tests/                # Tests unitaires
 ```
 
 ---
@@ -161,7 +161,9 @@ Streamlit Cloud nécessite un **requirements.txt**. Générez-le facilement :
 just requirements
 ```
 
-Cette commande crée un `requirements.txt` à partir de votre `pyproject.toml`.
+Cette commande régénère `requirements.txt` à partir de votre `pyproject.toml`
+(`uv export --no-dev --no-hashes --no-emit-project`). Un `requirements.txt`
+fonctionnel est déjà livré : la commande sert après chaque ajout de dépendance.
 
 **Important :** 
 - ✅ Modifiez toujours `pyproject.toml` (pas `requirements.txt`)
@@ -181,7 +183,7 @@ Cette commande crée un `requirements.txt` à partir de votre `pyproject.toml`.
 ### 📊 **Exemples Fonctionnels**
 - ✅ Dashboard Analytics avec KPI
 - ✅ Page Paramètres complète
-- ✅ Sidebar intelligente
+- ✅ Sidebar optionnelle prête à l'emploi
 - ✅ Composants charts Plotly
 - ✅ 20+ fonctions utilitaires
 
@@ -189,8 +191,9 @@ Cette commande crée un `requirements.txt` à partir de votre `pyproject.toml`.
 - ✅ **uv** pour la gestion des dépendances
 - ✅ **pyproject.toml** comme standard
 - ✅ **just** pour l'automatisation
-- ✅ Configuration Streamlit optimisée
-- ✅ Support GitHub Codespaces
+- ✅ Configuration Streamlit optimisée (thèmes, polices custom)
+- ✅ **ruff** pour le format et le lint
+- ✅ **pytest** avec une suite de tests d'exemple
 
 ---
 
@@ -232,7 +235,7 @@ Le template fonctionne sur toutes les plateformes supportant Python :
 | **Architecture** | Structure de base | Architecture enterprise |
 | **Authentification** | ❌ Non incluse | ✅ Système complet |
 | **Déploiement** | ❌ Manuel | ✅ 1-click deploy |
-| **Tests** | ❌ Non inclus | ✅ Suite complète |
+| **Tests** | ⚠️ Exemples de base | ✅ Suite complète |
 | **CI/CD** | ❌ Non inclus | ✅ GitHub Actions |
 | **Base de données** | ❌ Non incluse | ✅ Connecteurs DB |
 | **Monitoring** | ❌ Non inclus | ✅ Analytics intégrés |
