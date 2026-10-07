@@ -12,6 +12,8 @@ Architecture propre, thème soigné, outillage moderne : déjà là.
 [![uv](https://img.shields.io/badge/uv-powered-DE5FE9)](https://github.com/astral-sh/uv)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
+![Génération d'un projet StreamlitTurbo en une commande](docs/demo.gif)
+
 </div>
 
 ---
@@ -75,7 +77,7 @@ livré pour les plateformes sans uv (`just requirements` le régénère).
 
 ### Un template qui vieillit avec toi
 
-Basé sur **Copier** : `copier update` récupère les améliorations du template dans
+Basé sur **Copier** : `uvx copier update` récupère les améliorations du template dans
 tes projets déjà démarrés. **Pas un copier-coller mort.**
 
 ---
@@ -101,9 +103,14 @@ la palette du thème. Sortie de génération, sans une ligne de CSS._
 
 ### Prérequis
 
+Seul [uv](https://docs.astral.sh/uv/) est nécessaire :
+
 ```bash
-pip install uv          # gestionnaire de paquets ultra-rapide
-uv tool install copier  # générateur de projet
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
 `just` est optionnel mais recommandé : [comment l'installer](#faq).
@@ -111,10 +118,11 @@ uv tool install copier  # générateur de projet
 ### Générer ton projet
 
 ```bash
-copier copy https://github.com/gpenessot/StreamlitTurbo.git mon-app
+uvx copier copy gh:gpenessot/StreamlitTurbo mon-app
 cd mon-app
 ```
 
+`uvx` lance Copier sans rien installer.
 Copier te pose six questions (nom, description, auteur, version de Python,
 thème) et écrit le projet complet.
 
@@ -214,7 +222,7 @@ commencent les vraies questions de production.
 
 <div align="center">
 
-### [Découvrir Streamlit Unleashed](https://www.mes-formations-data.fr/formation/streamlit-unleashed)
+### [Découvrir Streamlit Unleashed](https://www.mes-formations-data.fr/formation/streamlit-unleashed?utm_source=github&utm_medium=readme&utm_campaign=streamlitturbo)
 
 _La formation complète : de l'app qui marche à l'app qui tient en production._
 
@@ -229,7 +237,7 @@ _La formation complète : de l'app qui marche à l'app qui tient en production._
 
 Un clone est mort à la seconde où tu le fais. Copier remplace les noms,
 l'auteur, le thème et la version de Python **partout** dans le projet. Surtout,
-`copier update` te permet de récupérer plus tard les correctifs du template dans
+`uvx copier update` te permet de récupérer plus tard les correctifs du template dans
 un projet déjà bien avancé.
 </details>
 
@@ -297,7 +305,7 @@ sudo pacman -S just       # Arch
 
 ## Contact
 
-[gael.penessot@gmail.com](mailto:gael.penessot@gmail.com) ·
+[gael.penessot@data-decision.io](mailto:gael.penessot@data-decision.io) ·
 [LinkedIn](https://www.linkedin.com/in/gael-penessot/) ·
 [Issues](https://github.com/gpenessot/StreamlitTurbo/issues)
 
@@ -309,7 +317,7 @@ sudo pacman -S just       # Arch
 
 <div align="center">
 
-**Créé par [Gaël Penessot](https://www.mes-formations-data.fr)**
+**Créé par [Gaël Penessot](https://www.mes-formations-data.fr?utm_source=github&utm_medium=readme&utm_campaign=streamlitturbo)**
 
 Ce template te fait gagner du temps ? Mets-lui une étoile.
 

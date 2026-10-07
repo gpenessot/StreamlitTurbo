@@ -57,15 +57,15 @@ _message_after_copy: |
   Votre projet Streamlit a ete cree avec succes !
 
     Projet     : {{ project_name }}
-    Repertoire : {{ project_slug }}
+    Repertoire : {{ _copier_conf.dst_path }}
 
   Prochaines etapes (avec uv + just) :
-    1. cd {{ project_slug }}
+    1. cd {{ _copier_conf.dst_path }}
     2. just setup
     3. just run
 
   Sans just :
-    1. cd {{ project_slug }}
+    1. cd {{ _copier_conf.dst_path }}
     2. pip install -r requirements.txt
     3. streamlit run main.py
 
